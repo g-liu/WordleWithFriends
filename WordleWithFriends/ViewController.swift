@@ -27,7 +27,6 @@ final class ViewController: UIViewController {
   private lazy var initialWordTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.becomeFirstResponder()
     textField.layer.borderWidth = 1.0
     textField.layer.borderColor = UIColor.darkText.cgColor
     textField.autocapitalizationType = .allCharacters
@@ -58,6 +57,8 @@ final class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
+    
+    view.backgroundColor = .systemBackground
     
     let label = UILabel()
     label.numberOfLines = 0

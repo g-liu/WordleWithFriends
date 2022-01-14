@@ -15,6 +15,8 @@
 		6C19F5A927921EFB00062083 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C19F5A727921EFB00062083 /* LaunchScreen.storyboard */; };
 		6C19F5B427921EFC00062083 /* WordleWithFriendsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5B327921EFC00062083 /* WordleWithFriendsTests.swift */; };
 		6C19F5BF27921EFC00062083 /* WordleWithFriendsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5BE27921EFC00062083 /* WordleWithFriendsUITests.swift */; };
+		6C19F5D127922D6700062083 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5D027922D6700062083 /* String+Extension.swift */; };
+		6C19F5D62792356500062083 /* WordGuessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5D52792356500062083 /* WordGuessViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		6C19F5BA27921EFC00062083 /* WordleWithFriendsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordleWithFriendsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C19F5BE27921EFC00062083 /* WordleWithFriendsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleWithFriendsUITests.swift; sourceTree = "<group>"; };
 		6C19F5C027921EFC00062083 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6C19F5D027922D6700062083 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		6C19F5D52792356500062083 /* WordGuessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordGuessViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,9 +103,11 @@
 		6C19F59B27921EFA00062083 /* WordleWithFriends */ = {
 			isa = PBXGroup;
 			children = (
+				6C19F5CF27922D5900062083 /* Extensions */,
 				6C19F59C27921EFA00062083 /* AppDelegate.swift */,
 				6C19F59E27921EFA00062083 /* SceneDelegate.swift */,
 				6C19F5A027921EFA00062083 /* ViewController.swift */,
+				6C19F5D52792356500062083 /* WordGuessViewController.swift */,
 				6C19F5A227921EFA00062083 /* Main.storyboard */,
 				6C19F5A527921EFB00062083 /* Assets.xcassets */,
 				6C19F5A727921EFB00062083 /* LaunchScreen.storyboard */,
@@ -126,6 +132,14 @@
 				6C19F5C027921EFC00062083 /* Info.plist */,
 			);
 			path = WordleWithFriendsUITests;
+			sourceTree = "<group>";
+		};
+		6C19F5CF27922D5900062083 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				6C19F5D027922D6700062083 /* String+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,6 +272,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C19F5D62792356500062083 /* WordGuessViewController.swift in Sources */,
+				6C19F5D127922D6700062083 /* String+Extension.swift in Sources */,
 				6C19F5A127921EFA00062083 /* ViewController.swift in Sources */,
 				6C19F59D27921EFA00062083 /* AppDelegate.swift in Sources */,
 				6C19F59F27921EFA00062083 /* SceneDelegate.swift in Sources */,

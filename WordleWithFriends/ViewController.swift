@@ -57,7 +57,7 @@ final class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
-    
+    title = "Wordle with Friends"
     view.backgroundColor = .systemBackground
     
     let label = UILabel()
@@ -115,6 +115,7 @@ final class ViewController: UIViewController {
     // start game
     let wordGuessVC = WordGuessViewController()
     wordGuessVC.word = inputText
+    initialWordTextField.text = ""
     
     navigationController?.pushViewController(wordGuessVC, animated: true)
     

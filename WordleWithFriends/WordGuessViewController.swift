@@ -13,12 +13,13 @@ final class WordGuessViewController: UIViewController {
   private lazy var guessTable: UITableView = {
     let tableView = UITableView(frame: .zero, style: .plain)
     tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.separatorStyle = .none
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.rowHeight = 75 // TODO UNHARDCODE
-    tableView.contentSize = CGSize(width: 75, height: 75)
+    tableView.allowsSelection = false
+    tableView.rowHeight = UITableView.automaticDimension
     
-    tableView.register(LetterTileTableViewCell.self, forCellReuseIdentifier: LetterTileTableViewCell.identifier)
+    tableView.register(WordGuessTableViewCell.self, forCellReuseIdentifier: WordGuessTableViewCell.identifier)
     
     return tableView
   }()
@@ -37,7 +38,7 @@ final class WordGuessViewController: UIViewController {
     view.backgroundColor = .systemBackground
     
     view.addSubview(guessTable)
-    guessTable.pin(to: view)
+    guessTable.pin(to: view.safeAreaLayoutGuide, margins: .init(top: 12, left: 0, bottom: 0, right: 0))
     
     title = "Guess the word"
   }
@@ -49,11 +50,11 @@ extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    5 // TODO UNHARDCODE
+    6 // TODO UNHARDCODE
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: LetterTileTableViewCell.identifier) as? LetterTileTableViewCell else {
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: WordGuessTableViewCell.identifier) as? WordGuessTableViewCell else {
       return UITableViewCell()
     }
     

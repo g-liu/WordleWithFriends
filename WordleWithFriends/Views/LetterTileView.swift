@@ -7,6 +7,7 @@
 
 import UIKit
 
+// TODO MOVE THIS
 enum LetterState {
   case unchecked
   case correct
@@ -14,9 +15,8 @@ enum LetterState {
   case incorrect
 }
 
-final class LetterTileTableViewCell: UITableViewCell {
-  static let identifier = "LetterTileTableViewCell"
-  
+
+final class LetterTileView: UIView {
   private lazy var letterLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
@@ -26,28 +26,26 @@ final class LetterTileTableViewCell: UITableViewCell {
     return label
   }()
   
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
-    
-    setupCell()
+  init() {
+    super.init(frame: .zero)
+    setupView()
   }
   
   required init?(coder: NSCoder) {
     super.init(coder: coder)
-    
-    setupCell()
+    setupView()
   }
   
-  private func setupCell() {
+  private func setupView() {
     layer.borderColor = UIColor.darkText.cgColor
     layer.borderWidth = 1.0
     
-    contentView.addSubview(letterLabel)
-    letterLabel.pin(to: contentView)
+    addSubview(letterLabel)
+    letterLabel.pin(to: self)
     
     NSLayoutConstraint.activate([
-      contentView.heightAnchor.constraint(equalToConstant: 75),
-      contentView.widthAnchor.constraint(equalTo: contentView.heightAnchor),
+      heightAnchor.constraint(equalToConstant: 50),
+      widthAnchor.constraint(equalTo: heightAnchor),
     ])
   }
   
@@ -55,13 +53,13 @@ final class LetterTileTableViewCell: UITableViewCell {
     letterLabel.text = letter
     switch state {
       case .correct:
-        contentView.backgroundColor = .systemGreen
+        backgroundColor = .systemGreen
       case .misplaced:
-        contentView.backgroundColor = .systemYellow
+        backgroundColor = .systemYellow
       case .incorrect:
-        contentView.backgroundColor = .systemGray
+        backgroundColor = .systemGray
       case .unchecked:
-        contentView.backgroundColor = .systemBackground
+        backgroundColor = .systemBackground
     }
   }
 }

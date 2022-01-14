@@ -16,4 +16,13 @@ extension UIView {
       trailingAnchor.constraint(equalTo: otherView.trailingAnchor, constant: -margins.right),
     ])
   }
+  
+  func pin(to layoutGuide: UILayoutGuide, margins: UIEdgeInsets = .zero) {
+    NSLayoutConstraint.activate([
+      topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: margins.top),
+      bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor, constant: -margins.bottom),
+      leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: margins.left),
+      trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -margins.right),
+    ])
+  }
 }

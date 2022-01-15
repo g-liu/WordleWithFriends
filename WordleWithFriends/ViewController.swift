@@ -9,7 +9,7 @@ import UIKit
 
 final class ViewController: UIViewController {
   
-  private static let MAX_WORD_LENGTH = 5
+  static let MAX_WORD_LENGTH = 5
   
   private lazy var startGameButton: UIButton = {
     let button = UIButton()

@@ -36,7 +36,7 @@ final class WordGuessTableViewCell: UITableViewCell {
   private func setupCell() {
     (0...4).forEach { _ in
       let tile = LetterTileView()
-      tile.configure(letter: " ", state: .unchecked)
+      tile.configure()
       letterStack.addArrangedSubview(tile)
     }
     
@@ -47,5 +47,16 @@ final class WordGuessTableViewCell: UITableViewCell {
       letterStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
       letterStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
     ])
+  }
+  
+  func configure(with wordGuess: WordGuessModel) {
+    letterStack.removeAllArrangedSubviews()
+    (0...4).forEach { index in
+      let tile = LetterTileView()
+      if let guess = wordGuess.guess(at: index) {
+        tile.configure(guess)
+      }
+      letterStack.addArrangedSubview(tile)
+    }
   }
 }

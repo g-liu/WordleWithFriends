@@ -20,8 +20,9 @@ final class LetterTileView: UIView {
   private lazy var letterLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
+    label.textAlignment = .center
     
-    label.font = .monospacedSystemFont(ofSize: 24.0, weight: .bold)
+    label.font = .monospacedSystemFont(ofSize: 28.0, weight: .bold)
     
     return label
   }()
@@ -49,9 +50,9 @@ final class LetterTileView: UIView {
     ])
   }
   
-  func configure(letter: String, state: LetterState) {
-    letterLabel.text = letter
-    switch state {
+  func configure(_ letterGuess: LetterGuess = .default) {
+    letterLabel.text = String(letterGuess.letter)
+    switch letterGuess.state {
       case .correct:
         backgroundColor = .systemGreen
       case .misplaced:

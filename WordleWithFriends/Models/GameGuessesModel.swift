@@ -24,6 +24,14 @@ struct GameGuessesModel {
     guesses.append(WordGuess())
   }
   
+  mutating func markInvalidGuess() {
+    guesses[guesses.count - 1].forceState(.invalid)
+  }
+  
+  mutating func clearInvalidGuess() {
+    guesses[guesses.count - 1].forceState(.unchecked)
+  }
+  
   var numberOfGuesses: Int { guesses.count }
 }
 
@@ -32,4 +40,5 @@ enum LetterState {
   case correct
   case misplaced
   case incorrect
+  case invalid
 }

@@ -14,6 +14,12 @@ struct WordGuess {
     guess = []
   }
   
+  mutating func forceState(_ state: LetterState) {
+    (0..<guess.count).forEach { index in
+      guess[index].state = state
+    }
+  }
+  
   mutating func updateGuess(_ newGuess: String) {
     guess = []
     for char in newGuess {

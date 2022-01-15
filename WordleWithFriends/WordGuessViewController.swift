@@ -132,11 +132,13 @@ extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
 extension WordGuessViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     // this is how we submit a guess
-    guard let wordGuess = textField.text else { return false }
-    
-    guard wordGuess.count == 5 else { return false }
-    
-    guard wordGuess.isARealWord() else { return false }
+    guard let wordGuess = textField.text,
+          wordGuess.count == 5,
+          wordGuess.isARealWord() else {
+      gameGuessesModel.markInvalidGuess()
+      guessTable.reloadData()
+      return false
+    }
     
     submitGuess()
     return false
@@ -158,6 +160,9 @@ extension WordGuessViewController: UITextFieldDelegate {
     guard (textField.text?.count ?? 0) + string.count <= GameSetupViewController.MAX_WORD_LENGTH else {
       return false
     }
+    
+    gameGuessesModel.clearInvalidGuess()
+    guessTable.reloadData()
     
     return true
   }

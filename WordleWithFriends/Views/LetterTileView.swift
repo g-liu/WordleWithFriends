@@ -44,7 +44,9 @@ final class LetterTileView: UIView {
   
   func configure(_ letterGuess: LetterGuess = .default) {
     letterLabel.text = String(letterGuess.letter)
+    layer.borderColor = UIColor.separator.cgColor
     layer.borderWidth = 1.0
+    
     switch letterGuess.state {
       case .correct:
         backgroundColor = .systemGreen
@@ -57,6 +59,9 @@ final class LetterTileView: UIView {
           layer.borderWidth = 3.0
         }
         backgroundColor = .systemBackground
+      case .invalid:
+        layer.borderColor = UIColor.systemRed.cgColor
+        layer.borderWidth = 3.0
     }
   }
 }

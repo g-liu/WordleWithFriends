@@ -25,7 +25,7 @@ final class GameSetupViewController: UIViewController {
   }()
   
   private lazy var initialWordTextField: UITextField = {
-    let textField = UITextField()
+    let textField = WordInputTextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.layer.borderWidth = 1.0
     textField.layer.borderColor = UIColor.separator.cgColor

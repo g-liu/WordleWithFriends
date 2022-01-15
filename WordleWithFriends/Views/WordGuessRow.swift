@@ -1,5 +1,5 @@
 //
-//  WordGuessTableViewCell.swift
+//  WordGuessRow.swift
 //  WordleWithFriends
 //
 //  Created by Geoffrey Liu on 1/14/22.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-final class WordGuessTableViewCell: UITableViewCell {
-  static let identifier = "LetterTileTableViewCell"
+final class WordGuessRow: UITableViewCell {
+  static let identifier = "WordGuessRow"
   
   private lazy var letterStack: UIStackView = {
     let stackView = UIStackView()
@@ -49,12 +49,14 @@ final class WordGuessTableViewCell: UITableViewCell {
     ])
   }
   
-  func configure(with wordGuess: WordGuessModel) {
+  func configure(with wordGuess: WordGuessModel = .init()) {
     letterStack.removeAllArrangedSubviews()
     (0...4).forEach { index in
       let tile = LetterTileView()
       if let guess = wordGuess.guess(at: index) {
         tile.configure(guess)
+      } else {
+        tile.configure()
       }
       letterStack.addArrangedSubview(tile)
     }

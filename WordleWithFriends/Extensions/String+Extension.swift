@@ -21,6 +21,10 @@ extension String {
     
     return misspelledRange.location == NSNotFound
   }
+  
+  func index(_ i: Int) -> String.Index {
+    index(startIndex, offsetBy: i)
+  }
 
 }
 

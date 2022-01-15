@@ -40,6 +40,15 @@ final class GameSetupViewController: UIViewController {
     return textField
   }()
   
+//  private lazy var errorLabel: UILabel = {
+//    let label = UILabel()
+//    label.translatesAutoresizingMaskIntoConstraints = false
+//    label.isHidden = true
+//    label.textColor = .systemRed
+//
+//    return label
+//  }()
+  
   init() {
     super.init(nibName: nil, bundle: nil)
     setupVC()
@@ -113,32 +122,34 @@ final class GameSetupViewController: UIViewController {
     }
   }
   
-  private func isWordValid() -> Bool /* TODO: replace bool with enum that we can use to present alerts and whatnot */ {
+  private func isWordValid() -> WordValidity {
     guard let inputText = initialWordTextField.text else {
       // todo alert
-      return false
+      return .missingWord
     }
     
-    if inputText.count != 5 {
-      return false
+    if inputText.count < 5 {
+      return .insufficientLength
+    } else if inputText.count > 5 {
+      return .excessLength
     }
     
     if !inputText.isARealWord() {
-      // todo better alert
-      // todo move this outta here
-//      let ctrl = UIAlertController(title: "Error", message: "That word doesn't exist", preferredStyle: .alert)
-//      ctrl.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-//      self.present(ctrl, animated: true, completion: nil)
-      return false
+      return .notDefined
     }
     
-    return true
+    return .valid
   }
   
   @objc private func checkAndInitiateGame() -> Bool {
-    let isValid = isWordValid()
+    let wordValidity = isWordValid()
+    let isValid = wordValidity == .valid
     if isValid {
       initiateGame()
+    } else {
+      let ctrl = UIAlertController(title: "Error", message: wordValidity.rawValue, preferredStyle: .alert)
+      ctrl.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+      self.present(ctrl, animated: true, completion: nil)
     }
     return isValid
   }
@@ -154,7 +165,6 @@ final class GameSetupViewController: UIViewController {
     
     navigationController?.pushViewController(wordGuessVC, animated: true)
   }
-
 }
 
 extension GameSetupViewController: UITextFieldDelegate {
@@ -173,4 +183,12 @@ extension GameSetupViewController: UITextFieldDelegate {
     
     return true
   }
+}
+
+enum WordValidity: String {
+  case insufficientLength = "Your word is not long enough."
+  case excessLength = "Your word is too long."
+  case notDefined = "That's not a word in our dictionary."
+  case missingWord = "Please input a word."
+  case valid
 }

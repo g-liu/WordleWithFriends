@@ -26,6 +26,9 @@ extension String {
     index(startIndex, offsetBy: i)
   }
 
+  func range(_ start: Int, _ end: Int) -> ClosedRange<String.Index> {
+    index(start)...index(end)
+  }
 }
 
 extension StringProtocol {

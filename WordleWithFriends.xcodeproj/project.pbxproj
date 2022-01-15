@@ -130,6 +130,7 @@
 		6C19F5B227921EFC00062083 /* WordleWithFriendsTests */ = {
 			isa = PBXGroup;
 			children = (
+				6C39559D2792885200B0EF29 /* Models */,
 				6C19F5B327921EFC00062083 /* WordleWithFriendsTests.swift */,
 				6C19F5B527921EFC00062083 /* Info.plist */,
 			);
@@ -169,6 +170,13 @@
 			isa = PBXGroup;
 			children = (
 				6C19F60A2792439600062083 /* GameGuessesModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		6C39559D2792885200B0EF29 /* Models */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			path = Models;
 			sourceTree = "<group>";

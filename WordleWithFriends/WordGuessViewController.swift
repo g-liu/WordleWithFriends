@@ -118,14 +118,31 @@ final class WordGuessViewController: UIViewController {
     
     guessInputTextField.text = ""
     guessInputTextField.becomeFirstResponder()
+      
+    // TODO: Move buttons to different VC?
+    let shareButton = UIAlertAction(title: "Share", style: .default) { [weak self] _ in
+      self?.gameGuessesModel.copyResult()
+    }
+      
+    let playAgainButton = UIAlertAction(title: "Play again", style: .default) { [weak self] _ in
+      self?.dismiss(animated: true, completion: nil)
+    }
     
     switch gameState {
       case .win:
         // show congrats
-        gameMessage.showWin()
+//        gameMessage.showWin()
+        let alert = UIAlertController(title: "Congratulations!", message: "You guessed the word in ", preferredStyle: .alert)
+        alert.addAction(shareButton)
+        alert.addAction(playAgainButton)
+        navigationController?.present(alert, animated: true, completion: nil)
       case .lose:
         // show actual word
-        gameMessage.showLose(answer: gameGuessesModel.actualWord)
+//        gameMessage.showLose(answer: gameGuessesModel.actualWord)
+        let alert = UIAlertController(title: "Aw darn 😢", message: "The word was \(gameGuessesModel.actualWord)", preferredStyle: .alert)
+        alert.addAction(shareButton)
+        alert.addAction(playAgainButton)
+        navigationController?.present(alert, animated: true, completion: nil)
       case .keepGuessing:
         // nothing
         gameMessage.hide()
@@ -182,6 +199,10 @@ extension WordGuessViewController: UITextFieldDelegate {
   }
   
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    guard !gameGuessesModel.isGameOver else {
+      return false
+    }
+    
     // TODO UNDUPLICATE THIS!!!!!!
     guard string.isLettersOnly() else {
       return false

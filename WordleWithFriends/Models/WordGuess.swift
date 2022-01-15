@@ -63,14 +63,5 @@ struct WordGuess {
         guess[index].state = .incorrect
       }
     }
-    //    guess = guess.enumerated().map { index, guess in
-    //      if guess.letter == actualWord[index] {
-    //        return LetterGuess(guess.letter, state: .correct)
-    //      } else if actualWord.contains(guess.letter) {
-    //        return LetterGuess(guess.letter, state: .misplaced)
-    //      } else {
-    //        return LetterGuess(guess.letter, state: .incorrect)
-    //      }
-    //    }
   }
 }

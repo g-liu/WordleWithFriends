@@ -9,6 +9,12 @@ import XCTest
 @testable import WordleWithFriends
 
 class WordGuessTests: XCTestCase {
+  func testSmokeTests() {
+    validateGuess("CATER", against: "RATED", pattern: [.incorrect, .correct, .correct, .correct, .misplaced])
+    validateGuess("SMOKE", against: "WATER", pattern: [.incorrect, .incorrect, .incorrect, .incorrect, .misplaced])
+    validateGuess("FRIED", against: "OKRAS", pattern: [.incorrect, .misplaced, .incorrect, .incorrect, .incorrect])
+  }
+  
   func testNoMatches() {
     validateGuess("BANES", against: "TRUCK", pattern: [.incorrect, .incorrect, .incorrect, .incorrect, .incorrect])
   }

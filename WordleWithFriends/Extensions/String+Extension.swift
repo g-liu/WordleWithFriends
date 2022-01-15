@@ -33,6 +33,14 @@ extension String {
   func range(_ start: Index, _ end: Index) -> ClosedRange<String.Index> {
     index(start, offsetBy: 0)...index(end, offsetBy: 0)
   }
+  
+  mutating func replaceAt(_ i: Int, with character: Character) {
+    replaceAt(index(i), with: character)
+  }
+  
+  mutating func replaceAt(_ index: Index, with character: Character) {
+    replaceSubrange(range(index, index), with: String(character))
+  }
 }
 
 extension StringProtocol {

@@ -7,14 +7,6 @@
 
 import UIKit
 
-// TODO MOVE THIS
-enum LetterState {
-  case unchecked
-  case correct
-  case misplaced
-  case incorrect
-}
-
 
 final class LetterTileView: UIView {
   private lazy var letterLabel: UILabel = {

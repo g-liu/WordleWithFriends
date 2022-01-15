@@ -28,8 +28,6 @@ struct GameGuessesModel {
 }
 
 
-
-// todo move
 struct WordGuessModel {
   private var guess: [LetterGuess]
   
@@ -50,26 +48,20 @@ struct WordGuessModel {
   }
   
   mutating func checkGuess(against actualWord: String) {
-    // TODO: Swiftify
     // TODO IMPORTANT!!! IS THE ALGO WRONG e.g. "ALLOW"-word vs "ABATE"-guess????
-    var checkedGuess = [LetterGuess]()
-    guess.enumerated().forEach { index, letterGuess in
-      let checkedGuessState: LetterState
-      if letterGuess.letter == actualWord[index] {
-        checkedGuessState = .correct
-      } else if actualWord.contains(letterGuess.letter) {
-        checkedGuessState = .misplaced
+//    var checkedGuess = [LetterGuess]()
+    guess = guess.enumerated().map { index, guess in
+      if guess.letter == actualWord[index] {
+        return LetterGuess(guess.letter, state: .correct)
+      } else if actualWord.contains(guess.letter) {
+        return LetterGuess(guess.letter, state: .misplaced)
       } else {
-        checkedGuessState = .incorrect
+        return LetterGuess(guess.letter, state: .incorrect)
       }
-      checkedGuess.append(LetterGuess(letterGuess.letter, state: checkedGuessState))
     }
-    
-    guess = checkedGuess
   }
 }
 
-// todo move
 struct LetterGuess {
   static let `default` = LetterGuess(" ", state: .unchecked)
   
@@ -80,4 +72,11 @@ struct LetterGuess {
     self.letter = letter
     self.state = state
   }
+}
+
+enum LetterState {
+  case unchecked
+  case correct
+  case misplaced
+  case incorrect
 }

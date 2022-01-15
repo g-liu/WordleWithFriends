@@ -17,7 +17,7 @@ extension String {
   
   func isARealWord() -> Bool {
     let range = NSRange(location: 0, length: capitalized.utf16.count)
-    let misspelledRange = String.checker.rangeOfMisspelledWord(in: capitalized, range: range, startingAt: 0, wrap: false, language: "en") // TODO: Locale???
+    let misspelledRange = String.checker.rangeOfMisspelledWord(in: capitalized, range: range, startingAt: 0, wrap: false, language: Locale.current.identifier)
     
     return misspelledRange.location == NSNotFound
   }

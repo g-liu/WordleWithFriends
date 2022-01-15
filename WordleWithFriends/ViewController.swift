@@ -114,7 +114,7 @@ final class ViewController: UIViewController {
     
     // start game
     let wordGuessVC = WordGuessViewController()
-    wordGuessVC.word = inputText
+    wordGuessVC.setWord(inputText)
     initialWordTextField.text = ""
     
     navigationController?.pushViewController(wordGuessVC, animated: true)

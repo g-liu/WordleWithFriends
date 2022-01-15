@@ -6,6 +6,7 @@
 //
 
 struct GameGuessesModel {
+  var actualWord: String = ""
   private var guesses: [WordGuessModel] = [WordGuessModel()]
   
   func guess(at index: Int) -> WordGuessModel? {
@@ -13,13 +14,14 @@ struct GameGuessesModel {
     return guesses[index]
   }
   
-  mutating func updateGuess(_ newGuess: String, at index: Int) {
-    guard index < guesses.count else { return }
-    guesses[index].updateGuess(newGuess)
+  mutating func updateGuess(_ newGuess: String) {
+    guesses[guesses.count - 1].updateGuess(newGuess)
   }
   
-  func submitGuess() {
-    // TODO!!!!
+  mutating func submitGuess() {
+    guesses[guesses.count - 1].checkGuess(against: actualWord)
+    
+    guesses.append(WordGuessModel())
   }
   
   var numberOfGuesses: Int { guesses.count }
@@ -45,6 +47,25 @@ struct WordGuessModel {
   func guess(at index: Int) -> LetterGuess? {
     guard index < guess.count else { return nil }
     return guess[index]
+  }
+  
+  mutating func checkGuess(against actualWord: String) {
+    // TODO: Swiftify
+    // TODO IMPORTANT!!! IS THE ALGO WRONG e.g. "ALLOW"-word vs "ABATE"-guess????
+    var checkedGuess = [LetterGuess]()
+    guess.enumerated().forEach { index, letterGuess in
+      let checkedGuessState: LetterState
+      if letterGuess.letter == actualWord[index] {
+        checkedGuessState = .correct
+      } else if actualWord.contains(letterGuess.letter) {
+        checkedGuessState = .misplaced
+      } else {
+        checkedGuessState = .incorrect
+      }
+      checkedGuess.append(LetterGuess(letterGuess.letter, state: checkedGuessState))
+    }
+    
+    guess = checkedGuess
   }
 }
 

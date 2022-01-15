@@ -8,7 +8,6 @@
 import UIKit
 
 final class WordGuessViewController: UIViewController {
-  var word: String = ""
   
   private var gameGuessesModel: GameGuessesModel = GameGuessesModel()
   
@@ -49,6 +48,10 @@ final class WordGuessViewController: UIViewController {
     setupVC()
   }
   
+  func setWord(_ word: String) {
+    gameGuessesModel.actualWord = word
+  }
+  
   private func setupVC() {
     NotificationCenter.default.addObserver(self, selector: #selector(guessDidChange), name: UITextField.textDidChangeNotification, object: nil)
   }
@@ -70,10 +73,17 @@ final class WordGuessViewController: UIViewController {
     guard let textField = notification.object as? UITextField else { return }
     let newGuess = textField.text ?? ""
     
-    // TODO UNHARDCODE ROW
-    gameGuessesModel.updateGuess(newGuess, at: 0)
+    gameGuessesModel.updateGuess(newGuess)
     
     guessTable.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
+  }
+  
+  private func submitGuess() {
+    gameGuessesModel.submitGuess()
+    
+    guessTable.reloadData()
+    
+    guessInputTextField.becomeFirstResponder()
   }
 }
 
@@ -102,6 +112,18 @@ extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension WordGuessViewController: UITextFieldDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    // this is how we submit a guess
+    guard let wordGuess = textField.text else { return false }
+    
+    guard wordGuess.count == 5 else { return false }
+    
+    guard wordGuess.isARealWord() else { return false }
+    
+    submitGuess() // TODO: Is side-effecting here OK?
+    return true
+  }
+  
   override func resignFirstResponder() -> Bool {
     super.resignFirstResponder()
     

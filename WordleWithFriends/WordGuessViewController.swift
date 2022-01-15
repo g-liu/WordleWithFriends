@@ -39,6 +39,16 @@ final class WordGuessViewController: UIViewController {
     return textField
   }()
   
+  private lazy var gameMessage: GameMessageView = {
+    let view = GameMessageView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.playAgain = { [weak self] in
+      self?.dismiss(animated: true, completion: nil)
+    }
+    
+    return view
+  }()
+  
   init() {
     super.init(nibName: nil, bundle: nil)
     setupVC()
@@ -63,10 +73,16 @@ final class WordGuessViewController: UIViewController {
     view.backgroundColor = .systemBackground
     
     view.addSubview(guessTable)
+    view.addSubview(gameMessage)
     view.addSubview(guessInputTextField)
     guessTable.pin(to: view.safeAreaLayoutGuide, margins: .init(top: 12, left: 0, bottom: 0, right: 0))
     
     NSLayoutConstraint.activate([
+      guessTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12.0),
+      guessTable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      guessTable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+      gameMessage.topAnchor.constraint(equalTo: guessTable.bottomAnchor),
+      gameMessage.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
       guessInputTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       guessInputTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
     ])
@@ -95,12 +111,25 @@ final class WordGuessViewController: UIViewController {
   }
   
   private func submitGuess() {
-    gameGuessesModel.submitGuess()
+    let gameState = gameGuessesModel.submitGuess()
     
     guessTable.reloadData()
     
     guessInputTextField.text = ""
     guessInputTextField.becomeFirstResponder()
+    
+    switch gameState {
+      case .win:
+        // show congrats
+        gameMessage.showWin()
+      case .lose:
+        // show actual word
+        gameMessage.showLose(answer: gameGuessesModel.actualWord)
+      case .keepGuessing:
+        // nothing
+        gameMessage.hide()
+        break
+    }
   }
 }
 

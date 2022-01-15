@@ -50,7 +50,7 @@ extension WordGuessTests {
     
     var model = WordGuess()
     model.updateGuess(guess)
-    model.checkGuess(against: actualWord)
+    let _ = model.checkGuess(against: actualWord)
     
     (0..<actualWord.count).forEach { index in
       let letterGuess = model.guess(at: index)!

@@ -22,7 +22,7 @@ struct WordGuess {
   
   mutating func updateGuess(_ newGuess: String) {
     guess = []
-    for char in newGuess {
+    for char in newGuess.uppercased() {
       guess.append(LetterGuess(char))
     }
   }
@@ -32,8 +32,12 @@ struct WordGuess {
     return guess[index]
   }
   
-  mutating func checkGuess(against actualWord: String) {
+  /// Checks a player's guess
+  /// - Parameter actualWord: the word to check against
+  /// - Returns: true if the user guessed correctly; false otherwise
+  mutating func checkGuess(against actualWord: String) -> Bool {
     var actualWord = actualWord
+    var didGuessCorrectly = true
     
     // pass 1: find exact matches and incorrect guesses
     guess.enumerated().forEach { index, letterGuess in
@@ -42,6 +46,7 @@ struct WordGuess {
         guess[index].state = .correct
       } else if !actualWord.contains(letterGuess.letter) {
         guess[index].state = .incorrect
+        didGuessCorrectly = false
       }
     }
     
@@ -51,10 +56,14 @@ struct WordGuess {
         if let indexInActualWord = actualWord.firstIndex(of: guess[index].letter) {
           actualWord.replaceAt(indexInActualWord, with: "#")
           guess[index].state = .misplaced
+          didGuessCorrectly = false
         } else {
           guess[index].state = .incorrect
+          didGuessCorrectly = false
         }
       }
     }
+    
+    return didGuessCorrectly
   }
 }

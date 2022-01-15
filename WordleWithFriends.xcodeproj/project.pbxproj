@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6C0009E02792AD8F00BCC9B6 /* Character+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0009DF2792AD8F00BCC9B6 /* Character+Extension.swift */; };
 		6C0009E22792AE8200BCC9B6 /* WordInputTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0009E12792AE8200BCC9B6 /* WordInputTextField.swift */; };
+		6C0009E42792B6BB00BCC9B6 /* GameMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0009E32792B6BB00BCC9B6 /* GameMessageView.swift */; };
 		6C19F59D27921EFA00062083 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F59C27921EFA00062083 /* AppDelegate.swift */; };
 		6C19F59F27921EFA00062083 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F59E27921EFA00062083 /* SceneDelegate.swift */; };
 		6C19F5A127921EFA00062083 /* GameSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5A027921EFA00062083 /* GameSetupViewController.swift */; };
@@ -49,6 +50,7 @@
 /* Begin PBXFileReference section */
 		6C0009DF2792AD8F00BCC9B6 /* Character+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+Extension.swift"; sourceTree = "<group>"; };
 		6C0009E12792AE8200BCC9B6 /* WordInputTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInputTextField.swift; sourceTree = "<group>"; };
+		6C0009E32792B6BB00BCC9B6 /* GameMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMessageView.swift; sourceTree = "<group>"; };
 		6C19F59927921EFA00062083 /* WordleWithFriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordleWithFriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C19F59C27921EFA00062083 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6C19F59E27921EFA00062083 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				6C19F5E427923B1400062083 /* WordGuessRow.swift */,
 				6C19F60127923F8400062083 /* LetterTileView.swift */,
 				6C0009E12792AE8200BCC9B6 /* WordInputTextField.swift */,
+				6C0009E32792B6BB00BCC9B6 /* GameMessageView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 				6C19F5A127921EFA00062083 /* GameSetupViewController.swift in Sources */,
 				6C19F59D27921EFA00062083 /* AppDelegate.swift in Sources */,
 				6C19F5E527923B1400062083 /* WordGuessRow.swift in Sources */,
+				6C0009E42792B6BB00BCC9B6 /* GameMessageView.swift in Sources */,
 				6C19F60227923F8400062083 /* LetterTileView.swift in Sources */,
 				6C0009E22792AE8200BCC9B6 /* WordInputTextField.swift in Sources */,
 				6C19F59F27921EFA00062083 /* SceneDelegate.swift in Sources */,

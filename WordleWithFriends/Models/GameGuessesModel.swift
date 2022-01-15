@@ -7,6 +7,7 @@
 
 struct GameGuessesModel {
   var actualWord: String = ""
+  var guessLimit: Int = 6
   private var guesses: [WordGuess] = [WordGuess()]
   
   func guess(at index: Int) -> WordGuess? {
@@ -18,10 +19,19 @@ struct GameGuessesModel {
     guesses[guesses.count - 1].updateGuess(newGuess)
   }
   
-  mutating func submitGuess() {
-    guesses[guesses.count - 1].checkGuess(against: actualWord)
+  /// Submit a guess
+  /// - Returns: if the user guessed the word correctly
+  mutating func submitGuess() -> GameState {
+    let didGuessCorrectly = guesses[guesses.count - 1].checkGuess(against: actualWord)
     
     guesses.append(WordGuess())
+    if didGuessCorrectly {
+      return .win
+    } else if guesses.count > guessLimit {
+      return .lose
+    } else {
+      return .keepGuessing
+    }
   }
   
   mutating func markInvalidGuess() {
@@ -41,4 +51,10 @@ enum LetterState {
   case misplaced
   case incorrect
   case invalid
+}
+
+enum GameState {
+  case win
+  case lose
+  case keepGuessing
 }

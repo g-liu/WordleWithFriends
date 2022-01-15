@@ -27,16 +27,16 @@ struct WordGuess {
   }
   
   mutating func checkGuess(against actualWord: String) {
-    var indicesToCheck = Set(0...4)
+    var indicesAlreadyChecked = Set<Int>()
     
     var actualWord = actualWord
     
     // first pass check for exact matches
-    indicesToCheck.forEach { index in
+    (0..<actualWord.count).forEach { index in
       let letterGuess = guess[index]
       if letterGuess.letter == actualWord[index] {
         // don't check that index anymore
-        _ = indicesToCheck.remove(index)
+        indicesAlreadyChecked.insert(index)
         // X out the character in `actualWord` so that we don't double over it
         actualWord.replaceSubrange(actualWord.range(index, index), with: "#")
         // Mark the guess as correct
@@ -45,7 +45,9 @@ struct WordGuess {
     }
     
     // 2nd pass: check for misplaced matches
-    indicesToCheck.forEach { index in
+    (0..<actualWord.count).forEach { index in
+      if indicesAlreadyChecked.contains(index) { return }
+      
       let letterGuess = guess[index]
       if let indexInActualWord = actualWord.firstIndex(of: letterGuess.letter) {
         // X out the character in `actual word` so that we don't double over it

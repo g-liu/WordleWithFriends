@@ -17,6 +17,19 @@ class WordGuessTests: XCTestCase {
     validateGuess("BCDEA", against: "ABCDE", pattern: [.misplaced, .misplaced, .misplaced, .misplaced, .misplaced])
   }
   
+  func testMoreMisplacedLettersThanPresentInActualWord() {
+    validateGuess("TATER", against: "TANGY", pattern: [.correct, .correct, .incorrect, .incorrect, .incorrect])
+  }
+  
+  func testAllMisplacedExceptOne() {
+    validateGuess("BBCAA", against: "AACBB", pattern: [.misplaced, .misplaced, .correct, .misplaced, .misplaced])
+  }
+  
+  func testMixedNumbersOfTwoLetters() {
+    validateGuess("BBBBC", against: "CCCCB", pattern: [.misplaced, .incorrect, .incorrect, .incorrect, .misplaced])
+    validateGuess("BCBBB", against: "CBCCC", pattern: [.misplaced, .misplaced, .incorrect, .incorrect, .incorrect])
+  }
+  
   func testFullMatch() {
     validateGuess("PIANO", against: "PIANO", pattern: [.correct, .correct, .correct, .correct, .correct])
   }

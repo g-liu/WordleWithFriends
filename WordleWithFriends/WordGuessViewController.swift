@@ -28,7 +28,7 @@ final class WordGuessViewController: UIViewController {
   private lazy var guessInputTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.isHidden = true // todo hide
+    textField.isHidden = true
     textField.autocorrectionType = .no
     textField.keyboardType = .asciiCapable
     textField.autocapitalizationType = .allCharacters
@@ -109,7 +109,6 @@ extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
       return UITableViewCell()
     }
     
-    // TODO CONFIGURE CELL
     if indexPath.row < gameGuessesModel.numberOfGuesses,
        let wordGuessModel = gameGuessesModel.guess(at: indexPath.row) {
       cell.configure(with: wordGuessModel)
@@ -128,7 +127,7 @@ extension WordGuessViewController: UITextFieldDelegate {
     
     guard wordGuess.isARealWord() else { return false }
     
-    submitGuess() // TODO: Is side-effecting here OK?
+    submitGuess()
     return false
   }
   

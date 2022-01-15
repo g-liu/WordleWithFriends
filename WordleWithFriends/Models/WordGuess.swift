@@ -66,4 +66,8 @@ struct WordGuess {
     
     return didGuessCorrectly
   }
+  
+  func asString() -> String {
+    guess.reduce("") { $0 + String($1.state.rawValue) }
+  }
 }

@@ -5,6 +5,8 @@
 //  Created by Geoffrey Liu on 1/14/22.
 //
 
+import UIKit
+
 struct GameGuessesModel {
   var actualWord: String = ""
   var guessLimit: Int = 6
@@ -34,6 +36,13 @@ struct GameGuessesModel {
     }
   }
   
+  func copyResult() {
+    let header = "Wordle With Friends - \(guesses.count)/\(guessLimit)"
+    UIPasteboard.general.string = guesses.reduce(header) { copyString, guess in
+      return copyString + "\n\(guess.asString())"
+    }
+  }
+  
   mutating func markInvalidGuess() {
     guesses[guesses.count - 1].forceState(.invalid)
   }
@@ -45,12 +54,12 @@ struct GameGuessesModel {
   var numberOfGuesses: Int { guesses.count }
 }
 
-enum LetterState {
-  case unchecked
-  case correct
-  case misplaced
-  case incorrect
-  case invalid
+enum LetterState: Character {
+  case unchecked = "⬛️"
+  case correct = "🟩"
+  case misplaced = "🟨"
+  case incorrect = "⬜️"
+  case invalid = "🟥"
 }
 
 enum GameState {

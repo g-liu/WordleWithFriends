@@ -27,13 +27,6 @@ final class GameSetupViewController: UIViewController {
   private lazy var initialWordTextField: UITextField = {
     let textField = WordInputTextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.layer.borderWidth = 1.0
-    textField.layer.borderColor = UIColor.separator.cgColor
-    textField.autocapitalizationType = .allCharacters
-    textField.autocorrectionType = .no
-    textField.font = .monospacedSystemFont(ofSize: 38, weight: .bold)
-    textField.keyboardType = .asciiCapable
-    textField.textAlignment = .center
     textField.delegate = self
     
     return textField

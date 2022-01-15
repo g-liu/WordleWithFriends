@@ -10,26 +10,26 @@ import UIKit
 struct GameGuessesModel {
   var actualWord: String = ""
   var guessLimit: Int = 6
-  private var guesses: [WordGuess] = [WordGuess()]
+  private var letterGuesses: [WordGuess] = [WordGuess()]
   
   func guess(at index: Int) -> WordGuess? {
-    guard index < guesses.count else { return nil }
-    return guesses[index]
+    guard index < letterGuesses.count else { return nil }
+    return letterGuesses[index]
   }
   
   mutating func updateGuess(_ newGuess: String) {
-    guesses[guesses.count - 1].updateGuess(newGuess)
+    letterGuesses[letterGuesses.count - 1].updateGuess(newGuess)
   }
   
   /// Submit a guess
   /// - Returns: if the user guessed the word correctly
   mutating func submitGuess() -> GameState {
-    let didGuessCorrectly = guesses[guesses.count - 1].checkGuess(against: actualWord)
+    let didGuessCorrectly = letterGuesses[letterGuesses.count - 1].checkGuess(against: actualWord)
     
-    guesses.append(WordGuess())
+    letterGuesses.append(WordGuess())
     if didGuessCorrectly {
       return .win
-    } else if guesses.count > guessLimit {
+    } else if letterGuesses.count > guessLimit {
       return .lose
     } else {
       return .keepGuessing
@@ -37,21 +37,21 @@ struct GameGuessesModel {
   }
   
   func copyResult() {
-    let header = "Wordle With Friends - \(guesses.count)/\(guessLimit)"
-    UIPasteboard.general.string = guesses.reduce(header) { copyString, guess in
+    let header = "Wordle With Friends - \(letterGuesses.count)/\(guessLimit)"
+    UIPasteboard.general.string = letterGuesses.reduce(header) { copyString, guess in
       return copyString + "\n\(guess.asString())"
     }
   }
   
   mutating func markInvalidGuess() {
-    guesses[guesses.count - 1].forceState(.invalid)
+    letterGuesses[letterGuesses.count - 1].forceState(.invalid)
   }
   
   mutating func clearInvalidGuess() {
-    guesses[guesses.count - 1].forceState(.unchecked)
+    letterGuesses[letterGuesses.count - 1].forceState(.unchecked)
   }
   
-  var numberOfGuesses: Int { guesses.count }
+  var numberOfGuesses: Int { letterGuesses.count }
 }
 
 enum LetterState: Character {

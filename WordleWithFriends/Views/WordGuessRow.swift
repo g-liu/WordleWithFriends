@@ -49,7 +49,7 @@ final class WordGuessRow: UITableViewCell {
     ])
   }
   
-  func configure(with wordGuess: WordGuessModel = .init()) {
+  func configure(with wordGuess: WordGuess = .init()) {
     letterStack.removeAllArrangedSubviews()
     (0...4).forEach { index in
       let tile = LetterTileView()

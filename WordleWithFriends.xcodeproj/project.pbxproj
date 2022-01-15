@@ -22,6 +22,9 @@
 		6C19F60227923F8400062083 /* LetterTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F60127923F8400062083 /* LetterTileView.swift */; };
 		6C19F60B2792439600062083 /* GameGuessesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F60A2792439600062083 /* GameGuessesModel.swift */; };
 		6C19F6162792491900062083 /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F6152792491900062083 /* UIStackView+Extension.swift */; };
+		6C39559F279288D100B0EF29 /* WordGuess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C39559E279288D100B0EF29 /* WordGuess.swift */; };
+		6C3955A1279288E800B0EF29 /* LetterGuess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3955A0279288E800B0EF29 /* LetterGuess.swift */; };
+		6C3955A32792890F00B0EF29 /* WordGuessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3955A22792890F00B0EF29 /* WordGuessTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +66,9 @@
 		6C19F60127923F8400062083 /* LetterTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterTileView.swift; sourceTree = "<group>"; };
 		6C19F60A2792439600062083 /* GameGuessesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameGuessesModel.swift; sourceTree = "<group>"; };
 		6C19F6152792491900062083 /* UIStackView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extension.swift"; sourceTree = "<group>"; };
+		6C39559E279288D100B0EF29 /* WordGuess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordGuess.swift; sourceTree = "<group>"; };
+		6C3955A0279288E800B0EF29 /* LetterGuess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterGuess.swift; sourceTree = "<group>"; };
+		6C3955A22792890F00B0EF29 /* WordGuessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordGuessTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +176,8 @@
 			isa = PBXGroup;
 			children = (
 				6C19F60A2792439600062083 /* GameGuessesModel.swift */,
+				6C39559E279288D100B0EF29 /* WordGuess.swift */,
+				6C3955A0279288E800B0EF29 /* LetterGuess.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -177,6 +185,7 @@
 		6C39559D2792885200B0EF29 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6C3955A22792890F00B0EF29 /* WordGuessTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -312,6 +321,7 @@
 			files = (
 				6C19F5D62792356500062083 /* WordGuessViewController.swift in Sources */,
 				6C19F60B2792439600062083 /* GameGuessesModel.swift in Sources */,
+				6C3955A1279288E800B0EF29 /* LetterGuess.swift in Sources */,
 				6C19F5F027923C5900062083 /* NSLayoutConstraint+Extension.swift in Sources */,
 				6C19F5FD27923CBB00062083 /* UIView+Extension.swift in Sources */,
 				6C19F5D127922D6700062083 /* String+Extension.swift in Sources */,
@@ -321,6 +331,7 @@
 				6C19F60227923F8400062083 /* LetterTileView.swift in Sources */,
 				6C19F59F27921EFA00062083 /* SceneDelegate.swift in Sources */,
 				6C19F6162792491900062083 /* UIStackView+Extension.swift in Sources */,
+				6C39559F279288D100B0EF29 /* WordGuess.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,6 +340,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C19F5B427921EFC00062083 /* WordleWithFriendsTests.swift in Sources */,
+				6C3955A32792890F00B0EF29 /* WordGuessTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

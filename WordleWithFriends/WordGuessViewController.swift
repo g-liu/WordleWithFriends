@@ -28,11 +28,13 @@ final class WordGuessViewController: UIViewController {
   private lazy var guessInputTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.isHidden = true
+    textField.isHidden = true // todo hide
     textField.autocorrectionType = .no
     textField.keyboardType = .asciiCapable
     textField.autocapitalizationType = .allCharacters
     textField.delegate = self
+    textField.layer.borderWidth = 1
+    textField.layer.borderColor = UIColor.darkText.cgColor
     // TODO: Disable selection on textField
     
     return textField
@@ -65,6 +67,11 @@ final class WordGuessViewController: UIViewController {
     view.addSubview(guessInputTextField)
     guessTable.pin(to: view.safeAreaLayoutGuide, margins: .init(top: 12, left: 0, bottom: 0, right: 0))
     
+    NSLayoutConstraint.activate([
+      guessInputTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      guessInputTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+    ])
+    
     guessInputTextField.becomeFirstResponder()
     title = "Guess the word"
   }
@@ -75,7 +82,7 @@ final class WordGuessViewController: UIViewController {
     
     gameGuessesModel.updateGuess(newGuess)
     
-    guessTable.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
+    guessTable.reloadData()
   }
   
   private func submitGuess() {
@@ -83,6 +90,7 @@ final class WordGuessViewController: UIViewController {
     
     guessTable.reloadData()
     
+    guessInputTextField.text = ""
     guessInputTextField.becomeFirstResponder()
   }
 }
@@ -121,7 +129,7 @@ extension WordGuessViewController: UITextFieldDelegate {
     guard wordGuess.isARealWord() else { return false }
     
     submitGuess() // TODO: Is side-effecting here OK?
-    return true
+    return false
   }
   
   override func resignFirstResponder() -> Bool {

@@ -16,7 +16,7 @@ final class ViewController: UIViewController {
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Start", for: .normal)
     button.setTitleColor(.systemGreen, for: .normal)
-    button.addTarget(self, action: #selector(initiateGame), for: .touchUpInside)
+    button.addTarget(self, action: #selector(checkAndInitiateGame), for: .touchUpInside)
     button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
     button.setTitleColor(.systemGray, for: .disabled)
     button.isEnabled = false
@@ -84,6 +84,8 @@ final class ViewController: UIViewController {
       stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
       initialWordTextField.widthAnchor.constraint(equalToConstant: 300) // TODO check this
     ])
+    
+    initialWordTextField.becomeFirstResponder()
   }
   
   @objc private func textFieldDidUpdate(_ notification: Notification) {
@@ -97,24 +99,41 @@ final class ViewController: UIViewController {
       startGameButton.isEnabled = false
     }
   }
-
-  @objc private func initiateGame(_ sender: Any) {
+  
+  private func isWordValid() -> Bool /* TODO: replace bool with enum that we can use to present alerts and whatnot */ {
     guard let inputText = initialWordTextField.text else {
       // todo alert
-      return
+      return false
+    }
+    
+    if inputText.count != 5 {
+      return false
     }
     
     if !inputText.isARealWord() {
       // todo better alert
-      let ctrl = UIAlertController(title: "Error", message: "That word doesn't exist", preferredStyle: .alert)
-      ctrl.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-      self.present(ctrl, animated: true, completion: nil)
-      return
+      // todo move this outta here
+//      let ctrl = UIAlertController(title: "Error", message: "That word doesn't exist", preferredStyle: .alert)
+//      ctrl.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+//      self.present(ctrl, animated: true, completion: nil)
+      return false
     }
     
+    return true
+  }
+  
+  @objc private func checkAndInitiateGame() -> Bool {
+    let isValid = isWordValid()
+    if isValid {
+      initiateGame()
+    }
+    return isValid
+  }
+
+  private func initiateGame() {
     // start game
     let wordGuessVC = WordGuessViewController()
-    wordGuessVC.setWord(inputText)
+    wordGuessVC.setWord(initialWordTextField.text ?? "")
     initialWordTextField.text = ""
     
     navigationController?.pushViewController(wordGuessVC, animated: true)
@@ -124,6 +143,10 @@ final class ViewController: UIViewController {
 }
 
 extension ViewController: UITextFieldDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    return checkAndInitiateGame()
+  }
+  
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     guard string.isLettersOnly() else {
       return false

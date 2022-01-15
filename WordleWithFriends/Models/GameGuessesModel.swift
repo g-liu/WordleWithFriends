@@ -11,7 +11,10 @@ struct GameGuessesModel {
   var actualWord: String = ""
   var guessLimit: Int = 6
   var isGameOver: Bool = false
+  
   private var letterGuesses: [WordGuess] = [WordGuess()]
+  
+  var numberOfGuesses: Int { letterGuesses.count }
   
   func guess(at index: Int) -> WordGuess? {
     guard index < letterGuesses.count else { return nil }
@@ -54,8 +57,6 @@ struct GameGuessesModel {
   mutating func clearInvalidGuess() {
     letterGuesses[letterGuesses.count - 1].forceState(.unchecked)
   }
-  
-  var numberOfGuesses: Int { letterGuesses.count }
 }
 
 enum LetterState: Character {

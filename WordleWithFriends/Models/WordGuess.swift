@@ -28,7 +28,7 @@ struct WordGuess {
   }
   
   func guess(at index: Int) -> LetterGuess? {
-    guard index < guess.count else { return nil }
+    guard index >= 0 && index < guess.count else { return nil }
     return guess[index]
   }
   

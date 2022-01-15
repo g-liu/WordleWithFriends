@@ -35,7 +35,6 @@ final class WordGuessViewController: UIViewController {
     textField.delegate = self
     textField.layer.borderWidth = 1
     textField.layer.borderColor = UIColor.darkText.cgColor
-    // TODO: Disable selection on textField
     
     return textField
   }()

@@ -35,19 +35,9 @@ final class GameSetupViewController: UIViewController {
     textField.keyboardType = .asciiCapable
     textField.textAlignment = .center
     textField.delegate = self
-    // TODO: Disable selection on textField
     
     return textField
   }()
-  
-//  private lazy var errorLabel: UILabel = {
-//    let label = UILabel()
-//    label.translatesAutoresizingMaskIntoConstraints = false
-//    label.isHidden = true
-//    label.textColor = .systemRed
-//
-//    return label
-//  }()
   
   init() {
     super.init(nibName: nil, bundle: nil)
@@ -124,7 +114,6 @@ final class GameSetupViewController: UIViewController {
   
   private func isWordValid() -> WordValidity {
     guard let inputText = initialWordTextField.text else {
-      // todo alert
       return .missingWord
     }
     

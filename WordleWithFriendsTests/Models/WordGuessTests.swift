@@ -13,6 +13,8 @@ class WordGuessTests: XCTestCase {
     validateGuess("CATER", against: "RATED", pattern: [.incorrect, .correct, .correct, .correct, .misplaced])
     validateGuess("SMOKE", against: "WATER", pattern: [.incorrect, .incorrect, .incorrect, .incorrect, .misplaced])
     validateGuess("FRIED", against: "OKRAS", pattern: [.incorrect, .misplaced, .incorrect, .incorrect, .incorrect])
+    validateGuess("STARS", against: "TARTS", pattern: [.incorrect, .misplaced, .misplaced, .misplaced, .correct])
+    validateGuess("STEMS", against: "MASTS", pattern: [.misplaced, .misplaced, .incorrect, .misplaced, .correct])
   }
   
   func testNoMatches() {
@@ -57,8 +59,4 @@ extension WordGuessTests {
                      "Mismatch: expected letter \"\(letterGuess.letter)\" at index \(index) to be \(expectedState), was instead \(letterGuess.state)")
     }
   }
-}
-
-extension XCTestCase {
-  
 }

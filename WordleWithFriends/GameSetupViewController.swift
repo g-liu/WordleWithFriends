@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  GameSetupViewController.swift
 //  WordleWithFriends
 //
 //  Created by Geoffrey Liu on 1/14/22.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ViewController: UIViewController {
+final class GameSetupViewController: UIViewController {
   
   static let MAX_WORD_LENGTH = 5
   
@@ -28,7 +28,7 @@ final class ViewController: UIViewController {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.layer.borderWidth = 1.0
-    textField.layer.borderColor = UIColor.darkText.cgColor
+    textField.layer.borderColor = UIColor.separator.cgColor
     textField.autocapitalizationType = .allCharacters
     textField.autocorrectionType = .no
     textField.font = .monospacedSystemFont(ofSize: 38, weight: .bold)
@@ -63,7 +63,7 @@ final class ViewController: UIViewController {
     let label = UILabel()
     label.numberOfLines = 0
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = "Welcome to Wordle with Friends\nTo get started, enter a five-letter English word below:"
+    label.text = "Welcome to Wordle with Friends.\nTo get started, enter a five-letter English word below:"
     label.textAlignment = .center
     
     
@@ -85,6 +85,19 @@ final class ViewController: UIViewController {
       initialWordTextField.widthAnchor.constraint(equalToConstant: 300) // TODO check this
     ])
     
+    initialWordTextField.becomeFirstResponder()
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    view.endEditing(true) // TODO WHY THE FUCK IS THIS SHIT NOT WORKING
+    startGameButton.isEnabled = false
+    initialWordTextField.resignFirstResponder()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    startGameButton.isEnabled = false // TODO THIS IS A HACK SEE ABOVE
     initialWordTextField.becomeFirstResponder()
   }
   
@@ -135,14 +148,16 @@ final class ViewController: UIViewController {
     let wordGuessVC = WordGuessViewController()
     wordGuessVC.setWord(initialWordTextField.text?.uppercased() ?? "")
     initialWordTextField.text = ""
+    startGameButton.isEnabled = false
+    
+    initialWordTextField.resignFirstResponder()
     
     navigationController?.pushViewController(wordGuessVC, animated: true)
-    
   }
 
 }
 
-extension ViewController: UITextFieldDelegate {
+extension GameSetupViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     return checkAndInitiateGame()
   }

@@ -30,7 +30,7 @@ final class LetterTileView: UIView {
   }
   
   private func setupView() {
-    layer.borderColor = UIColor.darkText.cgColor
+    layer.borderColor = UIColor.separator.cgColor
     layer.borderWidth = 1.0
     
     addSubview(letterLabel)

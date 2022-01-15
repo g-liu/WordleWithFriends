@@ -76,6 +76,16 @@ final class WordGuessViewController: UIViewController {
     title = "Guess the word"
   }
   
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    view.endEditing(true)
+    guessInputTextField.resignFirstResponder()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    guessInputTextField.becomeFirstResponder()
+  }
+  
   @objc private func guessDidChange(_ notification: Notification) {
     guard let textField = notification.object as? UITextField else { return }
     let newGuess = textField.text ?? ""
@@ -146,7 +156,7 @@ extension WordGuessViewController: UITextFieldDelegate {
       return false
     }
     
-    guard (textField.text?.count ?? 0) + string.count <= ViewController.MAX_WORD_LENGTH else {
+    guard (textField.text?.count ?? 0) + string.count <= GameSetupViewController.MAX_WORD_LENGTH else {
       return false
     }
     

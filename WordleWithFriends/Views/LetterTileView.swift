@@ -44,6 +44,7 @@ final class LetterTileView: UIView {
   
   func configure(_ letterGuess: LetterGuess = .default) {
     letterLabel.text = String(letterGuess.letter)
+    layer.borderWidth = 1.0
     switch letterGuess.state {
       case .correct:
         backgroundColor = .systemGreen
@@ -52,6 +53,9 @@ final class LetterTileView: UIView {
       case .incorrect:
         backgroundColor = .systemGray
       case .unchecked:
+        if letterGuess.letter != .space {
+          layer.borderWidth = 3.0
+        }
         backgroundColor = .systemBackground
     }
   }

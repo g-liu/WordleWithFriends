@@ -8,7 +8,7 @@
 import Foundation
 
 struct LetterGuess {
-  static let `default` = LetterGuess(" ", state: .unchecked)
+  static let `default` = LetterGuess(.space, state: .unchecked)
   
   var letter: Character
   var state: LetterState

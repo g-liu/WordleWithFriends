@@ -11,6 +11,16 @@ final class GameSetupViewController: UIViewController {
   
   static let MAX_WORD_LENGTH = 5
   
+  private lazy var settingsButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle("⚙️", for: .normal)
+    button.titleLabel?.font = .systemFont(ofSize: 24.0)
+    button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+    
+    return button
+  }()
+  
   private lazy var startGameButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -58,7 +68,6 @@ final class GameSetupViewController: UIViewController {
     label.text = "Welcome to Wordle with Friends.\nTo get started, enter a five-letter English word below:"
     label.textAlignment = .center
     
-    
     let stackView = UIStackView()
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .vertical
@@ -69,6 +78,7 @@ final class GameSetupViewController: UIViewController {
     stackView.addArrangedSubview(initialWordTextField)
     stackView.addArrangedSubview(startGameButton)
     view.addSubview(stackView)
+    view.addSubview(settingsButton)
     
     let maxWidth = LayoutUtility.size(screenWidthPercentage: 85.0, maxWidth: 300)
     
@@ -77,6 +87,9 @@ final class GameSetupViewController: UIViewController {
       stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
       initialWordTextField.widthAnchor.constraint(equalToConstant: maxWidth),
+      
+      settingsButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8.0),
+      settingsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8.0),
     ])
     
     initialWordTextField.becomeFirstResponder()
@@ -93,6 +106,11 @@ final class GameSetupViewController: UIViewController {
     super.viewWillAppear(animated)
     startGameButton.isEnabled = false // TODO THIS IS A HACK SEE ABOVE
     initialWordTextField.becomeFirstResponder()
+  }
+  
+  @objc private func openSettings() {
+    let vc = GameSettingsViewController()
+    navigationController?.present(vc, animated: true)
   }
   
   @objc private func textFieldDidUpdate(_ notification: Notification) {

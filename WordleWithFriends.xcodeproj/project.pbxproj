@@ -12,6 +12,7 @@
 		60D947FF2793A23700086C51 /* GameMessagingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D947FE2793A23700086C51 /* GameMessagingViewController.swift */; };
 		60D948012793A46700086C51 /* GameEndDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D948002793A46700086C51 /* GameEndDelegate.swift */; };
 		60D948042793A72800086C51 /* LayoutUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D948032793A72800086C51 /* LayoutUtility.swift */; };
+		60D948062793AE1400086C51 /* GameSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D948052793AE1400086C51 /* GameSettingsViewController.swift */; };
 		6C0009E02792AD8F00BCC9B6 /* Character+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0009DF2792AD8F00BCC9B6 /* Character+Extension.swift */; };
 		6C0009E22792AE8200BCC9B6 /* WordInputTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0009E12792AE8200BCC9B6 /* WordInputTextField.swift */; };
 		6C19F59D27921EFA00062083 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F59C27921EFA00062083 /* AppDelegate.swift */; };
@@ -56,6 +57,7 @@
 		60D947FE2793A23700086C51 /* GameMessagingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMessagingViewController.swift; sourceTree = "<group>"; };
 		60D948002793A46700086C51 /* GameEndDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEndDelegate.swift; sourceTree = "<group>"; };
 		60D948032793A72800086C51 /* LayoutUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutUtility.swift; sourceTree = "<group>"; };
+		60D948052793AE1400086C51 /* GameSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettingsViewController.swift; sourceTree = "<group>"; };
 		6C0009DF2792AD8F00BCC9B6 /* Character+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+Extension.swift"; sourceTree = "<group>"; };
 		6C0009E12792AE8200BCC9B6 /* WordInputTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInputTextField.swift; sourceTree = "<group>"; };
 		6C19F59927921EFA00062083 /* WordleWithFriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordleWithFriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -159,6 +161,7 @@
 				6C19F5A527921EFB00062083 /* Assets.xcassets */,
 				6C19F5A727921EFB00062083 /* LaunchScreen.storyboard */,
 				6C19F5AA27921EFC00062083 /* Info.plist */,
+				60D948052793AE1400086C51 /* GameSettingsViewController.swift */,
 			);
 			path = WordleWithFriends;
 			sourceTree = "<group>";
@@ -365,6 +368,7 @@
 				6C19F59D27921EFA00062083 /* AppDelegate.swift in Sources */,
 				6C19F5E527923B1400062083 /* WordGuessRow.swift in Sources */,
 				6C19F60227923F8400062083 /* LetterTileView.swift in Sources */,
+				60D948062793AE1400086C51 /* GameSettingsViewController.swift in Sources */,
 				6C0009E22792AE8200BCC9B6 /* WordInputTextField.swift in Sources */,
 				6C19F59F27921EFA00062083 /* SceneDelegate.swift in Sources */,
 				60D948012793A46700086C51 /* GameEndDelegate.swift in Sources */,

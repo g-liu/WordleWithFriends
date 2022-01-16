@@ -19,6 +19,15 @@ final class GameSetupViewController: UIViewController {
     return button
   }()
   
+  private lazy var instructionsTextLabel: UILabel = {
+    let label = UILabel()
+    label.numberOfLines = 0
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.textAlignment = .center
+    
+    return label
+  }()
+  
   private lazy var startGameButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -60,19 +69,14 @@ final class GameSetupViewController: UIViewController {
     title = "Wordle with Friends"
     view.backgroundColor = .systemBackground
     
-    let label = UILabel()
-    label.numberOfLines = 0
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = "Welcome to Wordle with Friends.\nTo get started, enter a five-letter English word below:"
-    label.textAlignment = .center
-    
     let stackView = UIStackView()
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .vertical
     stackView.alignment = .center
     stackView.spacing = 8.0
     
-    stackView.addArrangedSubview(label)
+    updateInstructionsText()
+    stackView.addArrangedSubview(instructionsTextLabel)
     stackView.addArrangedSubview(initialWordTextField)
     stackView.addArrangedSubview(startGameButton)
     view.addSubview(stackView)
@@ -109,6 +113,10 @@ final class GameSetupViewController: UIViewController {
   @objc private func openSettings() {
     let vc = GameSettingsViewController()
     navigationController?.present(UINavigationController(rootViewController: vc), animated: true)
+  }
+  
+  func updateInstructionsText() {
+    instructionsTextLabel.text = "Welcome to Wordle with Friends.\nTo get started, enter a \(GameSettings.clueLength.readIntValue().spelledOut ?? "??")-letter English word below:"
   }
   
   @objc private func textFieldDidUpdate(_ notification: Notification) {

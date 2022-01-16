@@ -19,7 +19,6 @@ final class WordGuessViewController: UIViewController {
     tableView.dataSource = self
     tableView.allowsSelection = false
     tableView.rowHeight = UITableView.automaticDimension
-    tableView.isScrollEnabled = false
     
     tableView.register(WordGuessRow.self, forCellReuseIdentifier: WordGuessRow.identifier)
     

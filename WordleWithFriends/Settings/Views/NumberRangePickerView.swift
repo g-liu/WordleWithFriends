@@ -8,14 +8,16 @@
 import UIKit
 
 final class NumberRangePickerView: UIPickerView {
-  let minValue: Int
-  let maxValue: Int
+  private let minValue: Int
+  private let maxValue: Int
   
-  init(minValue: Int, maxValue: Int) {
+  var didSelectNewValue: ((Int) -> Void)?
+  
+  init(frame: CGRect = .zero, minValue: Int, maxValue: Int) {
     self.minValue = minValue
     self.maxValue = maxValue
     
-    super.init(frame: .zero)
+    super.init(frame: frame)
     setupView()
   }
   
@@ -31,6 +33,11 @@ final class NumberRangePickerView: UIPickerView {
     delegate = self
     dataSource = self
     translatesAutoresizingMaskIntoConstraints = false
+  }
+  
+  func selectValue(_ value: Int) {
+    guard minValue <= value, value <= maxValue else { return }
+    selectRow(value - minValue, inComponent: 0, animated: true)
   }
 }
 
@@ -48,6 +55,11 @@ extension NumberRangePickerView: UIPickerViewDataSource, UIPickerViewDelegate {
   }
   
   func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-    35
+    66
+  }
+  
+  func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    let actualValue = row + minValue
+   didSelectNewValue?(actualValue)
   }
 }

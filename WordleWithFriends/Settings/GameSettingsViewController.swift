@@ -59,21 +59,21 @@ extension GameSettingsViewController: UITableViewDelegate, UITableViewDataSource
       return UITableViewCell()
     }
     
-    let setting = GameSettings.allSettings[indexPath.row]
-    
-    var config = UIListContentConfiguration.valueCell()
-    config.text = setting.description
-    config.secondaryText = "\(setting.readIntValue())"
-    
-    cell.contentConfiguration = config
+    // TODO: Account for other setting types
+    if let setting = GameSettings.allSettings[indexPath.row] as? GameSettingIntRange {
+      var config = UIListContentConfiguration.valueCell()
+      config.text = setting.description
+//      config.secondaryText = "\(setting.readIntValue())"
+      let picker = NumberRangePickerView(frame: .init(x: 0, y: 0, width: 85, height: 66), minValue: setting.minValue, maxValue: setting.maxValue)
+      picker.selectValue(setting.readIntValue())
+      picker.didSelectNewValue = { newValue in
+        setting.writeValue(newValue)
+      }
+      
+      cell.contentConfiguration = config
+      cell.accessoryView = picker
+    }
     
     return cell
   }
-  
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    // bring up picka
-    
-  }
-  
-  
 }

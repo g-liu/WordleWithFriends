@@ -34,7 +34,11 @@ final class GameMessagingViewController: UIViewController {
   
   func showWin(numGuesses: Int) {
     alertController.title = "Congratulations!"
-    alertController.message = "You guessed the word in \(numGuesses) tries." // TODO pluralize
+    if numGuesses == 1 {
+      alertController.message = "You guessed the word in \(numGuesses) try."
+    } else {
+      alertController.message = "You guessed the word in \(numGuesses) tries."
+    }
     
     alertController.addAction(shareButton)
     alertController.addAction(playAgainButton)

@@ -17,7 +17,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     window!.rootViewController = homeViewController
     window!.makeKeyAndVisible()
+    
+    // Read default settings
+    if let defaultSettings = readPropertyList("GameSettingsDefaults") {
+      UserDefaults.standard.register(defaults: defaultSettings)
+    }
+    
     return true
+  }
+  
+  private func readPropertyList(_ name: String) -> [String: Any]? {
+    guard let plistPath = Bundle.main.path(forResource: name, ofType: "plist"),
+          let plistData = FileManager.default.contents(atPath: plistPath) else {
+            return nil
+          }
+    
+    return try? PropertyListSerialization.propertyList(from: plistData, format: nil) as? [String: Any]
   }
 }
 

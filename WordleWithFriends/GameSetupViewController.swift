@@ -14,7 +14,7 @@ final class GameSetupViewController: UIViewController {
   private lazy var settingsButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("⚙️", for: .normal)
+    button.setTitle("⚙", for: .normal)
     button.titleLabel?.font = .systemFont(ofSize: 24.0)
     button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
     

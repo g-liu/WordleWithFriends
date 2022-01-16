@@ -52,23 +52,24 @@ final class GameSettingsViewController: UIViewController {
 
 extension GameSettingsViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    3
+    GameSettingsModel.numSettings
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+    
     let cell = tableView.dequeueReusableCell(withIdentifier: "Temp", for: indexPath)
+    let setting = GameSettingsModel.allSettings[indexPath.row]
+    
     var config = UIListContentConfiguration.sidebarCell()
-    config.text = "yooo"
+    config.text = setting.description
 //    config.secondaryText = "yuhhhh"
     
-    let switchView = UISwitch()
-    switchView.setOn(true, animated: true)
-    switchView.tag = indexPath.row
-    
-    
+    // todo: adapt to setting type
+    let pickerView = NumberRangePickerView(minValue: setting.minValue, maxValue: setting.maxValue)
     
     cell.contentConfiguration = config
-    cell.accessoryView = switchView
+    cell.accessoryView = pickerView // TODO this looks horrendous
     return cell
   }
   

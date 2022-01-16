@@ -8,11 +8,9 @@
 import Foundation
 
 protocol GameSetting {
-  associatedtype T
-  
   var key: String { get set }
   var description: String { get set }
   
-  func readValue() -> T
-  func writeValue(_ value: T)
+  func readValue() -> Any
+  func writeValue(_ value: Any)
 }

@@ -28,16 +28,26 @@ struct GameSettingsModel {
 
 // TODO Protocolize
 struct GameSettingIntRange: GameSetting {
+  
+//  typealias T = Int
+  
   var key: String
   var description: String
   var minValue: Int
   var maxValue: Int
   
-  func readValue() -> Int  {
+//  init(key: String, description: String, minValue: Int, maxValue: Int) {
+//    self.key = key
+//    self.description = description
+//    self.minValue = minValue
+//    self.maxValue = maxValue
+//  }
+  
+  func readValue() -> Any {
     UserDefaults.standard.integer(forKey: key)
   }
   
-  func writeValue(_ value: Int) {
+  func writeValue(_ value: Any) {
     UserDefaults.standard.set(value, forKey: key)
   }
 }

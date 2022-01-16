@@ -33,7 +33,7 @@ struct GameGuessesModel {
     if didGuessCorrectly {
       isGameOver = true
       return .win
-    } else if letterGuesses.count > GameSettingsModel.maxGuesses.readIntValue() {
+    } else if letterGuesses.count > GameSettings.maxGuesses.readIntValue() {
       isGameOver = true
       return .lose
     } else {
@@ -43,7 +43,7 @@ struct GameGuessesModel {
   }
   
   func copyResult() {
-    let header = "Wordle With Friends - \(letterGuesses.count-1)/\(GameSettingsModel.maxGuesses.readIntValue())\n"
+    let header = "Wordle With Friends - \(letterGuesses.count-1)/\(GameSettings.maxGuesses.readIntValue())\n"
     UIPasteboard.general.string = letterGuesses.reduce(header) { copyString, guess in
       return copyString + "\n\(guess.asString())"
     }

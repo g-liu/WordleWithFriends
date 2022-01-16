@@ -36,7 +36,7 @@ final class LetterTileView: UIView {
     addSubview(letterLabel)
     letterLabel.pin(to: self)
     
-    let calculatedWidth = LayoutUtility.gridSize(numberOfColumns: GameSettingsModel.clueLength.readIntValue(),
+    let calculatedWidth = LayoutUtility.gridSize(numberOfColumns: GameSettings.clueLength.readIntValue(),
                                                  screenWidthPercentage: 85,
                                                  maxSize: 50)
     

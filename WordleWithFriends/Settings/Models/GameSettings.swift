@@ -1,5 +1,5 @@
 //
-//  GameSettingsModel.swift
+//  GameSettings.swift
 //  WordleWithFriends
 //
 //  Created by Personal on 1/15/22.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GameSettingsModel {
+struct GameSettings {
   static var clueLength = GameSettingIntRange(key: "clueLength",
                                               description: "Length of clue",
                                               minValue: 3,

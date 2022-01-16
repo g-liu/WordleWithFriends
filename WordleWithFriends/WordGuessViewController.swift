@@ -132,7 +132,7 @@ extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    GameSettingsModel.maxGuesses.readIntValue()
+    GameSettings.maxGuesses.readIntValue()
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -155,7 +155,7 @@ extension WordGuessViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     // this is how we submit a guess
     guard let wordGuess = textField.text,
-          wordGuess.count == GameSettingsModel.clueLength.readIntValue(),
+          wordGuess.count == GameSettings.clueLength.readIntValue(),
           wordGuess.isARealWord() else {
       gameGuessesModel.markInvalidGuess()
       guessTable.reloadData()
@@ -183,7 +183,7 @@ extension WordGuessViewController: UITextFieldDelegate {
       return false
     }
     
-    guard (textField.text?.count ?? 0) + string.count <= GameSettingsModel.clueLength.readIntValue() else {
+    guard (textField.text?.count ?? 0) + string.count <= GameSettings.clueLength.readIntValue() else {
       return false
     }
     

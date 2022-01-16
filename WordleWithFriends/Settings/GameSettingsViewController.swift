@@ -51,7 +51,7 @@ final class GameSettingsViewController: UIViewController {
 
 extension GameSettingsViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    GameSettingsModel.numSettings
+    GameSettings.numSettings
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -59,7 +59,7 @@ extension GameSettingsViewController: UITableViewDelegate, UITableViewDataSource
       return UITableViewCell()
     }
     
-    let setting = GameSettingsModel.allSettings[indexPath.row]
+    let setting = GameSettings.allSettings[indexPath.row]
     
     var config = UIListContentConfiguration.valueCell()
     config.text = setting.description

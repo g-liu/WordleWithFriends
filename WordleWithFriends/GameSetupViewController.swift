@@ -116,7 +116,7 @@ final class GameSetupViewController: UIViewController {
       return
     }
     
-    if textField.text?.count == GameSettingsModel.clueLength.readIntValue() {
+    if textField.text?.count == GameSettings.clueLength.readIntValue() {
       startGameButton.isEnabled = true
     } else {
       startGameButton.isEnabled = false
@@ -128,9 +128,9 @@ final class GameSetupViewController: UIViewController {
       return .missingWord
     }
     
-    if inputText.count < GameSettingsModel.clueLength.readIntValue() {
+    if inputText.count < GameSettings.clueLength.readIntValue() {
       return .insufficientLength
-    } else if inputText.count > GameSettingsModel.clueLength.readIntValue() {
+    } else if inputText.count > GameSettings.clueLength.readIntValue() {
       return .excessLength
     }
     
@@ -177,7 +177,7 @@ extension GameSetupViewController: UITextFieldDelegate {
       return false
     }
     
-    guard (textField.text?.count ?? 0) + string.count <= GameSettingsModel.clueLength.readIntValue() else {
+    guard (textField.text?.count ?? 0) + string.count <= GameSettings.clueLength.readIntValue() else {
       return false
     }
     

@@ -11,7 +11,7 @@ struct GameSettings {
   static var clueLength = GameSettingIntRange(key: "clueLength",
                                               description: "Length of clue",
                                               minValue: 3,
-                                              maxValue: 6)
+                                              maxValue: 8)
   static var maxGuesses = GameSettingIntRange(key: "maxGuesses",
                                               description: "Max guesses",
                                               minValue: 1,

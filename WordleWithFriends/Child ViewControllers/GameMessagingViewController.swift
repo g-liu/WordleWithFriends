@@ -46,9 +46,9 @@ final class GameMessagingViewController: UIViewController {
     present(alertController, animated: true)
   }
   
-  func showLose(actualWord: String) {
+  func showLose(clue: String) {
     alertController.title = "Aww 😢"
-    alertController.message = "The actual word was \(actualWord). Good try!"
+    alertController.message = "The actual word was \(clue). Good try!"
     
     alertController.addAction(shareButton)
     alertController.addAction(playAgainButton)

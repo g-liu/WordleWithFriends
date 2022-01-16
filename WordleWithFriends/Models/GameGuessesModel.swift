@@ -8,7 +8,7 @@
 import UIKit
 
 struct GameGuessesModel {
-  var actualWord: String = ""
+  var clue: String = ""
   var isGameOver: Bool = false
   
   private var letterGuesses: [WordGuess] = [WordGuess()]
@@ -27,7 +27,7 @@ struct GameGuessesModel {
   /// Submit a guess
   /// - Returns: if the user guessed the word correctly
   mutating func submitGuess() -> GameState {
-    let didGuessCorrectly = letterGuesses[letterGuesses.count - 1].checkGuess(against: actualWord)
+    let didGuessCorrectly = letterGuesses[letterGuesses.count - 1].checkGuess(against: clue)
     
     letterGuesses.append(WordGuess())
     if didGuessCorrectly {

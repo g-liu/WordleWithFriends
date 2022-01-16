@@ -12,7 +12,7 @@ final class GameGuessesModelTests: XCTestCase {
   func testInitialConditions() {
     let model = GameGuessesModel()
     let maxGuesses = GameSettings.maxGuesses.readIntValue()
-    XCTAssertEqual(model.actualWord, "")
+    XCTAssertEqual(model.clue, "")
     XCTAssertEqual(model.isGameOver, false)
     XCTAssertEqual(model.numberOfGuesses, 0)
     

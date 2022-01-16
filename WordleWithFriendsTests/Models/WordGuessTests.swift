@@ -25,7 +25,7 @@ class WordGuessTests: XCTestCase {
     validateGuess("BCDEA", against: "ABCDE", pattern: [.misplaced, .misplaced, .misplaced, .misplaced, .misplaced])
   }
   
-  func testMoreMisplacedLettersThanPresentInActualWord() {
+  func testMoreMisplacedLettersThanPresentInClue() {
     validateGuess("TATER", against: "TANGY", pattern: [.correct, .correct, .incorrect, .incorrect, .incorrect])
   }
   
@@ -123,15 +123,15 @@ class WordGuessTests: XCTestCase {
 }
 
 extension WordGuessTests {
-  func validateGuess(_ guess: String, against actualWord: String, pattern: [LetterState]) {
-    assert(guess.count == actualWord.count, "Guess and actual word must be same length")
-    assert(actualWord.count == pattern.count, "Expected pattern must be same length as actual word")
+  func validateGuess(_ guess: String, against clue: String, pattern: [LetterState]) {
+    assert(guess.count == clue.count, "Guess and clue must be same length")
+    assert(clue.count == pattern.count, "Expected pattern must be same length as clue")
     
     var model = WordGuess()
     model.updateGuess(guess)
-    let _ = model.checkGuess(against: actualWord)
+    let _ = model.checkGuess(against: clue)
     
-    (0..<actualWord.count).forEach { index in
+    (0..<clue.count).forEach { index in
       let letterGuess = model.guess(at: index)!
       let expectedState = pattern[index]
       XCTAssertEqual(letterGuess.state, expectedState,

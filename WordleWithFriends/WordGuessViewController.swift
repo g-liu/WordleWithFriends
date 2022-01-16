@@ -57,7 +57,7 @@ final class WordGuessViewController: UIViewController {
   }
   
   func setWord(_ word: String) {
-    gameGuessesModel.actualWord = word
+    gameGuessesModel.clue = word
   }
   
   private func setupVC() {
@@ -118,7 +118,7 @@ final class WordGuessViewController: UIViewController {
       case .win:
         gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
       case .lose:
-        gameMessagingVC.showLose(actualWord: gameGuessesModel.actualWord)
+        gameMessagingVC.showLose(clue: gameGuessesModel.clue)
       case .keepGuessing:
         break
     }

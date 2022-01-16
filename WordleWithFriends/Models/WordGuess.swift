@@ -33,18 +33,18 @@ struct WordGuess {
   }
   
   /// Checks a player's guess
-  /// - Parameter actualWord: the word to check against
+  /// - Parameter clue: the word to check against
   /// - Returns: true if the user guessed correctly; false otherwise
-  mutating func checkGuess(against actualWord: String) -> Bool {
-    var actualWord = actualWord
+  mutating func checkGuess(against clue: String) -> Bool {
+    var clue = clue
     var didGuessCorrectly = true
     
     // pass 1: find exact matches and incorrect guesses
     guess.enumerated().forEach { index, letterGuess in
-      if letterGuess.letter == actualWord[index] {
-        actualWord.replaceAt(index, with: "#")
+      if letterGuess.letter == clue[index] {
+        clue.replaceAt(index, with: "#")
         guess[index].state = .correct
-      } else if !actualWord.contains(letterGuess.letter) {
+      } else if !clue.contains(letterGuess.letter) {
         guess[index].state = .incorrect
         didGuessCorrectly = false
       }
@@ -53,8 +53,8 @@ struct WordGuess {
     // pass 2: the rest are misplaced or incorrect
     (0..<guess.count).forEach { index in
       if guess[index].state == .unchecked {
-        if let indexInActualWord = actualWord.firstIndex(of: guess[index].letter) {
-          actualWord.replaceAt(indexInActualWord, with: "#")
+        if let indexInClue = clue.firstIndex(of: guess[index].letter) {
+          clue.replaceAt(indexInClue, with: "#")
           guess[index].state = .misplaced
           didGuessCorrectly = false
         } else {

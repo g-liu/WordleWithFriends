@@ -30,6 +30,7 @@ final class NumberRangePickerView: UIPickerView {
   private func setupView() {
     delegate = self
     dataSource = self
+    translatesAutoresizingMaskIntoConstraints = false
   }
 }
 
@@ -44,5 +45,9 @@ extension NumberRangePickerView: UIPickerViewDataSource, UIPickerViewDelegate {
   
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
     "\(minValue + row)"
+  }
+  
+  func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+    35
   }
 }

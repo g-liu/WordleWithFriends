@@ -37,9 +37,8 @@ final class GameSettingsViewController: UIViewController {
     table.translatesAutoresizingMaskIntoConstraints = false
     table.delegate = self
     table.dataSource = self
-    table.register(UITableViewCell.self, forCellReuseIdentifier: "Temp") // TODO Remove
+    table.register(GameSettingTableViewCell.self, forCellReuseIdentifier: GameSettingTableViewCell.identifier)
     table.rowHeight = UITableView.automaticDimension
-    table.allowsSelection = false
     
     view.addSubview(table)
     table.pin(to: view.safeAreaLayoutGuide)
@@ -56,20 +55,27 @@ extension GameSettingsViewController: UITableViewDelegate, UITableViewDataSource
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: GameSettingTableViewCell.identifier, for: indexPath) as? GameSettingTableViewCell else {
+      return UITableViewCell()
+    }
     
-    
-    let cell = tableView.dequeueReusableCell(withIdentifier: "Temp", for: indexPath)
     let setting = GameSettingsModel.allSettings[indexPath.row]
     
-    var config = UIListContentConfiguration.sidebarCell()
+    var config = UIListContentConfiguration.valueCell()
     config.text = setting.description
+    config.secondaryText = "\(setting.readValue())"
+    
 //    config.secondaryText = "yuhhhh"
     
     // todo: adapt to setting type
-    let pickerView = NumberRangePickerView(minValue: setting.minValue, maxValue: setting.maxValue)
+//    let pickerView = NumberRangePickerView(minValue: setting.minValue, maxValue: setting.maxValue)
     
     cell.contentConfiguration = config
-    cell.accessoryView = pickerView // TODO this looks horrendous
+    
+//    let label = UILabel()
+//    label.text = "\(setting.readValue())"
+//    cell. // TODO this looks horrendous
+    
     return cell
   }
   

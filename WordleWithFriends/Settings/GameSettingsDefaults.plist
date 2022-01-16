@@ -3,8 +3,8 @@
 <plist version="1.0">
 <dict>
 	<key>maxGuesses</key>
-	<integer>0</integer>
+	<integer>6</integer>
 	<key>clueLength</key>
-	<integer>0</integer>
+	<integer>5</integer>
 </dict>
 </plist>

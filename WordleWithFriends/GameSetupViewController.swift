@@ -70,11 +70,13 @@ final class GameSetupViewController: UIViewController {
     stackView.addArrangedSubview(startGameButton)
     view.addSubview(stackView)
     
+    let maxWidth = LayoutUtility.size(screenWidthPercentage: 85.0, maxWidth: 300)
+    
     NSLayoutConstraint.activate([
       stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
       stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      initialWordTextField.widthAnchor.constraint(equalToConstant: 300) // TODO check this
+      initialWordTextField.widthAnchor.constraint(equalToConstant: maxWidth),
     ])
     
     initialWordTextField.becomeFirstResponder()

@@ -9,8 +9,6 @@ import UIKit
 
 final class GameSetupViewController: UIViewController {
   
-  static let MAX_WORD_LENGTH = 5
-  
   private lazy var settingsButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -118,7 +116,7 @@ final class GameSetupViewController: UIViewController {
       return
     }
     
-    if textField.text?.count == 5 {
+    if textField.text?.count == GameSettingsModel.clueLength.readIntValue() {
       startGameButton.isEnabled = true
     } else {
       startGameButton.isEnabled = false
@@ -130,9 +128,9 @@ final class GameSetupViewController: UIViewController {
       return .missingWord
     }
     
-    if inputText.count < 5 {
+    if inputText.count < GameSettingsModel.clueLength.readIntValue() {
       return .insufficientLength
-    } else if inputText.count > 5 {
+    } else if inputText.count > GameSettingsModel.clueLength.readIntValue() {
       return .excessLength
     }
     
@@ -179,7 +177,7 @@ extension GameSetupViewController: UITextFieldDelegate {
       return false
     }
     
-    guard (textField.text?.count ?? 0) + string.count <= type(of: self).MAX_WORD_LENGTH else {
+    guard (textField.text?.count ?? 0) + string.count <= GameSettingsModel.clueLength.readIntValue() else {
       return false
     }
     

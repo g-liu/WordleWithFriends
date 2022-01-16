@@ -36,7 +36,9 @@ final class LetterTileView: UIView {
     addSubview(letterLabel)
     letterLabel.pin(to: self)
     
-    let calculatedWidth = LayoutUtility.gridSize(numberOfColumns: 5, screenWidthPercentage: 85, maxSize: 50)
+    let calculatedWidth = LayoutUtility.gridSize(numberOfColumns: GameSettingsModel.clueLength.readIntValue(),
+                                                 screenWidthPercentage: 85,
+                                                 maxSize: 50)
     
     NSLayoutConstraint.activate([
       heightAnchor.constraint(equalToConstant: calculatedWidth),

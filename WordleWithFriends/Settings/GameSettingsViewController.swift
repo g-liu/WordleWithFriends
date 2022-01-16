@@ -63,11 +63,16 @@ extension GameSettingsViewController: UITableViewDelegate, UITableViewDataSource
     
     var config = UIListContentConfiguration.valueCell()
     config.text = setting.description
-    config.secondaryText = "\(setting.readValue())"
+    config.secondaryText = "\(setting.readIntValue())"
     
     cell.contentConfiguration = config
     
     return cell
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    // bring up picka
+    
   }
   
   

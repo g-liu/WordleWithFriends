@@ -9,7 +9,6 @@ import UIKit
 
 struct GameGuessesModel {
   var actualWord: String = ""
-  var guessLimit: Int = 6
   var isGameOver: Bool = false
   
   private var letterGuesses: [WordGuess] = [WordGuess()]
@@ -34,7 +33,7 @@ struct GameGuessesModel {
     if didGuessCorrectly {
       isGameOver = true
       return .win
-    } else if letterGuesses.count > guessLimit {
+    } else if letterGuesses.count > GameSettingsModel.maxGuesses.readIntValue() {
       isGameOver = true
       return .lose
     } else {
@@ -44,7 +43,7 @@ struct GameGuessesModel {
   }
   
   func copyResult() {
-    let header = "Wordle With Friends - \(letterGuesses.count-1)/\(guessLimit)\n"
+    let header = "Wordle With Friends - \(letterGuesses.count-1)/\(GameSettingsModel.maxGuesses.readIntValue())\n"
     UIPasteboard.general.string = letterGuesses.reduce(header) { copyString, guess in
       return copyString + "\n\(guess.asString())"
     }

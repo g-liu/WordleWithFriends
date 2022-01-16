@@ -43,11 +43,5 @@ struct GameSettingIntRange: GameSetting {
 //    self.maxValue = maxValue
 //  }
   
-  func readValue() -> Any {
-    UserDefaults.standard.integer(forKey: key)
-  }
   
-  func writeValue(_ value: Any) {
-    UserDefaults.standard.set(value, forKey: key)
-  }
 }

@@ -17,7 +17,7 @@ final class GameMessagingViewController: UIViewController {
   }()
   
   private lazy var shareButton: UIAlertAction = {
-    let action = UIAlertAction(title: "Share", style: .default) { [weak self] _ in
+    let action = UIAlertAction(title: "Share", style: .cancel) { [weak self] _ in
       self?.delegate?.shareResult()
     }
     
@@ -43,7 +43,11 @@ final class GameMessagingViewController: UIViewController {
     alertController.addAction(shareButton)
     alertController.addAction(playAgainButton)
     
-    present(alertController, animated: true)
+    present(alertController, animated: true) { [weak self] in
+      guard let self = self else { return }
+      self.alertController.view.superview?.isUserInteractionEnabled = true
+      self.alertController.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.shouldDismiss)))
+    }
   }
   
   func showLose(clue: String) {
@@ -54,5 +58,9 @@ final class GameMessagingViewController: UIViewController {
     alertController.addAction(playAgainButton)
     
     present(alertController, animated: true)
+  }
+  
+  @objc private func shouldDismiss() {
+    alertController.dismiss(animated: true)
   }
 }

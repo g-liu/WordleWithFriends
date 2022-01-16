@@ -93,7 +93,7 @@ class WordGuessTests: XCTestCase {
   }
   
   func testStringRepresentationOfEmptyGuessIsEmpty() {
-    var model = WordGuess()
+    let model = WordGuess()
     XCTAssertEqual(model.asString(), "")
   }
   

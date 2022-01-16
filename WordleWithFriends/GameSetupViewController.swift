@@ -110,7 +110,7 @@ final class GameSetupViewController: UIViewController {
   
   @objc private func openSettings() {
     let vc = GameSettingsViewController()
-    navigationController?.present(vc, animated: true)
+    navigationController?.present(UINavigationController(rootViewController: vc), animated: true)
   }
   
   @objc private func textFieldDidUpdate(_ notification: Notification) {

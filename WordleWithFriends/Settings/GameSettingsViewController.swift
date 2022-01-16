@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol GameSettingsDelegate {
+  func didDismissSettings()
+}
+
 final class GameSettingsViewController: UIViewController {
+  var delegate: GameSettingsDelegate?
+  
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     setupVC()
@@ -45,7 +51,7 @@ final class GameSettingsViewController: UIViewController {
   }
   
   @objc private func didTapCloseSettings() {
-    dismiss(animated: true, completion: nil)
+    dismiss(animated: true) { [weak self] in self?.delegate?.didDismissSettings() }
   }
 }
 

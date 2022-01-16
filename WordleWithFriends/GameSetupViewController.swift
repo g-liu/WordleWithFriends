@@ -112,6 +112,7 @@ final class GameSetupViewController: UIViewController {
   
   @objc private func openSettings() {
     let vc = GameSettingsViewController()
+    vc.delegate = self
     navigationController?.present(UINavigationController(rootViewController: vc), animated: true)
   }
   
@@ -190,6 +191,12 @@ extension GameSetupViewController: UITextFieldDelegate {
     }
     
     return true
+  }
+}
+
+extension GameSetupViewController: GameSettingsDelegate {
+  func didDismissSettings() {
+    updateInstructionsText()
   }
 }
 

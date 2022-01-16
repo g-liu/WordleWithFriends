@@ -41,6 +41,17 @@ final class GameSetupViewController: UIViewController {
     return button
   }()
   
+  private lazy var randomWordButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle("Random word", for: .normal)
+    button.setTitleColor(.systemOrange, for: .normal)
+    button.addTarget(self, action: #selector(initiateGameWithRandomWord), for: .touchUpInside)
+    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    
+    return button
+  }()
+  
   private lazy var initialWordTextField: UITextField = {
     let textField = WordInputTextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
@@ -79,6 +90,7 @@ final class GameSetupViewController: UIViewController {
     stackView.addArrangedSubview(instructionsTextLabel)
     stackView.addArrangedSubview(initialWordTextField)
     stackView.addArrangedSubview(startGameButton)
+    stackView.addArrangedSubview(randomWordButton)
     view.addSubview(stackView)
     view.addSubview(settingsButton)
     
@@ -117,7 +129,7 @@ final class GameSetupViewController: UIViewController {
   }
   
   func updateInstructionsText() {
-    instructionsTextLabel.text = "Welcome to Wordle with Friends.\nTo get started, enter a \(GameSettings.clueLength.readIntValue().spelledOut ?? "??")-letter English word below:"
+    instructionsTextLabel.text = "Welcome to Wordle with Friends.\nTo get started, enter a \(GameSettings.clueLength.readIntValue().spelledOut ?? "??")-letter English word below."
   }
   
   @objc private func textFieldDidUpdate(_ notification: Notification) {
@@ -161,6 +173,17 @@ final class GameSetupViewController: UIViewController {
       self.present(ctrl, animated: true, completion: nil)
     }
     return isValid
+  }
+  
+  @objc private func initiateGameWithRandomWord() {
+    guard let path = Bundle.main.path(forResource: "words_\(GameSettings.clueLength.readIntValue())letters", ofType: "txt"),
+          let data = try? String(contentsOfFile: path) else { return }
+    
+    let allWords = data.components(separatedBy: "\n")
+    let word = allWords[Int.random(in: 0..<allWords.count)]
+    initialWordTextField.text = word.uppercased()
+    
+    initiateGame()
   }
 
   private func initiateGame() {

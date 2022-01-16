@@ -14,7 +14,7 @@ struct GameGuessesModel {
   
   private var letterGuesses: [WordGuess] = [WordGuess()]
   
-  var numberOfGuesses: Int { letterGuesses.count }
+  var numberOfGuesses: Int { letterGuesses.count - 1 }
   
   func guess(at index: Int) -> WordGuess? {
     guard index < letterGuesses.count else { return nil }

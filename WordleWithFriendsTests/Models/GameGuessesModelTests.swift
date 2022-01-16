@@ -14,7 +14,7 @@ final class GameGuessesModelTests: XCTestCase {
     XCTAssertEqual(model.actualWord, "")
     XCTAssertEqual(model.isGameOver, false)
     XCTAssertEqual(model.guessLimit, 6)
-    XCTAssertEqual(model.numberOfGuesses, 1)
+    XCTAssertEqual(model.numberOfGuesses, 0)
     
     XCTAssertNotNil(model.guess(at: 0))
     XCTAssertNil(model.guess(at: 1))

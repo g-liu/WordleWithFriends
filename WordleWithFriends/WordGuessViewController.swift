@@ -40,14 +40,11 @@ final class WordGuessViewController: UIViewController {
     return textField
   }()
   
-  private lazy var gameMessage: GameMessageView = {
-    let view = GameMessageView()
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.playAgain = { [weak self] in
-      self?.dismiss(animated: true, completion: nil)
-    }
+  private lazy var gameMessagingVC: GameMessagingViewController = {
+    let vc = GameMessagingViewController()
+    vc.delegate = self
     
-    return view
+    return vc
   }()
   
   init() {
@@ -73,8 +70,9 @@ final class WordGuessViewController: UIViewController {
     
     view.backgroundColor = .systemBackground
     
+    addChild(gameMessagingVC)
+    
     view.addSubview(guessTable)
-    view.addSubview(gameMessage)
     view.addSubview(guessInputTextField)
     guessTable.pin(to: view.safeAreaLayoutGuide, margins: .init(top: 12, left: 0, bottom: 0, right: 0))
     
@@ -82,8 +80,6 @@ final class WordGuessViewController: UIViewController {
       guessTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12.0),
       guessTable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
       guessTable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-      gameMessage.topAnchor.constraint(equalTo: guessTable.bottomAnchor),
-      gameMessage.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
       guessInputTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       guessInputTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
     ])
@@ -118,34 +114,13 @@ final class WordGuessViewController: UIViewController {
     
     guessInputTextField.text = ""
     guessInputTextField.becomeFirstResponder()
-      
-    // TODO: Move buttons to different VC?
-    let shareButton = UIAlertAction(title: "Share", style: .default) { [weak self] _ in
-      self?.gameGuessesModel.copyResult()
-    }
-      
-    let playAgainButton = UIAlertAction(title: "Play again", style: .default) { [weak self] _ in
-      self?.dismiss(animated: true, completion: nil)
-    }
     
     switch gameState {
       case .win:
-        // show congrats
-//        gameMessage.showWin()
-        let alert = UIAlertController(title: "Congratulations!", message: "You guessed the word in ", preferredStyle: .alert)
-        alert.addAction(shareButton)
-        alert.addAction(playAgainButton)
-        navigationController?.present(alert, animated: true, completion: nil)
+        gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
       case .lose:
-        // show actual word
-//        gameMessage.showLose(answer: gameGuessesModel.actualWord)
-        let alert = UIAlertController(title: "Aw darn 😢", message: "The word was \(gameGuessesModel.actualWord)", preferredStyle: .alert)
-        alert.addAction(shareButton)
-        alert.addAction(playAgainButton)
-        navigationController?.present(alert, animated: true, completion: nil)
+        gameMessagingVC.showLose(actualWord: gameGuessesModel.actualWord)
       case .keepGuessing:
-        // nothing
-        gameMessage.hide()
         break
     }
   }
@@ -165,7 +140,7 @@ extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
       return UITableViewCell()
     }
     
-    if indexPath.row < gameGuessesModel.numberOfGuesses,
+    if indexPath.row <= gameGuessesModel.numberOfGuesses,
        let wordGuessModel = gameGuessesModel.guess(at: indexPath.row) {
       cell.configure(with: wordGuessModel)
     } else {
@@ -217,4 +192,15 @@ extension WordGuessViewController: UITextFieldDelegate {
     
     return true
   }
+}
+
+extension WordGuessViewController: GameEndDelegate {
+  func shareResult() {
+    gameGuessesModel.copyResult()
+  }
+  
+  func goToInitialScreen() {
+    navigationController?.popToRootViewController(animated: true)
+  }
+  
 }

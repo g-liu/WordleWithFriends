@@ -65,16 +65,7 @@ extension GameSettingsViewController: UITableViewDelegate, UITableViewDataSource
     config.text = setting.description
     config.secondaryText = "\(setting.readValue())"
     
-//    config.secondaryText = "yuhhhh"
-    
-    // todo: adapt to setting type
-//    let pickerView = NumberRangePickerView(minValue: setting.minValue, maxValue: setting.maxValue)
-    
     cell.contentConfiguration = config
-    
-//    let label = UILabel()
-//    label.text = "\(setting.readValue())"
-//    cell. // TODO this looks horrendous
     
     return cell
   }

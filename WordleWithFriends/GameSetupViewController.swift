@@ -9,16 +9,6 @@ import UIKit
 
 final class GameSetupViewController: UIViewController {
   
-  private lazy var settingsButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("⚙", for: .normal)
-    button.titleLabel?.font = .systemFont(ofSize: 24.0)
-    button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
-    
-    return button
-  }()
-  
   private lazy var instructionsTextLabel: UILabel = {
     let label = UILabel()
     label.numberOfLines = 0
@@ -80,6 +70,8 @@ final class GameSetupViewController: UIViewController {
     title = "Wordle with Friends"
     view.backgroundColor = .systemBackground
     
+    navigationItem.leftBarButtonItem = UIBarButtonItem(title: "⚙", style: .plain, target: self, action: #selector(openSettings))
+    
     let stackView = UIStackView()
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .vertical
@@ -92,7 +84,6 @@ final class GameSetupViewController: UIViewController {
     stackView.addArrangedSubview(startGameButton)
     stackView.addArrangedSubview(randomWordButton)
     view.addSubview(stackView)
-    view.addSubview(settingsButton)
     
     let maxWidth = LayoutUtility.size(screenWidthPercentage: 85.0, maxWidth: 300)
     
@@ -101,9 +92,6 @@ final class GameSetupViewController: UIViewController {
       stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
       initialWordTextField.widthAnchor.constraint(equalToConstant: maxWidth),
-      
-      settingsButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8.0),
-      settingsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8.0),
     ])
     
     initialWordTextField.becomeFirstResponder()

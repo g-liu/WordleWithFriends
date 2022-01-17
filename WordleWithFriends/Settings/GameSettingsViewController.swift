@@ -71,6 +71,7 @@ extension GameSettingsViewController: UITableViewDelegate, UITableViewDataSource
       config.text = setting.description
 //      config.secondaryText = "\(setting.readIntValue())"
       let picker = NumberRangePickerView(frame: .init(x: 0, y: 0, width: 85, height: 66), minValue: setting.minValue, maxValue: setting.maxValue)
+      picker.tag = indexPath.row
       picker.selectValue(setting.readIntValue())
       picker.didSelectNewValue = { newValue in
         setting.writeValue(newValue)
@@ -78,8 +79,24 @@ extension GameSettingsViewController: UITableViewDelegate, UITableViewDataSource
       
       cell.contentConfiguration = config
       cell.accessoryView = picker
+    } else if let setting = GameSettings.allSettings[indexPath.row] as? GameSettingBool {
+      var config = UIListContentConfiguration.valueCell()
+      config.text = setting.description
+      
+      let toggle = UISwitch()
+      toggle.tag = indexPath.row
+      toggle.setOn(setting.readBoolValue(), animated: true)
+      toggle.addTarget(self, action: #selector(settingSwitchDidChange), for: .valueChanged)
+      
+      cell.contentConfiguration = config
+      cell.accessoryView = toggle
     }
     
     return cell
+  }
+  
+  @objc private func settingSwitchDidChange(_ toggle: UISwitch) {
+    guard let setting = GameSettings.allSettings[toggle.tag] as? GameSettingBool else { return }
+    setting.writeValue(toggle.isOn)
   }
 }

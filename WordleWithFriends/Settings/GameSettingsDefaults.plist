@@ -6,5 +6,7 @@
 	<integer>6</integer>
 	<key>clueLength</key>
 	<integer>5</integer>
+	<key>allowNonDictionaryGuesses</key>
+	<false/>
 </dict>
 </plist>

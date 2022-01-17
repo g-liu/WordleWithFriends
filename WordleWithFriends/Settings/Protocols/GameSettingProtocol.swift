@@ -13,6 +13,7 @@ protocol GameSetting {
   
   func readIntValue() -> Int
   func readStringValue() -> String?
+  func readBoolValue() -> Bool
   func writeValue(_ value: Any)
 }
 
@@ -23,6 +24,10 @@ extension GameSetting {
   
   func readStringValue() -> String? {
     UserDefaults.standard.string(forKey: key)
+  }
+  
+  func readBoolValue() -> Bool {
+    UserDefaults.standard.bool(forKey: key)
   }
   
   func writeValue(_ value: Any) {

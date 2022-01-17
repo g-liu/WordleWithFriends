@@ -155,7 +155,7 @@ extension WordGuessViewController: UITextFieldDelegate {
     // this is how we submit a guess
     guard let wordGuess = textField.text,
           wordGuess.count == GameSettings.clueLength.readIntValue(),
-          wordGuess.isARealWord() else {
+          GameSettings.allowNonDictionaryGuesses.readBoolValue() || wordGuess.isARealWord() else {
       gameGuessesModel.markInvalidGuess()
       guessTable.reloadData()
       return false

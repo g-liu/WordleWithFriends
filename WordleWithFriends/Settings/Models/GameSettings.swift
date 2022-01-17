@@ -16,14 +16,21 @@ struct GameSettings {
                                               description: "Max guesses",
                                               minValue: 1,
                                               maxValue: 20)
+  static var allowNonDictionaryGuesses = GameSettingBool(key: "allowNonDictionaryGuesses",
+                                                         description: "Allow non-word guesses")
   
   static var allSettings: [GameSetting] {
-    return [clueLength, maxGuesses]
+    return [clueLength, maxGuesses, allowNonDictionaryGuesses]
   }
   
   static var numSettings: Int {
     allSettings.count
   }
+}
+
+struct GameSettingBool: GameSetting {
+  var key: String
+  var description: String
 }
 
 // TODO Protocolize

@@ -32,11 +32,9 @@ final class GameSettingsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let moab = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapCloseSettings))
-    
     title = "Settings"
     navigationItem.title = "Settings"
-    navigationItem.rightBarButtonItem = moab
+    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapCloseSettings))
     view.backgroundColor = .systemBackground
     
     let table = UITableView(frame: .zero, style: .insetGrouped)

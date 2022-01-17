@@ -11,6 +11,12 @@ final class WordGuessViewController: UIViewController {
   
   private var gameGuessesModel: GameGuessesModel = GameGuessesModel()
   
+  private lazy var shareButton: UIBarButtonItem = {
+    let button = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareAction))
+    button.isEnabled = false
+    return button
+  }()
+  
   private lazy var guessTable: UITableView = {
     let tableView = UITableView(frame: .zero, style: .plain)
     tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -19,6 +25,7 @@ final class WordGuessViewController: UIViewController {
     tableView.dataSource = self
     tableView.allowsSelection = false
     tableView.rowHeight = UITableView.automaticDimension
+    // TODO: Autoscroll if latest guess no longer visible onscreen
     
     tableView.register(WordGuessRow.self, forCellReuseIdentifier: WordGuessRow.identifier)
     
@@ -85,6 +92,8 @@ final class WordGuessViewController: UIViewController {
     
     guessInputTextField.becomeFirstResponder()
     title = "Guess the word"
+    
+    navigationItem.rightBarButtonItem = shareButton
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -137,6 +146,10 @@ final class WordGuessViewController: UIViewController {
     }
     
     guessTable.scrollIndicatorInsets = guessTable.contentInset
+  }
+  
+  @objc private func shareAction(_ sender: Any?) {
+    // todo impl
   }
 }
 
@@ -209,7 +222,7 @@ extension WordGuessViewController: UITextFieldDelegate {
 }
 
 extension WordGuessViewController: GameEndDelegate {
-  func shareResult() {
+  func copyResult() {
     gameGuessesModel.copyResult()
   }
   

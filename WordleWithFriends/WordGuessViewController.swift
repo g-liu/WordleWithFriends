@@ -125,10 +125,13 @@ final class WordGuessViewController: UIViewController {
     
     switch gameState {
       case .win:
+        shareButton.isEnabled = true
         gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
       case .lose:
+        shareButton.isEnabled = true
         gameMessagingVC.showLose(clue: gameGuessesModel.clue)
       case .keepGuessing:
+        shareButton.isEnabled = false
         break
     }
   }
@@ -149,7 +152,11 @@ final class WordGuessViewController: UIViewController {
   }
   
   @objc private func shareAction(_ sender: Any?) {
-    // todo impl
+    guard let gameResult = UIPasteboard.general.string else {
+      return
+    }
+    let ac = UIActivityViewController(activityItems: [gameResult], applicationActivities: nil)
+    navigationController?.present(ac, animated: true)
   }
 }
 

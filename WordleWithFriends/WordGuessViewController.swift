@@ -67,6 +67,9 @@ final class WordGuessViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+    
     view.backgroundColor = .systemBackground
     
     addChild(gameMessagingVC)
@@ -76,9 +79,6 @@ final class WordGuessViewController: UIViewController {
     guessTable.pin(to: view.safeAreaLayoutGuide, margins: .init(top: 12, left: 0, bottom: 0, right: 0))
     
     NSLayoutConstraint.activate([
-      guessTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12.0),
-      guessTable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      guessTable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
       guessInputTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       guessInputTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
     ])
@@ -122,6 +122,21 @@ final class WordGuessViewController: UIViewController {
       case .keepGuessing:
         break
     }
+  }
+  
+  @objc private func adjustForKeyboard(notification: Notification) {
+    guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+    
+    let keyboardScreenEndFrame = keyboardValue.cgRectValue
+    let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+    
+    if notification.name == UIResponder.keyboardWillHideNotification {
+      guessTable.contentInset = .zero
+    } else {
+      guessTable.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+    }
+    
+    guessTable.scrollIndicatorInsets = guessTable.contentInset
   }
 }
 

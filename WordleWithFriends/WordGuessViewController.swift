@@ -25,7 +25,6 @@ final class WordGuessViewController: UIViewController {
     tableView.dataSource = self
     tableView.allowsSelection = false
     tableView.rowHeight = UITableView.automaticDimension
-    // TODO: Autoscroll if latest guess no longer visible onscreen
     
     tableView.register(WordGuessRow.self, forCellReuseIdentifier: WordGuessRow.identifier)
     
@@ -105,7 +104,13 @@ final class WordGuessViewController: UIViewController {
   }
   
   override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     guessInputTextField.becomeFirstResponder()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    isBeingScrolled = false
   }
   
   @objc private func guessDidChange(_ notification: Notification) {
@@ -119,21 +124,9 @@ final class WordGuessViewController: UIViewController {
     
     guessTable.reloadData()
     
-    let rowInTable = IndexPath(row:  gameGuessesModel.numberOfGuesses, section: 0)
-//    let isRowVisible = (guessTable.indexPathsForVisibleRows?.contains(rowInTable) ?? true)
-    
-    let actualOrigin = guessTable.frame.origin + guessTable.contentOffset
-    let actualSize = guessTable.frame.size - guessTable.contentInset
-    let actualFrame = CGRect(origin: actualOrigin, size: actualSize)
-    
-    let isRowVisible = actualFrame.contains(guessTable.cellForRow(at: rowInTable)?.frame ?? .zero)
-    if !isBeingScrolled && !isRowVisible {
-      isBeingScrolled = true
+    if !isBeingScrolled {
+      let rowInTable = IndexPath(row:  gameGuessesModel.numberOfGuesses, section: 0)
       guessTable.scrollToRow(at: rowInTable, at: .bottom, animated: true)
-    }
-    
-    if isRowVisible {
-      isBeingScrolled = false
     }
   }
   
@@ -207,22 +200,29 @@ extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
     return cell
   }
   
-//  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//    isBeingScrolled = true
-//    print("STARTING SCROLL")
-//  }
-//
-//  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//    isBeingScrolled = false
-//    print("END SCROLL AFTER DECEL")
-//  }
-//
-//  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//    if !decelerate {
-//      print("END SCROLL IMMEDIATELY")
-//      isBeingScrolled = false
-//    }
-//  }
+  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    isBeingScrolled = true
+  }
+  
+  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    isBeingScrolled = false
+  }
+  
+  func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+    isBeingScrolled = false
+  }
+  
+  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    if !decelerate { isBeingScrolled = false }
+  }
+  
+  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    isBeingScrolled = false
+  }
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    isBeingScrolled = true
+  }
   
   func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
     isBeingScrolled = false

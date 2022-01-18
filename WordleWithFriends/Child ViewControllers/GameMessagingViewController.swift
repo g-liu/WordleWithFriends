@@ -47,13 +47,13 @@ final class GameMessagingViewController: UIViewController {
       alertController.message = "You guessed the word in \(numGuesses) tries."
     }
     
-    present(alertController, animated: true)
+    (navigationController?.topViewController ?? parent)?.present(alertController, animated: true)
   }
   
   func showLose(clue: String) {
     alertController.title = "Aww 😢"
     alertController.message = "The actual word was \(clue). Good try!"
     
-    present(alertController, animated: true)
+    (navigationController?.topViewController ?? parent)?.present(alertController, animated: true)
   }
 }

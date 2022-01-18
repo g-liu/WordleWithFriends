@@ -10,27 +10,34 @@ import UIKit
 final class GameMessagingViewController: UIViewController {
   var delegate: GameEndDelegate?
   
-  private lazy var alertController: UIAlertController = {
-    let vc = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
-    
-    return vc
-  }()
+  private lazy var alertController = DismissableAlertController(title: nil, message: nil, preferredStyle: .alert)
   
   private lazy var shareButton: UIAlertAction = {
-    let action = UIAlertAction(title: "Share", style: .cancel) { [weak self] _ in
+    UIAlertAction(title: "Share", style: .cancel) { [weak self] _ in
       self?.delegate?.copyResult()
     }
-    
-    return action
   }()
   
   private lazy var playAgainButton: UIAlertAction = {
-    let action = UIAlertAction(title: "Play again", style: .default) { [weak self] _ in
+    UIAlertAction(title: "Play again", style: .default) { [weak self] _ in
       self?.delegate?.goToInitialScreen()
     }
-    
-    return action
   }()
+  
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    setupVC()
+  }
+  
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+    setupVC()
+  }
+  
+  private func setupVC() {
+    alertController.addAction(shareButton)
+    alertController.addAction(playAgainButton)
+  }
   
   func showWin(numGuesses: Int) {
     alertController.title = "Congratulations!"
@@ -40,29 +47,13 @@ final class GameMessagingViewController: UIViewController {
       alertController.message = "You guessed the word in \(numGuesses) tries."
     }
     
-    alertController.addAction(shareButton)
-    alertController.addAction(playAgainButton)
-    
-    present(alertController, animated: true) { [weak self] in
-      guard let self = self else { return }
-      let dismissGesture = UITapGestureRecognizer(target: self, action: #selector(self.shouldDismiss))
-      self.alertController.view.window?.isUserInteractionEnabled = true
-      self.alertController.view.window?.addGestureRecognizer(dismissGesture)
-      
-    }
+    present(alertController, animated: true)
   }
   
   func showLose(clue: String) {
     alertController.title = "Aww 😢"
     alertController.message = "The actual word was \(clue). Good try!"
     
-    alertController.addAction(shareButton)
-    alertController.addAction(playAgainButton)
-    
     present(alertController, animated: true)
-  }
-  
-  @objc private func shouldDismiss() {
-    alertController.dismiss(animated: true)
   }
 }

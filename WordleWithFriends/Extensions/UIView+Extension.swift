@@ -25,4 +25,8 @@ extension UIView {
       trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -margins.right),
     ])
   }
+  
+  func removeAllGestureRecognizers() {
+    gestureRecognizers?.forEach { removeGestureRecognizer($0) }
+  }
 }

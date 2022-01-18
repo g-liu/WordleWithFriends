@@ -500,8 +500,6 @@ birthed
 biscuit
 bisects
 bishops
-bitched
-bitches
 bizarre
 blabbed
 blacked

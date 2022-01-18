@@ -45,8 +45,10 @@ final class GameMessagingViewController: UIViewController {
     
     present(alertController, animated: true) { [weak self] in
       guard let self = self else { return }
-      self.alertController.view.superview?.isUserInteractionEnabled = true
-      self.alertController.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.shouldDismiss)))
+      let dismissGesture = UITapGestureRecognizer(target: self, action: #selector(self.shouldDismiss))
+      self.alertController.view.window?.isUserInteractionEnabled = true
+      self.alertController.view.window?.addGestureRecognizer(dismissGesture)
+      
     }
   }
   

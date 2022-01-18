@@ -152,6 +152,7 @@ final class WordGuessViewController: UIViewController {
   }
   
   @objc private func shareAction(_ sender: Any?) {
+    gameGuessesModel.copyResult()
     guard let gameResult = UIPasteboard.general.string else {
       return
     }

@@ -28,27 +28,16 @@ struct GameSettings {
   }
 }
 
+
 struct GameSettingBool: GameSetting {
   var key: String
   var description: String
 }
 
-// TODO Protocolize
+
 struct GameSettingIntRange: GameSetting {
-  
-//  typealias T = Int
-  
   var key: String
   var description: String
   var minValue: Int
   var maxValue: Int
-  
-//  init(key: String, description: String, minValue: Int, maxValue: Int) {
-//    self.key = key
-//    self.description = description
-//    self.minValue = minValue
-//    self.maxValue = maxValue
-//  }
-  
-  
 }

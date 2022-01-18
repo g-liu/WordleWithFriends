@@ -63,11 +63,10 @@ extension GameSettingsViewController: UITableViewDelegate, UITableViewDataSource
       return UITableViewCell()
     }
     
-    // TODO: Account for other setting types
+    // TODO: This is messy AF pls refactor
     if let setting = GameSettings.allSettings[indexPath.row] as? GameSettingIntRange {
       var config = UIListContentConfiguration.valueCell()
       config.text = setting.description
-//      config.secondaryText = "\(setting.readIntValue())"
       let picker = NumberRangePickerView(frame: .init(x: 0, y: 0, width: 85, height: 66), minValue: setting.minValue, maxValue: setting.maxValue)
       picker.tag = indexPath.row
       picker.selectValue(setting.readIntValue())

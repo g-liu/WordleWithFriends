@@ -13,6 +13,7 @@ struct GameGuessesModel {
   
   private var letterGuesses: [WordGuess] = [WordGuess()]
   
+  /// The number of completed guesses
   var numberOfGuesses: Int { letterGuesses.count - 1 }
   
   func guess(at index: Int) -> WordGuess? {

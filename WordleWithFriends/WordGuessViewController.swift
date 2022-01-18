@@ -53,6 +53,8 @@ final class WordGuessViewController: UIViewController {
     return vc
   }()
   
+  private var isBeingScrolled = false
+  
   init() {
     super.init(nibName: nil, bundle: nil)
     setupVC()
@@ -107,12 +109,32 @@ final class WordGuessViewController: UIViewController {
   }
   
   @objc private func guessDidChange(_ notification: Notification) {
-    guard let textField = notification.object as? UITextField else { return }
+    guard let textField = notification.object as? UITextField else {
+      isBeingScrolled = false
+      return
+    }
     let newGuess = textField.text ?? ""
     
     gameGuessesModel.updateGuess(newGuess)
     
     guessTable.reloadData()
+    
+    let rowInTable = IndexPath(row:  gameGuessesModel.numberOfGuesses, section: 0)
+//    let isRowVisible = (guessTable.indexPathsForVisibleRows?.contains(rowInTable) ?? true)
+    
+    let actualOrigin = guessTable.frame.origin + guessTable.contentOffset
+    let actualSize = guessTable.frame.size - guessTable.contentInset
+    let actualFrame = CGRect(origin: actualOrigin, size: actualSize)
+    
+    let isRowVisible = actualFrame.contains(guessTable.cellForRow(at: rowInTable)?.frame ?? .zero)
+    if !isBeingScrolled && !isRowVisible {
+      isBeingScrolled = true
+      guessTable.scrollToRow(at: rowInTable, at: .bottom, animated: true)
+    }
+    
+    if isRowVisible {
+      isBeingScrolled = false
+    }
   }
   
   private func submitGuess() {
@@ -183,6 +205,27 @@ extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     return cell
+  }
+  
+//  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//    isBeingScrolled = true
+//    print("STARTING SCROLL")
+//  }
+//
+//  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//    isBeingScrolled = false
+//    print("END SCROLL AFTER DECEL")
+//  }
+//
+//  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//    if !decelerate {
+//      print("END SCROLL IMMEDIATELY")
+//      isBeingScrolled = false
+//    }
+//  }
+  
+  func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    isBeingScrolled = false
   }
 }
 

@@ -41,7 +41,7 @@ final class LetterTileView: UIView {
                                                  maxSize: 50)
     
     NSLayoutConstraint.activate([
-      heightAnchor.constraint(equalToConstant: calculatedWidth),
+      heightAnchor.constraint(equalToConstant: CGFloat(calculatedWidth)),
       widthAnchor.constraint(equalTo: heightAnchor),
     ])
   }

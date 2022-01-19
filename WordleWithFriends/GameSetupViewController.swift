@@ -9,6 +9,13 @@ import UIKit
 
 final class GameSetupViewController: UIViewController {
   
+  private lazy var settingsButton: UIBarButtonItem = {
+    let button = UIBarButtonItem(title: "⚙", style: .plain, target: self, action: #selector(openSettings))
+    button.accessibilityLabel = "Game settings"
+    
+    return button
+  }()
+  
   private lazy var instructionsTextLabel: UILabel = {
     let label = UILabel()
     label.numberOfLines = 0
@@ -42,10 +49,11 @@ final class GameSetupViewController: UIViewController {
     return button
   }()
   
-  private lazy var initialWordTextField: UITextField = {
+  private lazy var clueTextField: UITextField = {
     let textField = WordInputTextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.delegate = self
+    textField.accessibilityIdentifier = "GameSetupViewController.clueTextField"
     
     return textField
   }()
@@ -70,7 +78,7 @@ final class GameSetupViewController: UIViewController {
     title = "Wordle with Friends"
     view.backgroundColor = .systemBackground
     
-    navigationItem.leftBarButtonItem = UIBarButtonItem(title: "⚙", style: .plain, target: self, action: #selector(openSettings))
+    navigationItem.leftBarButtonItem = settingsButton
     
     let stackView = UIStackView()
     stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -78,9 +86,9 @@ final class GameSetupViewController: UIViewController {
     stackView.alignment = .center
     stackView.spacing = 8.0
     
-    updateInstructionsText()
+    updateScreen()
     stackView.addArrangedSubview(instructionsTextLabel)
-    stackView.addArrangedSubview(initialWordTextField)
+    stackView.addArrangedSubview(clueTextField)
     stackView.addArrangedSubview(startGameButton)
     stackView.addArrangedSubview(randomWordButton)
     view.addSubview(stackView)
@@ -91,23 +99,23 @@ final class GameSetupViewController: UIViewController {
       stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
       stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      initialWordTextField.widthAnchor.constraint(equalToConstant: maxWidth),
+      clueTextField.widthAnchor.constraint(equalToConstant: CGFloat(maxWidth)),
     ])
     
-    initialWordTextField.becomeFirstResponder()
+    clueTextField.becomeFirstResponder()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     view.endEditing(true) // TODO WHY THE FUCK IS THIS SHIT NOT WORKING
     startGameButton.isEnabled = false
-    initialWordTextField.resignFirstResponder()
+    clueTextField.resignFirstResponder()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     startGameButton.isEnabled = false // TODO THIS IS A HACK SEE ABOVE
-    initialWordTextField.becomeFirstResponder()
+    clueTextField.becomeFirstResponder()
   }
   
   @objc private func openSettings() {
@@ -116,8 +124,11 @@ final class GameSetupViewController: UIViewController {
     navigationController?.present(UINavigationController(rootViewController: vc), animated: true)
   }
   
-  func updateInstructionsText() {
-    instructionsTextLabel.text = "Welcome to Wordle with Friends.\nTo get started, enter a \(GameSettings.clueLength.readIntValue().spelledOut ?? "??")-letter English word below."
+  func updateScreen() {
+    let clueLength = GameSettings.clueLength.readIntValue()
+    instructionsTextLabel.text = "Welcome to Wordle with Friends.\nTo get started, enter a \(clueLength.spelledOut ?? "??")-letter English word below."
+    
+    clueTextField.accessibilityLabel = "Enter a \(clueLength)-letter word here."
   }
   
   @objc private func textFieldDidUpdate(_ notification: Notification) {
@@ -133,7 +144,7 @@ final class GameSetupViewController: UIViewController {
   }
   
   private func isWordValid() -> WordValidity {
-    guard let inputText = initialWordTextField.text else {
+    guard let inputText = clueTextField.text else {
       return .missingWord
     }
     
@@ -169,7 +180,7 @@ final class GameSetupViewController: UIViewController {
     
     let allWords = data.components(separatedBy: "\n")
     let word = allWords[Int.random(in: 0..<allWords.count)]
-    initialWordTextField.text = word.uppercased()
+    clueTextField.text = word.uppercased()
     
     initiateGame()
   }
@@ -177,11 +188,11 @@ final class GameSetupViewController: UIViewController {
   private func initiateGame() {
     // start game
     let wordGuessVC = WordGuessViewController()
-    wordGuessVC.setWord(initialWordTextField.text?.uppercased() ?? "")
-    initialWordTextField.text = ""
+    wordGuessVC.setWord(clueTextField.text?.uppercased() ?? "")
+    clueTextField.text = ""
     startGameButton.isEnabled = false
     
-    initialWordTextField.resignFirstResponder()
+    clueTextField.resignFirstResponder()
     
     navigationController?.pushViewController(wordGuessVC, animated: true)
   }
@@ -207,7 +218,7 @@ extension GameSetupViewController: UITextFieldDelegate {
 
 extension GameSetupViewController: GameSettingsDelegate {
   func didDismissSettings() {
-    updateInstructionsText()
+    updateScreen()
   }
 }
 

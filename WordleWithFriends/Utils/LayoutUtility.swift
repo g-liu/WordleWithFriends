@@ -40,7 +40,7 @@ struct LayoutUtility {
   ///   - maxWidth: the max width
   /// - Returns: `screenWidthPercentage`% of the screen width, up to and including `maxWidth`
   static func size(screenWidthPercentage: Double, maxWidth: Int) -> Double {
-    let sizeGivenPercentage = screenWidth * (screenWidthPercentage / 100.0)
+    let sizeGivenPercentage = Double(screenWidth) * (screenWidthPercentage / 100.0)
     return min(sizeGivenPercentage, Double(maxWidth))
   }
 }

@@ -58,20 +58,6 @@ final class GameSetupViewController: UIViewController {
     return textField
   }()
   
-  init() {
-    super.init(nibName: nil, bundle: nil)
-    setupVC()
-  }
-  
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    setupVC()
-  }
-  
-  private func setupVC() {
-    NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidUpdate), name: UITextField.textDidChangeNotification, object: nil)
-  }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
@@ -109,12 +95,18 @@ final class GameSetupViewController: UIViewController {
     super.viewWillDisappear(animated)
     view.endEditing(true) // TODO WHY THE FUCK IS THIS SHIT NOT WORKING
     startGameButton.isEnabled = false
+    
+    NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: nil)
+    
     clueTextField.resignFirstResponder()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     startGameButton.isEnabled = false // TODO THIS IS A HACK SEE ABOVE
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidUpdate), name: UITextField.textDidChangeNotification, object: nil)
+    
     clueTextField.becomeFirstResponder()
   }
   

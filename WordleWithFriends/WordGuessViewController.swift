@@ -54,22 +54,8 @@ final class WordGuessViewController: UIViewController {
   
   private var isBeingScrolled = false
   
-  init() {
-    super.init(nibName: nil, bundle: nil)
-    setupVC()
-  }
-  
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    setupVC()
-  }
-  
   func setWord(_ word: String) {
     gameGuessesModel.clue = word
-  }
-  
-  private func setupVC() {
-    NotificationCenter.default.addObserver(self, selector: #selector(guessDidChange), name: UITextField.textDidChangeNotification, object: nil)
   }
   
   override func viewDidLoad() {
@@ -99,12 +85,20 @@ final class WordGuessViewController: UIViewController {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
+    
+    NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    
     view.endEditing(true)
     guessInputTextField.resignFirstResponder()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(guessDidChange), name: UITextField.textDidChangeNotification, object: nil)
+    
     guessInputTextField.becomeFirstResponder()
   }
   

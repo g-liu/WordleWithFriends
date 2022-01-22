@@ -18,8 +18,8 @@ final class GameMessagingViewController: UIViewController {
     }
   }()
   
-  private lazy var playAgainButton: UIAlertAction = {
-    UIAlertAction(title: "Play again", style: .default) { [weak self] _ in
+  private lazy var mainMenuButton: UIAlertAction = {
+    UIAlertAction(title: "", style: .default) { [weak self] _ in
       self?.delegate?.goToInitialScreen()
     }
   }()
@@ -30,20 +30,29 @@ final class GameMessagingViewController: UIViewController {
     }
   }()
   
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  private let clueSource: ClueSource
+  
+  init(clueSource: ClueSource) {
+    self.clueSource = clueSource
+    super.init(nibName: nil, bundle: nil)
     setupVC()
   }
   
   required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    setupVC()
+    fatalError("init(coder:) has not been implemented")
   }
   
   private func setupVC() {
     alertController.addAction(shareButton)
-    alertController.addAction(playAgainButton)
-    alertController.addAction(newClueButton)
+    alertController.addAction(mainMenuButton)
+    
+    switch clueSource {
+      case .human:
+        mainMenuButton.setValue("Play again", forKeyPath: "title")
+      case .computer:
+        mainMenuButton.setValue("Main menu", forKeyPath: "title")
+        alertController.addAction(newClueButton)
+    }
   }
   
   func showWin(numGuesses: Int) {

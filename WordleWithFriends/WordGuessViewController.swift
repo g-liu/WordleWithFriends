@@ -48,18 +48,15 @@ final class WordGuessViewController: UIViewController {
     return textField
   }()
   
-  private lazy var gameMessagingVC: GameMessagingViewController = {
-    let vc = GameMessagingViewController()
-    vc.delegate = self
-    
-    return vc
-  }()
+  private var gameMessagingVC: GameMessagingViewController
   
   private var isBeingScrolled = false
   
-  init(clue: String) {
+  init(clue: String, clueSource: ClueSource) {
     gameGuessesModel = GameGuessesModel(clue: clue)
+    gameMessagingVC = GameMessagingViewController(clueSource: clueSource)
     super.init(nibName: nil, bundle: nil)
+    gameMessagingVC.delegate = self
   }
   
   required init?(coder: NSCoder) {

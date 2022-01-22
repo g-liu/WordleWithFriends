@@ -157,7 +157,7 @@ final class GameSetupViewController: UIViewController {
     let wordValidity = isWordValid()
     let isValid = wordValidity == .valid
     if isValid {
-      initiateGame()
+      initiateGame(.human)
     } else {
       let ctrl = UIAlertController(title: "Error", message: wordValidity.rawValue, preferredStyle: .alert)
       ctrl.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
@@ -169,12 +169,12 @@ final class GameSetupViewController: UIViewController {
   @objc private func initiateGameWithRandomWord() {
     clueTextField.text = GameUtility.pickWord(length: GameSettings.clueLength.readIntValue())
     
-    initiateGame()
+    initiateGame(.computer)
   }
 
-  private func initiateGame() {
+  private func initiateGame(_ clueSource: ClueSource) {
     // start game
-    let wordGuessVC = WordGuessViewController(clue: clueTextField.text?.uppercased() ?? "")
+    let wordGuessVC = WordGuessViewController(clue: clueTextField.text?.uppercased() ?? "", clueSource: clueSource)
     clueTextField.text = ""
     startGameButton.isEnabled = false
     

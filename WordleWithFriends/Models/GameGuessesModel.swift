@@ -76,3 +76,8 @@ enum GameState {
   case lose
   case keepGuessing
 }
+
+enum ClueSource {
+  case human
+  case computer
+}

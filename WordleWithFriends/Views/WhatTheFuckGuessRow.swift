@@ -10,12 +10,16 @@ import UIKit
 final class WhatTheFuckGuessRow: UITableViewCell {
   static let identifier = "WhatTheFuckGuessRow"
   
+  private lazy var calculatedWidth: CGFloat = round(LayoutUtility.gridSize(numberOfColumns: GameSettings.clueLength.readIntValue(),
+                                                                screenWidthPercentage: 85,
+                                                                maxSize: 50))
+  
   private lazy var stackView: UIStackView = {
     let stack = UIStackView()
     stack.translatesAutoresizingMaskIntoConstraints = false
     stack.axis = .horizontal
     stack.distribution = .fillEqually
-    stack.alignment = .center
+    stack.alignment = .fill
     stack.spacing = 8.0
     
     return stack
@@ -32,11 +36,17 @@ final class WhatTheFuckGuessRow: UITableViewCell {
   }
   
   private func setupCell() {
-//    contentView.backgroundColor = .systemBrown
+    contentView.backgroundColor = .systemBrown
     contentView.addSubview(stackView)
+    (0..<GameSettings.clueLength.readIntValue()).forEach { _ in stackView.addArrangedSubview(LetterTileView()) }
+    
     NSLayoutConstraint.activate([
-      stackView.heightAnchor.constraint(equalToConstant: 50),
+      stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+      stackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+      stackView.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor),
+      stackView.heightAnchor.constraint(equalToConstant: calculatedWidth),
     ])
-    stackView.pin(to: contentView)
+//    stackView.pin(to: contentView)
   }
 }

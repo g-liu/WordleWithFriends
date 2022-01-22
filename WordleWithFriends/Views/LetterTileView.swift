@@ -41,7 +41,6 @@ final class LetterTileView: UIView {
     letterLabel.pin(to: self)
     
     NSLayoutConstraint.activate([
-//      heightAnchor.constraint(equalToConstant: CGFloat(calculatedWidth)),
       widthAnchor.constraint(equalTo: heightAnchor),
     ])
   

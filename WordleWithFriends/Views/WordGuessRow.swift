@@ -10,6 +10,14 @@ import UIKit
 final class WordGuessRow: UITableViewCell {
   static let identifier = "WordGuessRow"
   
+  private lazy var calculatedHeight: CGFloat = {
+    let gridSize = LayoutUtility.gridSize(numberOfColumns: GameSettings.clueLength.readIntValue(),
+                                          screenWidthPercentage: 85,
+                                          maxSize: 50)
+    
+    return round(gridSize)
+  }()
+  
   private lazy var letterStack: UIStackView = {
     let stackView = UIStackView()
     stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -41,14 +49,10 @@ final class WordGuessRow: UITableViewCell {
     
     contentView.addSubview(letterStack)
     
-    let calculatedWidth = LayoutUtility.gridSize(numberOfColumns: GameSettings.clueLength.readIntValue(),
-                                                 screenWidthPercentage: 85,
-                                                 maxSize: 50)
-    
     NSLayoutConstraint.activate([
       letterStack.topAnchor.constraint(equalTo: contentView.topAnchor),
       letterStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
-      letterStack.heightAnchor.constraint(equalToConstant: calculatedWidth),
+      letterStack.heightAnchor.constraint(equalToConstant: calculatedHeight),
       letterStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
       letterStack.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor),
     ])

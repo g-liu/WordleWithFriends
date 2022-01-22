@@ -16,7 +16,7 @@ final class WordGuessRow: UITableViewCell {
                                           screenWidthPercentage: 85,
                                           maxSize: 50)
     
-    return round(gridSize)
+    return floor(gridSize)
   }()
   
   private lazy var calculatedPadding: CGFloat = {
@@ -60,7 +60,6 @@ final class WordGuessRow: UITableViewCell {
       letterStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -calculatedPadding),
       letterStack.heightAnchor.constraint(equalToConstant: calculatedHeight),
       letterStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-      letterStack.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor),
     ])
   }
   

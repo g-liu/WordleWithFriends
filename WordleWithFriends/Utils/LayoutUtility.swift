@@ -17,7 +17,8 @@ struct LayoutUtility {
 //  private static let GRID_PADDING: Double = 8.0
   
   static func gridPadding(numberOfColumns: Int) -> Int {
-    max(0, -2*numberOfColumns + 22)
+    // logistic curve
+    Int(round(16.0 / (1.0 + pow(Double.e, -0.75*(6.0-Double(numberOfColumns))))))
   }
   
   /// Determines the max size of a square grid, given the variables

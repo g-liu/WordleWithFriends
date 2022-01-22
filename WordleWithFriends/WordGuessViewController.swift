@@ -144,6 +144,7 @@ final class WordGuessViewController: UIViewController {
         gameMessagingVC.showLose(clue: gameGuessesModel.clue)
       case .keepGuessing:
         shareButton.isEnabled = false
+        guessTable.scrollToRow(at: IndexPath.Row(gameGuessesModel.numberOfGuesses), at: .bottom, animated: true)
         break
     }
   }

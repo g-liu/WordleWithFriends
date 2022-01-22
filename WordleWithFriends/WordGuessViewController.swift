@@ -72,11 +72,6 @@ final class WordGuessViewController: UIViewController {
     view.addSubview(guessInputTextField)
     guessTable.pin(to: view.safeAreaLayoutGuide, margins: .init(top: 12, left: 0, bottom: 0, right: 0))
     
-    NSLayoutConstraint.activate([
-      guessInputTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      guessInputTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-    ])
-    
     guessInputTextField.becomeFirstResponder()
     title = "Guess the word"
     
@@ -116,7 +111,7 @@ final class WordGuessViewController: UIViewController {
     
     gameGuessesModel.updateGuess(newGuess)
     
-    guessTable.reloadData()
+    guessTable.reloadRows(at: [IndexPath(row: gameGuessesModel.numberOfGuesses, section: 0)], with: .none)
     
     if !isBeingScrolled {
       let rowInTable = IndexPath(row:  gameGuessesModel.numberOfGuesses, section: 0)
@@ -260,7 +255,6 @@ extension WordGuessViewController: UITextFieldDelegate {
     }
     
     gameGuessesModel.clearInvalidGuess()
-    guessTable.reloadData()
     
     return true
   }

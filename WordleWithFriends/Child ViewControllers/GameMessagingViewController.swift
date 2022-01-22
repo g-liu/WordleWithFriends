@@ -13,7 +13,7 @@ final class GameMessagingViewController: UIViewController {
   private lazy var alertController = DismissableAlertController(title: nil, message: nil, preferredStyle: .alert)
   
   private lazy var shareButton: UIAlertAction = {
-    UIAlertAction(title: "Share", style: .cancel) { [weak self] _ in
+    UIAlertAction(title: "Share", style: .default) { [weak self] _ in
       self?.delegate?.shareResult()
     }
   }()
@@ -21,6 +21,13 @@ final class GameMessagingViewController: UIViewController {
   private lazy var playAgainButton: UIAlertAction = {
     UIAlertAction(title: "Play again", style: .default) { [weak self] _ in
       self?.delegate?.goToInitialScreen()
+    }
+  }()
+  
+  private lazy var newClueButton: UIAlertAction = {
+    UIAlertAction(title: "New clue", style: .default) { [weak self] _ in
+//      self?.delegate?.newClue()
+      // TODO
     }
   }()
   
@@ -37,6 +44,7 @@ final class GameMessagingViewController: UIViewController {
   private func setupVC() {
     alertController.addAction(shareButton)
     alertController.addAction(playAgainButton)
+    alertController.addAction(newClueButton)
   }
   
   func showWin(numGuesses: Int) {

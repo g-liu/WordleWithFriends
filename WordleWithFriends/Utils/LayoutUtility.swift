@@ -13,15 +13,20 @@ struct LayoutUtility {
   private static let screenWidth = UIScreen.main.bounds.size.width
   private static let screenHeight = UIScreen.main.bounds.size.height
   
-  private static let GRID_PADDING: Double = 8.0
+  
+//  private static let GRID_PADDING: Double = 8.0
+  
+  static func gridPadding(numberOfColumns: Int) -> Int {
+    // logistic curve
+    Int(round(16.0 / (1.0 + pow(Double.e, -0.75*(6.0-Double(numberOfColumns))))))
+  }
   
   /// Determines the max size of a square grid, given the variables
   /// - Parameters:
   ///   - numberOfColumns: Number of columns in the grid
-  ///   - padding: Padding between grid cells
   ///   - screenWidthPercentage: The amount of screen width that can be taken up by the grid
   /// - Returns: The length of a single cell in the grid. If the calculated length exceeds the max size, returns max size instead
-  static func gridSize(numberOfColumns: Int, padding: Double = GRID_PADDING, screenWidthPercentage: Double, maxSize: Double) -> Double {
+  static func gridSize(numberOfColumns: Int, padding: Double, screenWidthPercentage: Double, maxSize: Double) -> Double {
     guard numberOfColumns >= 1, padding >= 0, screenWidthPercentage >= 0, screenWidthPercentage <= 100 else {
       return 0
     }

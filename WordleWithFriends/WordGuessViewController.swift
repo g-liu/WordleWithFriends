@@ -24,10 +24,10 @@ final class WordGuessViewController: UIViewController {
     tableView.delegate = self
     tableView.dataSource = self
     tableView.allowsSelection = false
+    tableView.estimatedRowHeight = 50.0
     tableView.rowHeight = UITableView.automaticDimension
     
     tableView.register(WordGuessRow.self, forCellReuseIdentifier: WordGuessRow.identifier)
-    
     return tableView
   }()
   
@@ -183,14 +183,14 @@ extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: WordGuessRow.identifier) as? WordGuessRow else {
       return UITableViewCell()
     }
-    
+
     if indexPath.row <= gameGuessesModel.numberOfGuesses,
        let wordGuessModel = gameGuessesModel.guess(at: indexPath.row) {
       cell.configure(with: wordGuessModel)
     } else {
       cell.configure()
     }
-    
+
     return cell
   }
   

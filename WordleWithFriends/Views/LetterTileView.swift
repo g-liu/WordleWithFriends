@@ -19,37 +19,32 @@ final class LetterTileView: UIView {
     return label
   }()
   
-  init() {
+  init(letterGuess: LetterGuess? = nil) {
     super.init(frame: .zero)
-    setupView()
+    configure(letterGuess)
+    
   }
   
   required init?(coder: NSCoder) {
     super.init(coder: coder)
-    setupView()
+    configure()
   }
   
-  private func setupView() {
+
+  private func configure(_ letterGuess: LetterGuess? = nil) {
+    let letterGuess = letterGuess ?? .default
     translatesAutoresizingMaskIntoConstraints = false
-    
+
     layer.borderColor = UIColor.separator.cgColor
     layer.borderWidth = 1.0
     
     addSubview(letterLabel)
     letterLabel.pin(to: self)
     
-    let calculatedWidth = LayoutUtility.gridSize(numberOfColumns: GameSettings.clueLength.readIntValue(),
-                                                 padding: 12.0,
-                                                 screenWidthPercentage: 85,
-                                                 maxSize: 50)
-    
     NSLayoutConstraint.activate([
-      heightAnchor.constraint(equalToConstant: CGFloat(calculatedWidth)),
       widthAnchor.constraint(equalTo: heightAnchor),
     ])
-  }
   
-  func configure(_ letterGuess: LetterGuess = .default) {
     letterLabel.text = String(letterGuess.letter)
     layer.borderColor = UIColor.separator.cgColor
     layer.borderWidth = 1.0

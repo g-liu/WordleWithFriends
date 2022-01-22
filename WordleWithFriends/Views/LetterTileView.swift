@@ -30,18 +30,16 @@ final class LetterTileView: UIView {
   }
   
   private func setupView() {
+    translatesAutoresizingMaskIntoConstraints = false
+      
     layer.borderColor = UIColor.separator.cgColor
     layer.borderWidth = 1.0
     
     addSubview(letterLabel)
     letterLabel.pin(to: self)
     
-    let calculatedWidth = LayoutUtility.gridSize(numberOfColumns: GameSettings.clueLength.readIntValue(),
-                                                 screenWidthPercentage: 85,
-                                                 maxSize: 50)
-    
     NSLayoutConstraint.activate([
-      heightAnchor.constraint(equalToConstant: CGFloat(calculatedWidth)),
+//      heightAnchor.constraint(equalToConstant: CGFloat(calculatedWidth)),
       widthAnchor.constraint(equalTo: heightAnchor),
     ])
   }

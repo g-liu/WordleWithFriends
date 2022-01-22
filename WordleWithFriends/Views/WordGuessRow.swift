@@ -15,7 +15,7 @@ final class WordGuessRow: UITableViewCell {
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .horizontal
     stackView.distribution = .fillEqually
-    stackView.alignment = .center
+    stackView.alignment = .fill
     stackView.spacing = 12.0
     
     return stackView
@@ -42,10 +42,16 @@ final class WordGuessRow: UITableViewCell {
     
     contentView.addSubview(letterStack)
     
+    let calculatedWidth = LayoutUtility.gridSize(numberOfColumns: GameSettings.clueLength.readIntValue(),
+                                                 screenWidthPercentage: 85,
+                                                 maxSize: 50)
+    
     NSLayoutConstraint.activate([
       letterStack.topAnchor.constraint(equalTo: contentView.topAnchor),
       letterStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+      letterStack.heightAnchor.constraint(equalToConstant: calculatedWidth),
       letterStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+      letterStack.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor),
     ])
   }
   

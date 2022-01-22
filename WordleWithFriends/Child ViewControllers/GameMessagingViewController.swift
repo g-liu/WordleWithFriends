@@ -26,8 +26,7 @@ final class GameMessagingViewController: UIViewController {
   
   private lazy var newClueButton: UIAlertAction = {
     UIAlertAction(title: "New clue", style: .default) { [weak self] _ in
-//      self?.delegate?.newClue()
-      // TODO
+      self?.delegate?.restartWithNewClue()
     }
   }()
   

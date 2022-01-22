@@ -13,8 +13,7 @@ final class WordGuessViewController: UIViewController {
   // https://stackoverflow.com/questions/28244475/reloaddata-of-uitableview-with-dynamic-cell-heights-causes-jumpy-scrolling
   private var cellHeightCache: [IndexPath: CGFloat] = [:]
 
-  
-  private var gameGuessesModel: GameGuessesModel = GameGuessesModel()
+  private var gameGuessesModel: GameGuessesModel
   
   private lazy var shareButton: UIBarButtonItem = {
     let button = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareAction))
@@ -58,8 +57,13 @@ final class WordGuessViewController: UIViewController {
   
   private var isBeingScrolled = false
   
-  func setWord(_ word: String) {
-    gameGuessesModel.clue = word
+  init(clue: String) {
+    gameGuessesModel = GameGuessesModel(clue: clue)
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
   override func viewDidLoad() {
@@ -117,11 +121,11 @@ final class WordGuessViewController: UIViewController {
     
     DispatchQueue.main.async { [weak self] in
       guard let self = self else { return }
-      self.guessTable.reloadRows(at: [IndexPath(row: self.gameGuessesModel.numberOfGuesses, section: 0)], with: .none)
+      let currentRow = IndexPath.Row(self.gameGuessesModel.numberOfGuesses)
+      self.guessTable.reloadRows(at: [currentRow], with: .none)
       
       if !self.isBeingScrolled {
-        let rowInTable = IndexPath(row: self.gameGuessesModel.numberOfGuesses, section: 0)
-        self.guessTable.scrollToRow(at: rowInTable, at: .bottom, animated: true)
+        self.guessTable.scrollToRow(at: currentRow, at: .bottom, animated: true)
       }
     }
   }
@@ -243,7 +247,7 @@ extension WordGuessViewController: UITextFieldDelegate {
           wordGuess.count == GameSettings.clueLength.readIntValue(),
           GameSettings.allowNonDictionaryGuesses.readBoolValue() || wordGuess.isARealWord() else {
       gameGuessesModel.markInvalidGuess()
-      let currentIndexPath = IndexPath(row: gameGuessesModel.numberOfGuesses, section: 0)
+      let currentIndexPath = IndexPath.Row(gameGuessesModel.numberOfGuesses)
       guessTable.reloadRows(at: [currentIndexPath], with: .none)
       return false
     }
@@ -288,4 +292,14 @@ extension WordGuessViewController: GameEndDelegate {
     navigationController?.popToRootViewController(animated: true)
   }
   
+  func restartWithNewClue() {
+    let newClue = GameUtility.pickWord(length: GameSettings.clueLength.readIntValue())
+    gameGuessesModel = GameGuessesModel(clue: newClue)
+    
+    DispatchQueue.main.async { [weak self] in
+      self?.guessTable.reloadData()
+      // TODO: In the future might have to reset `cellHeightCache`
+      self?.guessTable.scrollToRow(at: .zero, at: .bottom, animated: true)
+    }
+  }
 }

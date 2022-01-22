@@ -8,4 +8,5 @@
 protocol GameEndDelegate {
   func shareResult()
   func goToInitialScreen()
+  func restartWithNewClue()
 }

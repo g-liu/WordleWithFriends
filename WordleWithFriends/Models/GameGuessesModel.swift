@@ -8,13 +8,17 @@
 import UIKit
 
 struct GameGuessesModel {
-  var clue: String = ""
-  var isGameOver: Bool = false
+  let clue: String
+  private(set) var isGameOver: Bool = false
   
   private var letterGuesses: [WordGuess] = [WordGuess()]
   
   /// The number of completed guesses
   var numberOfGuesses: Int { letterGuesses.count - 1 }
+  
+  init(clue: String) {
+    self.clue = clue
+  }
   
   func guess(at index: Int) -> WordGuess? {
     guard index < letterGuesses.count else { return nil }

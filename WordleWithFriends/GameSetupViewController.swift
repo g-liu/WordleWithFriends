@@ -167,20 +167,14 @@ final class GameSetupViewController: UIViewController {
   }
   
   @objc private func initiateGameWithRandomWord() {
-    guard let path = Bundle.main.path(forResource: "words_\(GameSettings.clueLength.readIntValue())letters", ofType: "txt"),
-          let data = try? String(contentsOfFile: path) else { return }
-    
-    let allWords = data.components(separatedBy: "\n")
-    let word = allWords[Int.random(in: 0..<allWords.count)]
-    clueTextField.text = word.uppercased()
+    clueTextField.text = GameUtility.pickWord(length: GameSettings.clueLength.readIntValue())
     
     initiateGame()
   }
 
   private func initiateGame() {
     // start game
-    let wordGuessVC = WordGuessViewController()
-    wordGuessVC.setWord(clueTextField.text?.uppercased() ?? "")
+    let wordGuessVC = WordGuessViewController(clue: clueTextField.text?.uppercased() ?? "")
     clueTextField.text = ""
     startGameButton.isEnabled = false
     

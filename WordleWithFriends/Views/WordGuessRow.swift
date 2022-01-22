@@ -36,7 +36,6 @@ final class WordGuessRow: UITableViewCell {
   private func setupCell() {
     (0...(GameSettings.clueLength.readIntValue()-1)).forEach { _ in
       let tile = LetterTileView()
-      tile.configure()
       letterStack.addArrangedSubview(tile)
     }
     
@@ -58,12 +57,7 @@ final class WordGuessRow: UITableViewCell {
   func configure(with wordGuess: WordGuess = .init()) {
     letterStack.removeAllArrangedSubviews()
     (0...(GameSettings.clueLength.readIntValue()-1)).forEach { index in
-      let tile = LetterTileView()
-      if let guess = wordGuess.guess(at: index) {
-        tile.configure(guess)
-      } else {
-        tile.configure()
-      }
+      let tile = LetterTileView(letterGuess: wordGuess.guess(at: index))
       letterStack.addArrangedSubview(tile)
     }
   }

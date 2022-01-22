@@ -280,8 +280,8 @@ extension WordGuessViewController: UITextFieldDelegate {
 }
 
 extension WordGuessViewController: GameEndDelegate {
-  func copyResult() {
-    gameGuessesModel.copyResult()
+  func shareResult() {
+    shareAction(nil)
   }
   
   func goToInitialScreen() {

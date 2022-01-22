@@ -14,7 +14,7 @@ final class GameMessagingViewController: UIViewController {
   
   private lazy var shareButton: UIAlertAction = {
     UIAlertAction(title: "Share", style: .cancel) { [weak self] _ in
-      self?.delegate?.copyResult()
+      self?.delegate?.shareResult()
     }
   }()
   

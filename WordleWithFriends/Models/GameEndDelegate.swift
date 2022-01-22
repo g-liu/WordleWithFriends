@@ -6,6 +6,6 @@
 //
 
 protocol GameEndDelegate {
-  func copyResult()
+  func shareResult()
   func goToInitialScreen()
 }

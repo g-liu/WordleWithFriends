@@ -24,12 +24,12 @@
 		60D9481F2794DB2C00086C51 /* words_5letters.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60D9481E2794DB2C00086C51 /* words_5letters.txt */; };
 		60D948232794DBFE00086C51 /* words_6letters.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60D948222794DBFE00086C51 /* words_6letters.txt */; };
 		60D948252794DC1800086C51 /* words_7letters.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60D948242794DC1800086C51 /* words_7letters.txt */; };
-		60D948272794DC4F00086C51 /* words_8letters in Resources */ = {isa = PBXBuildFile; fileRef = 60D948262794DC4F00086C51 /* words_8letters */; };
-		60D948292794DC6800086C51 /* words_9letters in Resources */ = {isa = PBXBuildFile; fileRef = 60D948282794DC6800086C51 /* words_9letters */; };
+		60D948272794DC4F00086C51 /* words_8letters.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60D948262794DC4F00086C51 /* words_8letters.txt */; };
+		60D948292794DC6800086C51 /* words_9letters.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60D948282794DC6800086C51 /* words_9letters.txt */; };
 		60D9482B2794DCB100086C51 /* words_10letters.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60D9482A2794DCB100086C51 /* words_10letters.txt */; };
 		60D9482D2794DCD600086C51 /* words_11letters.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60D9482C2794DCD600086C51 /* words_11letters.txt */; };
 		60D9482F2794DCEF00086C51 /* words_12letters.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60D9482E2794DCEF00086C51 /* words_12letters.txt */; };
-		60D948312794DD0900086C51 /* words_13letters in Resources */ = {isa = PBXBuildFile; fileRef = 60D948302794DD0900086C51 /* words_13letters */; };
+		60D948312794DD0900086C51 /* words_13letters.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60D948302794DD0900086C51 /* words_13letters.txt */; };
 		60D948332794DD2500086C51 /* words_14letters.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60D948322794DD2500086C51 /* words_14letters.txt */; };
 		60D948352794DD4000086C51 /* words_15Plusletters.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60D948342794DD4000086C51 /* words_15Plusletters.txt */; };
 		6C0009E02792AD8F00BCC9B6 /* Character+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0009DF2792AD8F00BCC9B6 /* Character+Extension.swift */; };
@@ -93,12 +93,12 @@
 		60D9481E2794DB2C00086C51 /* words_5letters.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = words_5letters.txt; sourceTree = "<group>"; };
 		60D948222794DBFE00086C51 /* words_6letters.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words_6letters.txt; sourceTree = "<group>"; };
 		60D948242794DC1800086C51 /* words_7letters.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = words_7letters.txt; sourceTree = "<group>"; };
-		60D948262794DC4F00086C51 /* words_8letters */ = {isa = PBXFileReference; lastKnownFileType = text; path = words_8letters; sourceTree = "<group>"; };
-		60D948282794DC6800086C51 /* words_9letters */ = {isa = PBXFileReference; lastKnownFileType = text; path = words_9letters; sourceTree = "<group>"; };
+		60D948262794DC4F00086C51 /* words_8letters.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = words_8letters.txt; sourceTree = "<group>"; };
+		60D948282794DC6800086C51 /* words_9letters.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = words_9letters.txt; sourceTree = "<group>"; };
 		60D9482A2794DCB100086C51 /* words_10letters.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = words_10letters.txt; sourceTree = "<group>"; };
 		60D9482C2794DCD600086C51 /* words_11letters.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = words_11letters.txt; sourceTree = "<group>"; };
 		60D9482E2794DCEF00086C51 /* words_12letters.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = words_12letters.txt; sourceTree = "<group>"; };
-		60D948302794DD0900086C51 /* words_13letters */ = {isa = PBXFileReference; lastKnownFileType = text; path = words_13letters; sourceTree = "<group>"; };
+		60D948302794DD0900086C51 /* words_13letters.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = words_13letters.txt; sourceTree = "<group>"; };
 		60D948322794DD2500086C51 /* words_14letters.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = words_14letters.txt; sourceTree = "<group>"; };
 		60D948342794DD4000086C51 /* words_15Plusletters.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = words_15Plusletters.txt; sourceTree = "<group>"; };
 		6C0009DF2792AD8F00BCC9B6 /* Character+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+Extension.swift"; sourceTree = "<group>"; };
@@ -219,12 +219,12 @@
 				60D9481E2794DB2C00086C51 /* words_5letters.txt */,
 				60D948222794DBFE00086C51 /* words_6letters.txt */,
 				60D948242794DC1800086C51 /* words_7letters.txt */,
-				60D948262794DC4F00086C51 /* words_8letters */,
-				60D948282794DC6800086C51 /* words_9letters */,
+				60D948262794DC4F00086C51 /* words_8letters.txt */,
+				60D948282794DC6800086C51 /* words_9letters.txt */,
 				60D9482A2794DCB100086C51 /* words_10letters.txt */,
 				60D9482C2794DCD600086C51 /* words_11letters.txt */,
 				60D9482E2794DCEF00086C51 /* words_12letters.txt */,
-				60D948302794DD0900086C51 /* words_13letters */,
+				60D948302794DD0900086C51 /* words_13letters.txt */,
 				60D948322794DD2500086C51 /* words_14letters.txt */,
 				60D948342794DD4000086C51 /* words_15Plusletters.txt */,
 				60D9481B2794C30100086C51 /* Comments.md */,
@@ -455,15 +455,15 @@
 				60D948252794DC1800086C51 /* words_7letters.txt in Resources */,
 				6C19F5A927921EFB00062083 /* LaunchScreen.storyboard in Resources */,
 				60D9482B2794DCB100086C51 /* words_10letters.txt in Resources */,
-				60D948272794DC4F00086C51 /* words_8letters in Resources */,
+				60D948272794DC4F00086C51 /* words_8letters.txt in Resources */,
 				60D9482D2794DCD600086C51 /* words_11letters.txt in Resources */,
 				60D9480B2793C14C00086C51 /* GameSettingsDefaults.plist in Resources */,
 				60D9481D2794C69D00086C51 /* words_4letters.txt in Resources */,
-				60D948312794DD0900086C51 /* words_13letters in Resources */,
+				60D948312794DD0900086C51 /* words_13letters.txt in Resources */,
 				6C19F5A627921EFB00062083 /* Assets.xcassets in Resources */,
 				60D9481F2794DB2C00086C51 /* words_5letters.txt in Resources */,
 				60D948192794BF9A00086C51 /* words_3letters.txt in Resources */,
-				60D948292794DC6800086C51 /* words_9letters in Resources */,
+				60D948292794DC6800086C51 /* words_9letters.txt in Resources */,
 				60D948232794DBFE00086C51 /* words_6letters.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

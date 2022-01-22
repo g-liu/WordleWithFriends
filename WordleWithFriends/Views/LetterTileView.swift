@@ -30,6 +30,8 @@ final class LetterTileView: UIView {
   }
   
   private func setupView() {
+    translatesAutoresizingMaskIntoConstraints = false
+    
     layer.borderColor = UIColor.separator.cgColor
     layer.borderWidth = 1.0
     
@@ -37,6 +39,7 @@ final class LetterTileView: UIView {
     letterLabel.pin(to: self)
     
     let calculatedWidth = LayoutUtility.gridSize(numberOfColumns: GameSettings.clueLength.readIntValue(),
+                                                 padding: 12.0,
                                                  screenWidthPercentage: 85,
                                                  maxSize: 50)
     

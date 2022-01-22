@@ -9,6 +9,11 @@ import UIKit
 
 final class WordGuessViewController: UIViewController {
   
+  // Extremely hacky workaround of table jumpiness when reloading...
+  // https://stackoverflow.com/questions/28244475/reloaddata-of-uitableview-with-dynamic-cell-heights-causes-jumpy-scrolling
+  private var cellHeightCache: [IndexPath: CGFloat] = [:]
+
+  
   private var gameGuessesModel: GameGuessesModel = GameGuessesModel()
   
   private lazy var shareButton: UIBarButtonItem = {
@@ -24,7 +29,6 @@ final class WordGuessViewController: UIViewController {
     tableView.delegate = self
     tableView.dataSource = self
     tableView.allowsSelection = false
-    tableView.estimatedRowHeight = 50.0
     tableView.rowHeight = UITableView.automaticDimension
     
     tableView.register(WordGuessRow.self, forCellReuseIdentifier: WordGuessRow.identifier)
@@ -111,11 +115,14 @@ final class WordGuessViewController: UIViewController {
     
     gameGuessesModel.updateGuess(newGuess)
     
-    guessTable.reloadRows(at: [IndexPath(row: gameGuessesModel.numberOfGuesses, section: 0)], with: .none)
-    
-    if !isBeingScrolled {
-      let rowInTable = IndexPath(row:  gameGuessesModel.numberOfGuesses, section: 0)
-      guessTable.scrollToRow(at: rowInTable, at: .bottom, animated: true)
+    DispatchQueue.main.async { [weak self] in
+      guard let self = self else { return }
+      self.guessTable.reloadRows(at: [IndexPath(row: self.gameGuessesModel.numberOfGuesses, section: 0)], with: .none)
+      
+      if !self.isBeingScrolled {
+        let rowInTable = IndexPath(row: self.gameGuessesModel.numberOfGuesses, section: 0)
+        self.guessTable.scrollToRow(at: rowInTable, at: .bottom, animated: true)
+      }
     }
   }
   
@@ -216,6 +223,17 @@ extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
   func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
     isBeingScrolled = false
   }
+  
+  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    cellHeightCache[indexPath] = cell.frame.size.height
+  }
+
+  func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    if let height = self.cellHeightCache[indexPath] {
+      return height
+    }
+    return 50.0
+  }
 }
 
 extension WordGuessViewController: UITextFieldDelegate {
@@ -225,7 +243,8 @@ extension WordGuessViewController: UITextFieldDelegate {
           wordGuess.count == GameSettings.clueLength.readIntValue(),
           GameSettings.allowNonDictionaryGuesses.readBoolValue() || wordGuess.isARealWord() else {
       gameGuessesModel.markInvalidGuess()
-      guessTable.reloadData()
+      let currentIndexPath = IndexPath(row: gameGuessesModel.numberOfGuesses, section: 0)
+      guessTable.reloadRows(at: [currentIndexPath], with: .none)
       return false
     }
     

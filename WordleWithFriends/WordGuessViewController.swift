@@ -28,8 +28,6 @@ final class WordGuessViewController: UIViewController {
     tableView.rowHeight = UITableView.automaticDimension
     
     tableView.register(WordGuessRow.self, forCellReuseIdentifier: WordGuessRow.identifier)
-    // TODO: TMP Remove
-    tableView.register(WhatTheFuckGuessRow.self, forCellReuseIdentifier: WhatTheFuckGuessRow.identifier)
     return tableView
   }()
   
@@ -201,10 +199,6 @@ extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
 
     return cell
   }
-  
-//  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//    return tableView.dequeueReusableCell(withIdentifier: WhatTheFuckGuessRow.identifier, for: indexPath)
-//  }
   
   func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
     isBeingScrolled = true

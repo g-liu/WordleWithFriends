@@ -12,10 +12,16 @@ final class WordGuessRow: UITableViewCell {
   
   private lazy var calculatedHeight: CGFloat = {
     let gridSize = LayoutUtility.gridSize(numberOfColumns: GameSettings.clueLength.readIntValue(),
+                                          padding: calculatedPadding,
                                           screenWidthPercentage: 85,
                                           maxSize: 50)
     
     return round(gridSize)
+  }()
+  
+  private lazy var calculatedPadding: CGFloat = {
+    let padding = LayoutUtility.gridPadding(numberOfColumns: GameSettings.clueLength.readIntValue())
+    return CGFloat(padding)
   }()
   
   private lazy var letterStack: UIStackView = {
@@ -24,7 +30,7 @@ final class WordGuessRow: UITableViewCell {
     stackView.axis = .horizontal
     stackView.distribution = .fillEqually
     stackView.alignment = .fill
-    stackView.spacing = 12.0
+    stackView.spacing = CGFloat(LayoutUtility.gridPadding(numberOfColumns: GameSettings.clueLength.readIntValue()))
     
     return stackView
   }()
@@ -51,7 +57,7 @@ final class WordGuessRow: UITableViewCell {
     
     NSLayoutConstraint.activate([
       letterStack.topAnchor.constraint(equalTo: contentView.topAnchor),
-      letterStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+      letterStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -calculatedPadding),
       letterStack.heightAnchor.constraint(equalToConstant: calculatedHeight),
       letterStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
       letterStack.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor),

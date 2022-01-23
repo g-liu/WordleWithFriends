@@ -41,7 +41,8 @@ final class GameSettingsViewController: UIViewController {
     table.translatesAutoresizingMaskIntoConstraints = false
     table.delegate = self
     table.dataSource = self
-    table.register(GameSettingTableViewCell.self, forCellReuseIdentifier: GameSettingTableViewCell.identifier)
+    table.register(NumberRangeGameSettingCell.self, forCellReuseIdentifier: NumberRangeGameSettingCell.identifier)
+    table.register(BoolGameSettingCell.self, forCellReuseIdentifier: BoolGameSettingCell.identifier)
     table.rowHeight = UITableView.automaticDimension
     
     view.addSubview(table)
@@ -59,41 +60,23 @@ extension GameSettingsViewController: UITableViewDelegate, UITableViewDataSource
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: GameSettingTableViewCell.identifier, for: indexPath) as? GameSettingTableViewCell else {
-      return UITableViewCell()
-    }
-    
-    // TODO: This is messy AF pls refactor
+    let cell: UITableViewCell
     if let setting = GameSettings.allSettings[indexPath.row] as? GameSettingIntRange {
-      var config = UIListContentConfiguration.valueCell()
-      config.text = setting.description
-      let picker = NumberRangePickerView(frame: .init(x: 0, y: 0, width: 85, height: 66), minValue: setting.minValue, maxValue: setting.maxValue)
-      picker.tag = indexPath.row
-      picker.selectValue(setting.readIntValue())
-      picker.didSelectNewValue = { newValue in
-        setting.writeValue(newValue)
+      guard let numberRangeCell = tableView.dequeueReusableCell(withIdentifier: NumberRangeGameSettingCell.identifier, for: indexPath) as? NumberRangeGameSettingCell else {
+        return UITableViewCell()
       }
-      
-      cell.contentConfiguration = config
-      cell.accessoryView = picker
+      numberRangeCell.configure(with: indexPath, setting: setting)
+      cell = numberRangeCell
     } else if let setting = GameSettings.allSettings[indexPath.row] as? GameSettingBool {
-      var config = UIListContentConfiguration.valueCell()
-      config.text = setting.description
-      
-      let toggle = UISwitch()
-      toggle.tag = indexPath.row
-      toggle.setOn(setting.readBoolValue(), animated: true)
-      toggle.addTarget(self, action: #selector(settingSwitchDidChange), for: .valueChanged)
-      
-      cell.contentConfiguration = config
-      cell.accessoryView = toggle
+      guard let boolCell = tableView.dequeueReusableCell(withIdentifier: BoolGameSettingCell.identifier, for: indexPath) as? BoolGameSettingCell else {
+        return UITableViewCell()
+      }
+      boolCell.configure(with: indexPath, setting: setting)
+      cell = boolCell
+    } else {
+      cell = UITableViewCell()
     }
     
     return cell
-  }
-  
-  @objc private func settingSwitchDidChange(_ toggle: UISwitch) {
-    guard let setting = GameSettings.allSettings[toggle.tag] as? GameSettingBool else { return }
-    setting.writeValue(toggle.isOn)
   }
 }

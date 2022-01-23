@@ -266,7 +266,6 @@ extension WordGuessViewController: UITextFieldDelegate {
       return false
     }
     
-    // TODO UNDUPLICATE THIS!!!!!!
     guard string.isLettersOnly() else {
       return false
     }

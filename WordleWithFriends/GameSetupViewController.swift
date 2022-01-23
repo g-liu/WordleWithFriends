@@ -93,7 +93,7 @@ final class GameSetupViewController: UIViewController {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    view.endEditing(true) // TODO WHY THE FUCK IS THIS SHIT NOT WORKING
+    view.endEditing(true)
     startGameButton.isEnabled = false
     
     NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: nil)
@@ -103,7 +103,7 @@ final class GameSetupViewController: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    startGameButton.isEnabled = false // TODO THIS IS A HACK SEE ABOVE
+    startGameButton.isEnabled = false
     
     NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidUpdate), name: UITextField.textDidChangeNotification, object: nil)
     

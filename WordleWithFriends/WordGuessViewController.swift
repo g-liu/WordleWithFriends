@@ -48,6 +48,16 @@ final class WordGuessViewController: UIViewController {
     return textField
   }()
   
+  private lazy var loadingView: UIActivityIndicatorView = {
+    let view = UIActivityIndicatorView(style: .large)
+    view.translatesAutoresizingMaskIntoConstraints = false
+    
+    view.startAnimating()
+    view.isHidden = true
+    
+    return view
+  }()
+  
   private var gameMessagingVC: GameMessagingViewController
   
   private var isBeingScrolled = false
@@ -75,7 +85,9 @@ final class WordGuessViewController: UIViewController {
     
     view.addSubview(guessTable)
     view.addSubview(guessInputTextField)
+    view.addSubview(loadingView)
     guessTable.pin(to: view.safeAreaLayoutGuide, margins: .init(top: 12, left: 0, bottom: 0, right: 0))
+    loadingView.pin(to: view.safeAreaLayoutGuide)
     
     guessInputTextField.becomeFirstResponder()
     title = "Guess the word"
@@ -169,8 +181,11 @@ final class WordGuessViewController: UIViewController {
     guard let gameResult = UIPasteboard.general.string else {
       return
     }
+    loadingView.isHidden = false
     let ac = UIActivityViewController(activityItems: [gameResult], applicationActivities: nil)
-    navigationController?.present(ac, animated: true)
+    navigationController?.present(ac, animated: true) { [weak self] in
+      self?.loadingView.isHidden = true
+    }
   }
 }
 

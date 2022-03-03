@@ -15,6 +15,12 @@ protocol KeyTapDelegate {
 }
 
 final class WordleKeyboardInputView: UIView {
+  private struct Layout {
+    static let interKeySpacing = 4.0
+    static let rowSpacing = 8.0
+    static let specialKeySpacing = 8.0
+    static let topPadding = 8.0
+  }
   private var keyReferences: [WeakRef<WordleKeyboardKey>] = []
   
   // TODO make customizable
@@ -34,7 +40,7 @@ final class WordleKeyboardInputView: UIView {
     stackView.alignment = .center
     stackView.axis = .vertical
     stackView.distribution = .equalSpacing
-    stackView.spacing = 4.0
+    stackView.spacing = Layout.rowSpacing
     
     return stackView
   }()
@@ -60,7 +66,7 @@ final class WordleKeyboardInputView: UIView {
     type(of: self).keyboardLayout.enumerated().forEach { index, row in
       let stackView = UIStackView()
       stackView.translatesAutoresizingMaskIntoConstraints = false
-      stackView.spacing = 2.0
+      stackView.spacing = Layout.interKeySpacing
       stackView.axis = .horizontal
       stackView.alignment = .fill
       
@@ -71,7 +77,7 @@ final class WordleKeyboardInputView: UIView {
         let keyView = WordleKeyboardKey(keyType: .submit)
         keyView.delegate = self
         stackView.addArrangedSubview(keyView)
-        stackView.setCustomSpacing(4.0, after: keyView)
+        stackView.setCustomSpacing(Layout.specialKeySpacing, after: keyView)
       }
       
       row.enumerated().forEach { index, char in
@@ -79,18 +85,15 @@ final class WordleKeyboardInputView: UIView {
         keyView.delegate = self
         stackView.addArrangedSubview(keyView)
         
-        if index == row.count - 1 {
-          stackView.setCustomSpacing(4.0, after: keyView)
-        }
-        
         keyReferences.append(WeakRef(value: keyView))
-      }
-      
-      if isLastRow {
-        // last row must add Backspace key
-        let keyView = WordleKeyboardKey(keyType: .del)
-        keyView.delegate = self
-        stackView.addArrangedSubview(keyView)
+        
+        if isLastRow && index == row.count - 1 {
+          stackView.setCustomSpacing(Layout.specialKeySpacing, after: keyView)
+          // last row must add Backspace key
+          let keyView = WordleKeyboardKey(keyType: .del)
+          keyView.delegate = self
+          stackView.addArrangedSubview(keyView)
+        }
       }
       
       mainStackView.addArrangedSubview(stackView)
@@ -106,7 +109,10 @@ final class WordleKeyboardInputView: UIView {
     }
     
     addSubview(mainStackView)
-    mainStackView.pin(to: safeAreaLayoutGuide, margins: UIEdgeInsets(top: 16, left: 8, bottom: 32, right: 8))
+    NSLayoutConstraint.activate([
+      mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: Layout.topPadding),
+      mainStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+    ])
   }
   
   func updateState(with wordGuess: WordGuess) {

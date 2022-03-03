@@ -323,11 +323,10 @@
 		6C19F5E327923B0B00062083 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6C94887427D08C64005252F1 /* CustomKeyboard */,
 				6C19F5E427923B1400062083 /* WordGuessRow.swift */,
 				6C19F60127923F8400062083 /* LetterTileView.swift */,
 				6C0009E12792AE8200BCC9B6 /* WordInputTextField.swift */,
-				6C94887027D07FD4005252F1 /* WordleKeyboardInputView.swift */,
-				6C94887227D08598005252F1 /* WordleKeyboardKey.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -359,6 +358,15 @@
 				6C78E0C02797902700C501CD /* XCUIElement+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6C94887427D08C64005252F1 /* CustomKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				6C94887027D07FD4005252F1 /* WordleKeyboardInputView.swift */,
+				6C94887227D08598005252F1 /* WordleKeyboardKey.swift */,
+			);
+			path = CustomKeyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

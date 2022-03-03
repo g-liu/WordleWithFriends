@@ -10,6 +10,8 @@ import UIKit
 
 protocol KeyTapDelegate {
   func didTapKey(_ char: Character)
+  func didTapSubmit()
+  func didTapDelete()
 }
 
 final class WordleKeyboardInputView: UIView {
@@ -64,15 +66,14 @@ final class WordleKeyboardInputView: UIView {
       
       if isLastRow {
         // last row must add Enter character
-        let keyView = WordleKeyboardKey()
-        keyView.char = "⏎"
+        let keyView = WordleKeyboardKey(keyType: .submit)
+        keyView.delegate = self
         stackView.addArrangedSubview(keyView)
         stackView.setCustomSpacing(4.0, after: keyView)
       }
       
-      row.enumerated().forEach { index, key in
-        let keyView = WordleKeyboardKey()
-        keyView.char = Character(key)
+      row.enumerated().forEach { index, char in
+        let keyView = WordleKeyboardKey(keyType: .char(Character(char)))
         keyView.delegate = self
         stackView.addArrangedSubview(keyView)
         
@@ -83,8 +84,8 @@ final class WordleKeyboardInputView: UIView {
       
       if isLastRow {
         // last row must add Backspace key
-        let keyView = WordleKeyboardKey()
-        keyView.char = "⌫"
+        let keyView = WordleKeyboardKey(keyType: .del)
+        keyView.delegate = self
         stackView.addArrangedSubview(keyView)
       }
       
@@ -100,5 +101,13 @@ final class WordleKeyboardInputView: UIView {
 extension WordleKeyboardInputView: KeyTapDelegate {
   func didTapKey(_ char: Character) {
     delegate?.didTapKey(char)
+  }
+  
+  func didTapDelete() {
+    delegate?.didTapDelete()
+  }
+  
+  func didTapSubmit() {
+    delegate?.didTapSubmit()
   }
 }

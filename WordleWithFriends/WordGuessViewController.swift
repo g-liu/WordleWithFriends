@@ -147,6 +147,15 @@ final class WordGuessViewController: UIViewController {
   }
   
   private func submitGuess() {
+    guard let wordGuess = guessInputTextField.text,
+          wordGuess.count == GameSettings.clueLength.readIntValue(),
+          GameSettings.allowNonDictionaryGuesses.readBoolValue() || wordGuess.isARealWord() else {
+      gameGuessesModel.markInvalidGuess()
+      let currentIndexPath = IndexPath.Row(gameGuessesModel.numberOfGuesses)
+      guessTable.reloadRows(at: [currentIndexPath], with: .none)
+      return
+    }
+    
     let gameState = gameGuessesModel.submitGuess()
     
     guessTable.reloadData()
@@ -262,16 +271,6 @@ extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension WordGuessViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    // this is how we submit a guess
-    guard let wordGuess = textField.text,
-          wordGuess.count == GameSettings.clueLength.readIntValue(),
-          GameSettings.allowNonDictionaryGuesses.readBoolValue() || wordGuess.isARealWord() else {
-      gameGuessesModel.markInvalidGuess()
-      let currentIndexPath = IndexPath.Row(gameGuessesModel.numberOfGuesses)
-      guessTable.reloadRows(at: [currentIndexPath], with: .none)
-      return false
-    }
-    
     submitGuess()
     return false
   }
@@ -283,6 +282,7 @@ extension WordGuessViewController: UITextFieldDelegate {
     return false
   }
   
+  // TODO: The below may be deprecated now after the custom keyboard
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     guard !gameGuessesModel.isGameOver else {
       return false
@@ -325,6 +325,15 @@ extension WordGuessViewController: GameEndDelegate {
 
 extension WordGuessViewController: KeyTapDelegate {
   func didTapKey(_ char: Character) {
+    guard (guessInputTextField.text?.count ?? 0) < GameSettings.clueLength.readIntValue() else { return }
     guessInputTextField.insertText("\(char)")
+  }
+  
+  func didTapSubmit() {
+    submitGuess()
+  }
+  
+  func didTapDelete() {
+    guessInputTextField.deleteBackward()
   }
 }

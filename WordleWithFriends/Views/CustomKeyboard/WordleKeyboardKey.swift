@@ -8,10 +8,23 @@
 import Foundation
 import UIKit
 
+enum KeyType {
+  case char(Character)
+  case submit
+  case del
+}
+
 final class WordleKeyboardKey: UIButton {
-  var char: Character = " " {
+  var keyType: KeyType {
     didSet {
-      characterLabel.text = "\(char)"
+      switch keyType {
+        case .char(let character):
+          characterLabel.text = "\(character)"
+        case .submit:
+          characterLabel.text = "⏎"
+        case .del:
+          characterLabel.text = "⌫"
+      }
     }
   }
   
@@ -34,15 +47,29 @@ final class WordleKeyboardKey: UIButton {
     return label
   }()
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  init(keyType: KeyType) {
+    self.keyType = .del
+    defer {
+      self.keyType = keyType
+    }
+    super.init(frame: .zero)
     setupView()
   }
   
   required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    setupView()
+    fatalError("init(coder:) has not been implemented")
   }
+  //
+//
+//  override init(frame: CGRect) {
+//    super.init(frame: frame)
+//    setupView()
+//  }
+//
+//  required init?(coder: NSCoder) {
+//    super.init(coder: coder)
+//    setupView()
+//  }
   
   private func setupView() {
     translatesAutoresizingMaskIntoConstraints = false
@@ -61,6 +88,14 @@ final class WordleKeyboardKey: UIButton {
   }
   
   @objc private func didTapKey() {
-    delegate?.didTapKey(char)
+    UIDevice.current.playInputClick()
+    switch keyType {
+      case .char(let character):
+        delegate?.didTapKey(character)
+      case .submit:
+        delegate?.didTapSubmit()
+      case .del:
+        delegate?.didTapDelete()
+    }
   }
 }

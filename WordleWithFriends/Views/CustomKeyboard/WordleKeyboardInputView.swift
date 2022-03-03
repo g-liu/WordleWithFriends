@@ -96,6 +96,7 @@ final class WordleKeyboardInputView: UIView {
       mainStackView.addArrangedSubview(stackView)
     }
     
+    // Sort key references A->Z for better lookup later
     keyReferences.sort { keyRef1, keyRef2 in
       guard let key1 = keyRef1.value, let key2 = keyRef2.value,
             case KeyType.char(let char1) = key1.keyType,
@@ -105,22 +106,14 @@ final class WordleKeyboardInputView: UIView {
     }
     
     addSubview(mainStackView)
-    mainStackView.pin(to: safeAreaLayoutGuide, margins: UIEdgeInsets(top: 16, left: 8, bottom: 16, right: 8))
+    mainStackView.pin(to: safeAreaLayoutGuide, margins: UIEdgeInsets(top: 16, left: 8, bottom: 32, right: 8))
   }
   
   func updateState(with wordGuess: WordGuess) {
-    // TODO: A different algorithm???
     wordGuess.forEach { letterGuess in
       guard let guessAsciiValue = letterGuess.letter.asciiValue else { return }
-//      print(letterGuess.letter.asciiValue) // index based on THIS!!!!
       let indexInRefArray = Int(guessAsciiValue - (Character("A").asciiValue ?? 65))
-//      for i in 0..<keyReferences.count {
-//        if let keyType = keyReferences[i].value?.keyType,
-//           case KeyType.char(let char) = keyType,
-//           char == letterGuess.letter {
-          keyReferences[indexInRefArray].value?.guessState = letterGuess.state
-//        }
-//      }
+      keyReferences[indexInRefArray].value?.updateGuessState(letterGuess.state)
     }
   }
 }

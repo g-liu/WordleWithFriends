@@ -28,7 +28,7 @@ final class WordleKeyboardKey: UIButton {
     }
   }
   
-  var guessState: LetterState = .unchecked {
+  private var guessState: LetterState = .unchecked {
     didSet {
       backgroundColor = guessState.associatedColor // TODO verify
     }
@@ -59,17 +59,6 @@ final class WordleKeyboardKey: UIButton {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  //
-//
-//  override init(frame: CGRect) {
-//    super.init(frame: frame)
-//    setupView()
-//  }
-//
-//  required init?(coder: NSCoder) {
-//    super.init(coder: coder)
-//    setupView()
-//  }
   
   private func setupView() {
     translatesAutoresizingMaskIntoConstraints = false
@@ -85,6 +74,11 @@ final class WordleKeyboardKey: UIButton {
     ])
     
     addTarget(self, action: #selector(didTapKey), for: .touchUpInside)
+  }
+  
+  func updateGuessState(_ state: LetterState) {
+    guard state.priority > guessState.priority else { return }
+    guessState = state
   }
   
   @objc private func didTapKey() {

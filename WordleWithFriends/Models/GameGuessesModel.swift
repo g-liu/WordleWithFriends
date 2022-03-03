@@ -89,6 +89,21 @@ enum LetterState: Character {
         return .clear
     }
   }
+  
+  var priority: Int {
+    switch self {
+      case .unchecked:
+        return -1
+      case .correct:
+        return 10
+      case .misplaced:
+        return 5
+      case .incorrect:
+        return 0
+      case .invalid:
+        return -100
+    }
+  }
 }
 
 enum GameState {

@@ -23,7 +23,7 @@ final class WordleKeyboardInputView: UIView {
   }
   private var keyReferences: [WeakRef<WordleKeyboardKey>] = []
   
-  // TODO make customizable
+  // TODO make customizable?
   private static let keyboardLayout = [[
     "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
   ], [
@@ -73,7 +73,7 @@ final class WordleKeyboardInputView: UIView {
       let isLastRow = index == type(of: self).keyboardLayout.count - 1
       
       if isLastRow {
-        // last row must add Enter character
+        // last row must add Enter key (Submit guess)
         let keyView = WordleKeyboardKey(keyType: .submit)
         keyView.delegate = self
         stackView.addArrangedSubview(keyView)

@@ -100,8 +100,6 @@ final class WordGuessViewController: UIViewController {
     title = "Guess the word"
     
     navigationItem.rightBarButtonItem = shareButton
-    
-    guessInputTextField.reloadInputViews()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -149,6 +147,7 @@ final class WordGuessViewController: UIViewController {
   }
   
   private func submitGuess() {
+    // TODO: Move some checks to view model???
     guard let wordGuess = guessInputTextField.text,
           wordGuess.count == GameSettings.clueLength.readIntValue(),
           GameSettings.allowNonDictionaryGuesses.readBoolValue() || wordGuess.isARealWord() else {
@@ -318,7 +317,7 @@ extension WordGuessViewController: GameEndDelegate {
   }
   
   func restartWithNewClue() {
-    let newClue = GameUtility.pickWord(length: GameSettings.clueLength.readIntValue())
+    let newClue = GameUtility.pickWord()
     gameGuessesModel = GameGuessesModel(clue: newClue)
     
     DispatchQueue.main.async { [weak self] in

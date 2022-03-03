@@ -41,7 +41,7 @@
 		6C19F5A927921EFB00062083 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C19F5A727921EFB00062083 /* LaunchScreen.storyboard */; };
 		6C19F5BF27921EFC00062083 /* WordleWithFriendsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5BE27921EFC00062083 /* WordleWithFriendsUITests.swift */; };
 		6C19F5D127922D6700062083 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5D027922D6700062083 /* String+Extension.swift */; };
-		6C19F5D62792356500062083 /* WordGuessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5D52792356500062083 /* WordGuessViewController.swift */; };
+		6C19F5D62792356500062083 /* ClueGuessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5D52792356500062083 /* ClueGuessViewController.swift */; };
 		6C19F5E527923B1400062083 /* WordGuessRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5E427923B1400062083 /* WordGuessRow.swift */; };
 		6C19F5F027923C5900062083 /* NSLayoutConstraint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5EF27923C5900062083 /* NSLayoutConstraint+Extension.swift */; };
 		6C19F5FD27923CBB00062083 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5FC27923CBB00062083 /* UIView+Extension.swift */; };
@@ -59,6 +59,7 @@
 		6C94887627D098C7005252F1 /* WeakRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887527D098C7005252F1 /* WeakRef.swift */; };
 		6C94887827D0AAD9005252F1 /* LetterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887727D0AAD9005252F1 /* LetterState.swift */; };
 		6C94887C27D0AB15005252F1 /* LetterStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887B27D0AB15005252F1 /* LetterStateTests.swift */; };
+		6C94887E27D0B4E4005252F1 /* KeyboardRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887D27D0B4E4005252F1 /* KeyboardRow.swift */; };
 		6CBBCECF279BDC7D00875C30 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */; };
 		6CBCC3CD2797565D005EB254 /* DismissableAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCC3CC2797565D005EB254 /* DismissableAlertController.swift */; };
 		6CBCC3D1279764FF005EB254 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */; };
@@ -124,7 +125,7 @@
 		6C19F5BE27921EFC00062083 /* WordleWithFriendsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleWithFriendsUITests.swift; sourceTree = "<group>"; };
 		6C19F5C027921EFC00062083 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6C19F5D027922D6700062083 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		6C19F5D52792356500062083 /* WordGuessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordGuessViewController.swift; sourceTree = "<group>"; };
+		6C19F5D52792356500062083 /* ClueGuessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClueGuessViewController.swift; sourceTree = "<group>"; };
 		6C19F5E427923B1400062083 /* WordGuessRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordGuessRow.swift; sourceTree = "<group>"; };
 		6C19F5EF27923C5900062083 /* NSLayoutConstraint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Extension.swift"; sourceTree = "<group>"; };
 		6C19F5FC27923CBB00062083 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -142,6 +143,7 @@
 		6C94887527D098C7005252F1 /* WeakRef.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakRef.swift; sourceTree = "<group>"; };
 		6C94887727D0AAD9005252F1 /* LetterState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterState.swift; sourceTree = "<group>"; };
 		6C94887B27D0AB15005252F1 /* LetterStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterStateTests.swift; sourceTree = "<group>"; };
+		6C94887D27D0B4E4005252F1 /* KeyboardRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardRow.swift; sourceTree = "<group>"; };
 		6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		6CBCC3CC2797565D005EB254 /* DismissableAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissableAlertController.swift; sourceTree = "<group>"; };
 		6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
@@ -283,7 +285,7 @@
 				6C19F59E27921EFA00062083 /* SceneDelegate.swift */,
 				6C19F5A027921EFA00062083 /* GameSetupViewController.swift */,
 				60D948072793BB0D00086C51 /* Settings */,
-				6C19F5D52792356500062083 /* WordGuessViewController.swift */,
+				6C19F5D52792356500062083 /* ClueGuessViewController.swift */,
 				6C19F5A527921EFB00062083 /* Assets.xcassets */,
 				6C19F5A727921EFB00062083 /* LaunchScreen.storyboard */,
 				6C19F5AA27921EFC00062083 /* Info.plist */,
@@ -374,6 +376,7 @@
 			children = (
 				6C94887027D07FD4005252F1 /* WordleKeyboardInputView.swift */,
 				6C94887227D08598005252F1 /* WordleKeyboardKey.swift */,
+				6C94887D27D0B4E4005252F1 /* KeyboardRow.swift */,
 			);
 			path = CustomKeyboard;
 			sourceTree = "<group>";
@@ -522,7 +525,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C19F5D62792356500062083 /* WordGuessViewController.swift in Sources */,
+				6C19F5D62792356500062083 /* ClueGuessViewController.swift in Sources */,
 				6C19F60B2792439600062083 /* GameGuessesModel.swift in Sources */,
 				60D948102793E2BC00086C51 /* GameSettingTableViewCell.swift in Sources */,
 				6C3955A1279288E800B0EF29 /* LetterGuess.swift in Sources */,
@@ -551,6 +554,7 @@
 				6C94887327D08598005252F1 /* WordleKeyboardKey.swift in Sources */,
 				6C94887627D098C7005252F1 /* WeakRef.swift in Sources */,
 				60D948012793A46700086C51 /* GameEndDelegate.swift in Sources */,
+				6C94887E27D0B4E4005252F1 /* KeyboardRow.swift in Sources */,
 				6CBCC3D1279764FF005EB254 /* CGPoint+Extension.swift in Sources */,
 				6C19F6162792491900062083 /* UIStackView+Extension.swift in Sources */,
 				60D947FF2793A23700086C51 /* GameMessagingViewController.swift in Sources */,

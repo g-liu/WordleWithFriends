@@ -179,13 +179,13 @@ final class GameSetupViewController: UIViewController {
 
   private func initiateGame(_ clueSource: ClueSource) {
     // start game
-    let wordGuessVC = WordGuessViewController(clue: clueTextField.text?.uppercased() ?? "", clueSource: clueSource)
+    let clueGuessVC = ClueGuessViewController(clue: clueTextField.text?.uppercased() ?? "", clueSource: clueSource)
     clueTextField.text = ""
     startGameButton.isEnabled = false
     
     clueTextField.resignFirstResponder()
     
-    navigationController?.pushViewController(wordGuessVC, animated: true)
+    navigationController?.pushViewController(clueGuessVC, animated: true)
   }
 }
 

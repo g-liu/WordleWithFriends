@@ -1,5 +1,5 @@
 //
-//  WordGuessViewController.swift
+//  ClueGuessViewController.swift
 //  WordleWithFriends
 //
 //  Created by Geoffrey Liu on 1/14/22.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class WordGuessViewController: UIViewController {
+final class ClueGuessViewController: UIViewController {
   
   // Extremely hacky workaround of table jumpiness when reloading...
   // https://stackoverflow.com/questions/28244475/reloaddata-of-uitableview-with-dynamic-cell-heights-causes-jumpy-scrolling
@@ -210,7 +210,7 @@ final class WordGuessViewController: UIViewController {
   }
 }
 
-extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
+extension ClueGuessViewController: UITableViewDelegate, UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     1
   }
@@ -274,7 +274,7 @@ extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
   }
 }
 
-extension WordGuessViewController: UITextFieldDelegate {
+extension ClueGuessViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     submitGuess()
     return false
@@ -307,7 +307,7 @@ extension WordGuessViewController: UITextFieldDelegate {
   }
 }
 
-extension WordGuessViewController: GameEndDelegate {
+extension ClueGuessViewController: GameEndDelegate {
   func shareResult() {
     shareAction(nil)
   }
@@ -328,7 +328,7 @@ extension WordGuessViewController: GameEndDelegate {
   }
 }
 
-extension WordGuessViewController: KeyTapDelegate {
+extension ClueGuessViewController: KeyTapDelegate {
   func didTapKey(_ char: Character) {
     guard !gameGuessesModel.isGameOver else { return }
     

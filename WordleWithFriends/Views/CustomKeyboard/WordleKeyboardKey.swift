@@ -66,6 +66,16 @@ final class WordleKeyboardKey: UIButton {
     layer.masksToBounds = false
     backgroundColor = guessState.associatedColor
     
+    // TODO: Subtle shadow?
+//    layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+//    layer.shadowColor = UIColor.black.cgColor
+//    layer.shadowOpacity = 1
+//    layer.shadowOffset = .init(width: 1, height: 1)
+//    layer.shadowRadius = 1
+//
+//    layer.shouldRasterize = true
+//    layer.rasterizationScale = UIScreen.main.scale
+    
     addSubview(characterLabel)
     characterLabel.pin(to: self, margins: UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0))
     

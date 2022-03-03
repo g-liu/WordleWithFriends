@@ -34,6 +34,12 @@ final class WordGuessViewController: UIViewController {
     return tableView
   }()
   
+  private lazy var wordleKeyboard: WordleKeyboardInputView = {
+    let inputView = WordleKeyboardInputView()
+    inputView.delegate = self
+    return inputView
+  }()
+  
   private lazy var guessInputTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
@@ -44,11 +50,7 @@ final class WordGuessViewController: UIViewController {
     textField.delegate = self
     textField.layer.borderWidth = 1
     textField.layer.borderColor = UIColor.darkText.cgColor
-    textField.inputView = {
-      let inputView = WordleKeyboardInputView()
-      inputView.delegate = self
-      return inputView
-    }()
+    textField.inputView = wordleKeyboard
     
     return textField
   }()
@@ -157,6 +159,10 @@ final class WordGuessViewController: UIViewController {
     }
     
     let gameState = gameGuessesModel.submitGuess()
+    
+    if let mostRecentGuess = gameGuessesModel.mostRecentGuess {
+      wordleKeyboard.updateState(with: mostRecentGuess)
+    }
     
     guessTable.reloadData()
     

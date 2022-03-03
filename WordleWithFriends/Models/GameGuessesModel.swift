@@ -25,6 +25,11 @@ struct GameGuessesModel {
     return letterGuesses[index]
   }
   
+  var mostRecentGuess: WordGuess? {
+    guard numberOfGuesses >= 1 else { return nil }
+    return letterGuesses[numberOfGuesses - 1]
+  }
+  
   mutating func updateGuess(_ newGuess: String) {
     letterGuesses[letterGuesses.count - 1].updateGuess(newGuess)
   }

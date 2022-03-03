@@ -71,3 +71,9 @@ struct WordGuess {
     guess.reduce("") { $0 + String($1.state.rawValue) }
   }
 }
+
+extension WordGuess: Sequence {
+  func makeIterator() -> IndexingIterator<Array<LetterGuess>> {
+    guess.makeIterator()
+  }
+}

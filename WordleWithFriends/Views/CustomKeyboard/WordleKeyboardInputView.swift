@@ -15,6 +15,7 @@ protocol KeyTapDelegate {
 }
 
 final class WordleKeyboardInputView: UIView {
+  private var keyReferences: [WeakRef<WordleKeyboardKey>] = []
   // TODO make customizable
   private static let keyboardLayout = [[
     "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
@@ -80,6 +81,8 @@ final class WordleKeyboardInputView: UIView {
         if index == row.count - 1 {
           stackView.setCustomSpacing(4.0, after: keyView)
         }
+        
+        keyReferences.append(WeakRef(value: keyView))
       }
       
       if isLastRow {
@@ -90,11 +93,26 @@ final class WordleKeyboardInputView: UIView {
       }
       
       mainStackView.addArrangedSubview(stackView)
-      
     }
     
     addSubview(mainStackView)
     mainStackView.pin(to: safeAreaLayoutGuide, margins: UIEdgeInsets(top: 16, left: 8, bottom: 16, right: 8))
+  }
+  
+  func updateState(with wordGuess: WordGuess) {
+    // TODO: A different algorithm???
+    wordGuess.forEach { letterGuess in
+      for i in 0..<keyReferences.count {
+        
+//      }
+//      keyReferences.forEach { key in
+        if let keyType = keyReferences[i].value?.keyType,
+           case KeyType.char(let char) = keyType,
+           char == letterGuess.letter {
+          keyReferences[i].value?.guessState = letterGuess.state
+        }
+      }
+    }
   }
 }
 

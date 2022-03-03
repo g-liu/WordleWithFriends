@@ -54,6 +54,8 @@
 		6C78E0C12797902700C501CD /* XCUIElement+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C78E0C02797902700C501CD /* XCUIElement+Extension.swift */; };
 		6C834C8E279C87160024CB13 /* GameUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C834C8D279C87160024CB13 /* GameUtility.swift */; };
 		6C834C90279C897F0024CB13 /* IndexPath+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C834C8F279C897F0024CB13 /* IndexPath+Extension.swift */; };
+		6C94887127D07FD4005252F1 /* WordleKeyboardInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887027D07FD4005252F1 /* WordleKeyboardInputView.swift */; };
+		6C94887327D08598005252F1 /* WordleKeyboardKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887227D08598005252F1 /* WordleKeyboardKey.swift */; };
 		6CBBCECF279BDC7D00875C30 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */; };
 		6CBCC3CD2797565D005EB254 /* DismissableAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCC3CC2797565D005EB254 /* DismissableAlertController.swift */; };
 		6CBCC3D1279764FF005EB254 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */; };
@@ -132,6 +134,8 @@
 		6C78E0C02797902700C501CD /* XCUIElement+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Extension.swift"; sourceTree = "<group>"; };
 		6C834C8D279C87160024CB13 /* GameUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameUtility.swift; sourceTree = "<group>"; };
 		6C834C8F279C897F0024CB13 /* IndexPath+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IndexPath+Extension.swift"; sourceTree = "<group>"; };
+		6C94887027D07FD4005252F1 /* WordleKeyboardInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleKeyboardInputView.swift; sourceTree = "<group>"; };
+		6C94887227D08598005252F1 /* WordleKeyboardKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleKeyboardKey.swift; sourceTree = "<group>"; };
 		6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		6CBCC3CC2797565D005EB254 /* DismissableAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissableAlertController.swift; sourceTree = "<group>"; };
 		6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
@@ -322,6 +326,8 @@
 				6C19F5E427923B1400062083 /* WordGuessRow.swift */,
 				6C19F60127923F8400062083 /* LetterTileView.swift */,
 				6C0009E12792AE8200BCC9B6 /* WordInputTextField.swift */,
+				6C94887027D07FD4005252F1 /* WordleKeyboardInputView.swift */,
+				6C94887227D08598005252F1 /* WordleKeyboardKey.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -514,6 +520,7 @@
 				60D948092793BD0300086C51 /* GameSettings.swift in Sources */,
 				6CBCC3D32797657B005EB254 /* CGSize+Extension.swift in Sources */,
 				6C19F5E527923B1400062083 /* WordGuessRow.swift in Sources */,
+				6C94887127D07FD4005252F1 /* WordleKeyboardInputView.swift in Sources */,
 				6CBBCECF279BDC7D00875C30 /* Double+Extension.swift in Sources */,
 				6C19F60227923F8400062083 /* LetterTileView.swift in Sources */,
 				6CBCC3CD2797565D005EB254 /* DismissableAlertController.swift in Sources */,
@@ -522,6 +529,7 @@
 				60D948142793E50100086C51 /* GameSettingProtocol.swift in Sources */,
 				6C0009E22792AE8200BCC9B6 /* WordInputTextField.swift in Sources */,
 				6C19F59F27921EFA00062083 /* SceneDelegate.swift in Sources */,
+				6C94887327D08598005252F1 /* WordleKeyboardKey.swift in Sources */,
 				60D948012793A46700086C51 /* GameEndDelegate.swift in Sources */,
 				6CBCC3D1279764FF005EB254 /* CGPoint+Extension.swift in Sources */,
 				6C19F6162792491900062083 /* UIStackView+Extension.swift in Sources */,

@@ -44,6 +44,9 @@ final class WordGuessViewController: UIViewController {
     textField.delegate = self
     textField.layer.borderWidth = 1
     textField.layer.borderColor = UIColor.darkText.cgColor
+    textField.inputView = WordleKeyboardInputView() // TODO remove test only
+    // Lol this shit works fucking hell
+//    textField.inputView = { let dp = UIDatePicker(); dp.preferredDatePickerStyle = .wheels; return dp; }()
     
     return textField
   }()
@@ -93,6 +96,8 @@ final class WordGuessViewController: UIViewController {
     title = "Guess the word"
     
     navigationItem.rightBarButtonItem = shareButton
+    
+    guessInputTextField.reloadInputViews()
   }
   
   override func viewWillDisappear(_ animated: Bool) {

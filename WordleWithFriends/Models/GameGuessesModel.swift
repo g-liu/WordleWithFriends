@@ -69,6 +69,21 @@ enum LetterState: Character {
   case misplaced = "🟨"
   case incorrect = "⬜️"
   case invalid = "🟥"
+  
+  var associatedColor: UIColor {
+    switch self {
+      case .unchecked:
+        return .systemBackground
+      case .correct:
+        return .systemGreen
+      case .misplaced:
+        return .systemYellow
+      case .incorrect:
+        return .systemGray
+      case .invalid:
+        return .clear
+    }
+  }
 }
 
 enum GameState {

@@ -10,9 +10,9 @@ import XCTest
 
 final class GameGuessesModelTests: XCTestCase {
   func testInitialConditions() {
-    let model = GameGuessesModel()
+    let model = GameGuessesModel(clue: "GOOSE")
     let maxGuesses = GameSettings.maxGuesses.readIntValue()
-    XCTAssertEqual(model.clue, "")
+    XCTAssertEqual(model.clue, "GOOSE")
     XCTAssertEqual(model.isGameOver, false)
     XCTAssertEqual(model.numberOfGuesses, 0)
     
@@ -21,5 +21,25 @@ final class GameGuessesModelTests: XCTestCase {
     
     model.copyResult()
     XCTAssertEqual(UIPasteboard.general.string, "Wordle With Friends - 0/\(maxGuesses)\n\n")
+  }
+  
+  // MARK: - mostRecentGuess
+  
+  func testMostRecentGuessWhenNoneExist() {
+    XCTAssertNil(GameGuessesModel(clue: "COOKS").mostRecentGuess)
+  }
+  
+  func testMostRecentGuessWhenIncompleteGuessExists() {
+    var model = GameGuessesModel(clue: "COOKS")
+    model.updateGuess("CORKS")
+    XCTAssertNil(model.mostRecentGuess)
+  }
+  
+  func testMostRecentGuessWhenOneCompleteGuessExists() {
+    var model = GameGuessesModel(clue: "COOKS")
+    model.updateGuess("CORKS")
+    model.submitGuess()
+    
+    XCTAssertEqual(model.mostRecentGuess?.word, "CORKS")
   }
 }

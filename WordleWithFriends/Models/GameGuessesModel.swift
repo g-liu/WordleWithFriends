@@ -36,6 +36,7 @@ struct GameGuessesModel {
   
   /// Submit a guess
   /// - Returns: if the user guessed the word correctly
+  @discardableResult
   mutating func submitGuess() -> GameState {
     let didGuessCorrectly = letterGuesses[letterGuesses.count - 1].checkGuess(against: clue)
     
@@ -65,44 +66,6 @@ struct GameGuessesModel {
   
   mutating func clearInvalidGuess() {
     letterGuesses[letterGuesses.count - 1].forceState(.unchecked)
-  }
-}
-
-enum LetterState: Character {
-  case unchecked = "⬛️"
-  case correct = "🟩"
-  case misplaced = "🟨"
-  case incorrect = "⬜️"
-  case invalid = "🟥"
-  
-  var associatedColor: UIColor {
-    switch self {
-      case .unchecked:
-        return .systemBackground
-      case .correct:
-        return .systemGreen
-      case .misplaced:
-        return .systemYellow
-      case .incorrect:
-        return .systemGray
-      case .invalid:
-        return .clear
-    }
-  }
-  
-  var priority: Int {
-    switch self {
-      case .unchecked:
-        return -1
-      case .correct:
-        return 10
-      case .misplaced:
-        return 5
-      case .incorrect:
-        return 0
-      case .invalid:
-        return -100
-    }
   }
 }
 

@@ -18,3 +18,5 @@ struct LetterGuess {
     self.state = state
   }
 }
+
+extension LetterGuess: Equatable { }

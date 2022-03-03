@@ -10,8 +10,15 @@ import Foundation
 struct WordGuess {
   private var guess: [LetterGuess]
   
-  init() {
-    guess = []
+  init(guess: String = "") {
+    self.guess = []
+    updateGuess(guess)
+  }
+  
+  var word: String {
+    guess.reduce("") {
+      "\($0)\($1.letter)"
+    }
   }
   
   mutating func forceState(_ state: LetterState) {
@@ -71,6 +78,8 @@ struct WordGuess {
     guess.reduce("") { $0 + String($1.state.rawValue) }
   }
 }
+
+extension WordGuess: Equatable { }
 
 extension WordGuess: Sequence {
   func makeIterator() -> IndexingIterator<Array<LetterGuess>> {

@@ -16,6 +16,7 @@ protocol KeyTapDelegate {
 
 final class WordleKeyboardInputView: UIView {
   private var keyReferences: [WeakRef<WordleKeyboardKey>] = []
+  
   // TODO make customizable
   private static let keyboardLayout = [[
     "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
@@ -95,6 +96,14 @@ final class WordleKeyboardInputView: UIView {
       mainStackView.addArrangedSubview(stackView)
     }
     
+    keyReferences.sort { keyRef1, keyRef2 in
+      guard let key1 = keyRef1.value, let key2 = keyRef2.value,
+            case KeyType.char(let char1) = key1.keyType,
+            case KeyType.char(let char2) = key2.keyType else { return false }
+      
+      return char1 < char2
+    }
+    
     addSubview(mainStackView)
     mainStackView.pin(to: safeAreaLayoutGuide, margins: UIEdgeInsets(top: 16, left: 8, bottom: 16, right: 8))
   }
@@ -102,16 +111,16 @@ final class WordleKeyboardInputView: UIView {
   func updateState(with wordGuess: WordGuess) {
     // TODO: A different algorithm???
     wordGuess.forEach { letterGuess in
-      for i in 0..<keyReferences.count {
-        
+      guard let guessAsciiValue = letterGuess.letter.asciiValue else { return }
+//      print(letterGuess.letter.asciiValue) // index based on THIS!!!!
+      let indexInRefArray = Int(guessAsciiValue - (Character("A").asciiValue ?? 65))
+//      for i in 0..<keyReferences.count {
+//        if let keyType = keyReferences[i].value?.keyType,
+//           case KeyType.char(let char) = keyType,
+//           char == letterGuess.letter {
+          keyReferences[indexInRefArray].value?.guessState = letterGuess.state
+//        }
 //      }
-//      keyReferences.forEach { key in
-        if let keyType = keyReferences[i].value?.keyType,
-           case KeyType.char(let char) = keyType,
-           char == letterGuess.letter {
-          keyReferences[i].value?.guessState = letterGuess.state
-        }
-      }
     }
   }
 }

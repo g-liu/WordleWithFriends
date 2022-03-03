@@ -74,12 +74,23 @@ final class WordleKeyboardInputView: UIView {
   }
   
   static func getPortraitModeKeyWidth() -> CGFloat {
-    // TODO: Instead, calculate widths of all rows and use the max.
     let keyboardWidth = UIScreen.main.bounds.width
-    guard let maxKeysInARow = keyboardLayout.max(by: { $0.count < $1.count })?.count else { return 0.0 }
-    let totalSpace = KeyboardRow.Layout.interKeySpacing * Double(maxKeysInARow + 1)
+    let keyboardRowKeyWidths = keyboardLayout.enumerated().map { index, row -> CGFloat in
+      let isLastRow = index == keyboardLayout.count - 1
+      
+      let totalSpace: Double; let keysInRow: Int
+      if isLastRow {
+        totalSpace = KeyboardRow.Layout.interKeySpacing * Double(row.count + 1) + 2 * KeyboardRow.Layout.specialKeySpacing
+        keysInRow = row.count + 2
+      } else {
+        totalSpace = KeyboardRow.Layout.interKeySpacing * Double(row.count + 1)
+        keysInRow = row.count
+      }
+      
+      return CGFloat((keyboardWidth - totalSpace) / Double(keysInRow))
+    }
     
-    return CGFloat((keyboardWidth - totalSpace) / Double(maxKeysInARow))
+    return keyboardRowKeyWidths.min() ?? .zero
   }
   
   private func setupKeyboard(keyWidth: CGFloat = getPortraitModeKeyWidth()) {
@@ -89,6 +100,8 @@ final class WordleKeyboardInputView: UIView {
     NSLayoutConstraint.activate([
       widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width),
     ])
+    
+    mainStackView.removeAllArrangedSubviews()
     
     type(of: self).keyboardLayout.enumerated().forEach { index, row in
       let keyboardRow = KeyboardRow()

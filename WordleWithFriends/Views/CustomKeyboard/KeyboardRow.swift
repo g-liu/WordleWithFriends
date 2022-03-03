@@ -51,7 +51,6 @@ final class KeyboardRow: UIStackView {
       keyView.widthAnchor.constraint(equalToConstant: keyWidth).isActive = true
       addArrangedSubview(keyView)
       
-      // TODO: Send back references!
       keyReferences.append(WeakRef(value: keyView))
     }
     

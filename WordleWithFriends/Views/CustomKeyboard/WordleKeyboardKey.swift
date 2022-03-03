@@ -68,9 +68,6 @@ final class WordleKeyboardKey: UIButton {
     
     addSubview(characterLabel)
     characterLabel.pin(to: self, margins: UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0))
-    NSLayoutConstraint.activate([
-      heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1.4)
-    ])
     
     addTarget(self, action: #selector(didTapKey), for: .touchUpInside)
   }

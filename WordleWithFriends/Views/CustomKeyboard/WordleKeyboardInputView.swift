@@ -78,16 +78,16 @@ final class WordleKeyboardInputView: UIView {
     let keyboardRowKeyWidths = keyboardLayout.enumerated().map { index, row -> CGFloat in
       let isLastRow = index == keyboardLayout.count - 1
       
-      let totalSpace: Double; let keysInRow: Int
+      let totalSpace: Double; let keysInRow: Double
       if isLastRow {
         totalSpace = KeyboardRow.Layout.interKeySpacing * Double(row.count + 1) + 2 * KeyboardRow.Layout.specialKeySpacing
-        keysInRow = row.count + 2
+        keysInRow = Double(row.count) + 2.0 + (2.0 * (KeyboardRow.Layout.specialKeyWidthMultiplier - 1.0))
       } else {
         totalSpace = KeyboardRow.Layout.interKeySpacing * Double(row.count + 1)
-        keysInRow = row.count
+        keysInRow = Double(row.count)
       }
       
-      return CGFloat((keyboardWidth - totalSpace) / Double(keysInRow))
+      return CGFloat((keyboardWidth - totalSpace) / keysInRow)
     }
     
     return keyboardRowKeyWidths.min() ?? .zero

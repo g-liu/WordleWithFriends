@@ -44,9 +44,11 @@ final class WordGuessViewController: UIViewController {
     textField.delegate = self
     textField.layer.borderWidth = 1
     textField.layer.borderColor = UIColor.darkText.cgColor
-    textField.inputView = WordleKeyboardInputView() // TODO remove test only
-    // Lol this shit works fucking hell
-//    textField.inputView = { let dp = UIDatePicker(); dp.preferredDatePickerStyle = .wheels; return dp; }()
+    textField.inputView = {
+      let inputView = WordleKeyboardInputView()
+      inputView.delegate = self
+      return inputView
+    }()
     
     return textField
   }()
@@ -318,5 +320,11 @@ extension WordGuessViewController: GameEndDelegate {
       // TODO: In the future might have to reset `cellHeightCache`
       self?.guessTable.scrollToRow(at: .zero, at: .bottom, animated: true)
     }
+  }
+}
+
+extension WordGuessViewController: KeyTapDelegate {
+  func didTapKey(_ char: Character) {
+    guessInputTextField.insertText("\(char)")
   }
 }

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class WordleKeyboardKey: UIView {
+final class WordleKeyboardKey: UIButton {
   var char: Character = " " {
     didSet {
       characterLabel.text = "\(char)"
@@ -20,6 +20,8 @@ final class WordleKeyboardKey: UIView {
       backgroundColor = guessState.associatedColor // TODO verify
     }
   }
+  
+  var delegate: KeyTapDelegate?
   
   private lazy var characterLabel: UILabel = {
     let label = UILabel()
@@ -54,5 +56,11 @@ final class WordleKeyboardKey: UIView {
     NSLayoutConstraint.activate([
       widthAnchor.constraint(equalToConstant: 32.0), // todo dynamically calculate based on fattest letter
     ])
+    
+    addTarget(self, action: #selector(didTapKey), for: .touchUpInside)
+  }
+  
+  @objc private func didTapKey() {
+    delegate?.didTapKey(char)
   }
 }

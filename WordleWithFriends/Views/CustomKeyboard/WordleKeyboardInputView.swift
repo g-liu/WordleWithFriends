@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+protocol KeyTapDelegate {
+  func didTapKey(_ char: Character)
+}
+
 final class WordleKeyboardInputView: UIView {
   // TODO make customizable
   private static let keyboardLayout = [[
@@ -17,6 +21,8 @@ final class WordleKeyboardInputView: UIView {
   ], [
     "Z", "X", "C", "V", "B", "N", "M",
   ]]
+  
+  var delegate: KeyTapDelegate?
   
   private lazy var mainStackView: UIStackView = {
     let stackView = UIStackView()
@@ -67,6 +73,7 @@ final class WordleKeyboardInputView: UIView {
       row.enumerated().forEach { index, key in
         let keyView = WordleKeyboardKey()
         keyView.char = Character(key)
+        keyView.delegate = self
         stackView.addArrangedSubview(keyView)
         
         if index == row.count - 1 {
@@ -89,20 +96,9 @@ final class WordleKeyboardInputView: UIView {
     mainStackView.pin(to: safeAreaLayoutGuide, margins: UIEdgeInsets(top: 16, left: 8, bottom: 16, right: 8))
   }
 }
-/*
-extension WordleKeyboardInputView: UIKeyInput {
-  var hasText: Bool {
-    <#code#>
+
+extension WordleKeyboardInputView: KeyTapDelegate {
+  func didTapKey(_ char: Character) {
+    delegate?.didTapKey(char)
   }
-  
-  func insertText(_ text: String) {
-    <#code#>
-  }
-  
-  func deleteBackward() {
-    <#code#>
-  }
-  
-  
 }
-*/

@@ -97,7 +97,7 @@ final class WordGuessViewController: UIViewController {
     loadingView.pin(to: view.safeAreaLayoutGuide)
     
     guessInputTextField.becomeFirstResponder()
-    title = "Guess the word"
+    title = "Guess the clue"
     
     navigationItem.rightBarButtonItem = shareButton
   }

@@ -48,14 +48,38 @@ final class WordleKeyboardInputView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupKeyboard()
+    // TODO: Fuck you this doesn't work with custom inputView
+//    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
   }
   
   required init?(coder: NSCoder) {
     super.init(coder: coder)
     setupKeyboard()
+    // TODO: Fuck you this doesn't work with custom inputView
+//    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
   }
   
-  private func setupKeyboard() {
+  @objc private func keyboardWillShow(_ notification: Notification) {
+    guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+    let keyboardRectangle = keyboardFrame.cgRectValue
+    let keyboardWidth = keyboardRectangle.width
+    
+    guard let maxKeysInARow = type(of: self).keyboardLayout.max(by: { $0.count < $1.count })?.count else { return }
+    let totalSpace = Layout.interKeySpacing * Double(maxKeysInARow + 1)
+    
+    let keyWidth = CGFloat((keyboardWidth - totalSpace) / Double(maxKeysInARow))
+    setupKeyboard(keyWidth: keyWidth)
+  }
+  
+  static func getPortraitModeKeyWidth() -> CGFloat {
+    let keyboardWidth = UIScreen.main.bounds.width
+    guard let maxKeysInARow = keyboardLayout.max(by: { $0.count < $1.count })?.count else { return 0.0 }
+    let totalSpace = Layout.interKeySpacing * Double(maxKeysInARow + 1)
+    
+    return CGFloat((keyboardWidth - totalSpace) / Double(maxKeysInARow))
+  }
+  
+  private func setupKeyboard(keyWidth: CGFloat = getPortraitModeKeyWidth()) {
     backgroundColor = .tertiarySystemFill
     translatesAutoresizingMaskIntoConstraints = false
     
@@ -76,6 +100,7 @@ final class WordleKeyboardInputView: UIView {
         // last row must add Enter key (Submit guess)
         let keyView = WordleKeyboardKey(keyType: .submit)
         keyView.delegate = self
+        keyView.widthAnchor.constraint(equalToConstant: keyWidth).isActive = true
         stackView.addArrangedSubview(keyView)
         stackView.setCustomSpacing(Layout.specialKeySpacing, after: keyView)
       }
@@ -83,6 +108,7 @@ final class WordleKeyboardInputView: UIView {
       row.enumerated().forEach { index, char in
         let keyView = WordleKeyboardKey(keyType: .char(Character(char)))
         keyView.delegate = self
+        keyView.widthAnchor.constraint(equalToConstant: keyWidth).isActive = true
         stackView.addArrangedSubview(keyView)
         
         keyReferences.append(WeakRef(value: keyView))
@@ -92,6 +118,7 @@ final class WordleKeyboardInputView: UIView {
           // last row must add Backspace key
           let keyView = WordleKeyboardKey(keyType: .del)
           keyView.delegate = self
+          keyView.widthAnchor.constraint(equalToConstant: keyWidth).isActive = true
           stackView.addArrangedSubview(keyView)
         }
       }

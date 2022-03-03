@@ -25,7 +25,7 @@ final class WordleKeyboardKey: UIView {
     let label = UILabel()
     label.numberOfLines = 1
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.textColor = .secondarySystemFill // TODO what's the right color??
+    label.textColor = .systemFill // TODO what's the right color??
     label.textAlignment = .center
     label.font = label.font.withSize(24.0)
     
@@ -47,7 +47,7 @@ final class WordleKeyboardKey: UIView {
     
     layer.cornerRadius = 3.0
     layer.masksToBounds = false
-    backgroundColor = .systemGray
+    backgroundColor = guessState.associatedColor
     
     addSubview(characterLabel)
     characterLabel.pin(to: self, margins: UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0))

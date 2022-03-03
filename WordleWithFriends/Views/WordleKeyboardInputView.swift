@@ -47,16 +47,37 @@ final class WordleKeyboardInputView: UIView {
       widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width),
     ])
     
-    type(of: self).keyboardLayout.forEach { row in
+    type(of: self).keyboardLayout.enumerated().forEach { index, row in
       let stackView = UIStackView()
       stackView.translatesAutoresizingMaskIntoConstraints = false
       stackView.spacing = 2.0
       stackView.axis = .horizontal
       stackView.alignment = .fill
       
-      row.forEach { key in
+      let isLastRow = index == type(of: self).keyboardLayout.count - 1
+      
+      if isLastRow {
+        // last row must add Enter character
+        let keyView = WordleKeyboardKey()
+        keyView.char = "⏎"
+        stackView.addArrangedSubview(keyView)
+        stackView.setCustomSpacing(4.0, after: keyView)
+      }
+      
+      row.enumerated().forEach { index, key in
         let keyView = WordleKeyboardKey()
         keyView.char = Character(key)
+        stackView.addArrangedSubview(keyView)
+        
+        if index == row.count - 1 {
+          stackView.setCustomSpacing(4.0, after: keyView)
+        }
+      }
+      
+      if isLastRow {
+        // last row must add Backspace key
+        let keyView = WordleKeyboardKey()
+        keyView.char = "⌫"
         stackView.addArrangedSubview(keyView)
       }
       

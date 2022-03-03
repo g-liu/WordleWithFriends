@@ -56,7 +56,7 @@ final class WordleKeyboardInputView: UIView {
   }
   
   private func setupKeyboard() {
-    backgroundColor = .secondarySystemBackground
+    backgroundColor = .tertiarySystemFill
     translatesAutoresizingMaskIntoConstraints = false
     
     NSLayoutConstraint.activate([

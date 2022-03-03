@@ -40,7 +40,6 @@ final class WordleKeyboardKey: UIButton {
     let label = UILabel()
     label.numberOfLines = 1
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.textColor = .systemFill // TODO what's the right color??
     label.textAlignment = .center
     label.font = label.font.withSize(24.0)
     

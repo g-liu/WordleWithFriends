@@ -287,7 +287,7 @@ extension WordGuessViewController: UITextFieldDelegate {
     return false
   }
   
-  // TODO: The below may be deprecated now after the custom keyboard
+  // Note: We still need this function as users can use bluetooth keyboard etc. to bypass the onscreen input
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     guard !gameGuessesModel.isGameOver else {
       return false

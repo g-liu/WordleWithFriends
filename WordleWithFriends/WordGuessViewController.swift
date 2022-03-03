@@ -330,7 +330,12 @@ extension WordGuessViewController: GameEndDelegate {
 
 extension WordGuessViewController: KeyTapDelegate {
   func didTapKey(_ char: Character) {
+    guard !gameGuessesModel.isGameOver else { return }
+    
+    guard guessInputTextField.text?.isLettersOnly() ?? false else { return }
+    
     guard (guessInputTextField.text?.count ?? 0) < GameSettings.clueLength.readIntValue() else { return }
+    
     guessInputTextField.insertText("\(char)")
   }
   

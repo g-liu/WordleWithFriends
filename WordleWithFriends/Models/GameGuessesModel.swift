@@ -34,6 +34,10 @@ struct GameGuessesModel {
     letterGuesses[letterGuesses.count - 1].updateGuess(newGuess)
   }
   
+  mutating func forceGameOver() {
+    isGameOver = true
+  }
+  
   /// Submit a guess
   /// - Returns: if the user guessed the word correctly
   @discardableResult

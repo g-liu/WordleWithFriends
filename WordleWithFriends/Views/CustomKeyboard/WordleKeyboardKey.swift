@@ -85,7 +85,9 @@ final class WordleKeyboardKey: UIButton {
         delegate?.didTapDelete()
         AudioServicesPlaySystemSound(1155)
       case .forfeit:
-        // TODO: impl
+        delegate?.didForfeit()
+        isEnabled = false
+        isHidden = true
         AudioServicesPlaySystemSound(1156)
     }
   }

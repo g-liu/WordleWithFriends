@@ -12,6 +12,7 @@ protocol KeyTapDelegate {
   func didTapKey(_ char: Character)
   func didTapSubmit()
   func didTapDelete()
+  func didForfeit()
 }
 
 final class WordleKeyboardInputView: UIInputView {

@@ -12,6 +12,8 @@ extension Int {
   var asFloat: Float { .init(self) }
   var asCGFloat: CGFloat { .init(self) }
   
+  var inverse: Double { 1.0 / self }
+  
   static var formatter: NumberFormatter = {
     let fmt = NumberFormatter()
     fmt.numberStyle = .spellOut

@@ -32,11 +32,11 @@ final class WordleKeyboardKey: UIButton {
           contentEdgeInsets.left = 8
           contentEdgeInsets.right = 8
           
+          addTarget(self, action: #selector(didBeginLongPressKey), for: .touchDown)
+          
           let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressKey))
           longPressGestureRecognizer.minimumPressDuration = minDuration
           addGestureRecognizer(longPressGestureRecognizer)
-          
-          addTarget(self, action: #selector(didBeginLongPressKey), for: .touchDown)
           
           addSubview(progressBar)
           NSLayoutConstraint.activate([
@@ -126,15 +126,14 @@ final class WordleKeyboardKey: UIButton {
   
   @objc private func didBeginLongPressKey() {
     // begin progress bar animation
-    progressBarTimer = Timer.scheduledTimer(timeInterval: TimeInterval(1.0/UIScreen.main.maximumFramesPerSecond), target: self, selector: #selector(shouldUpdateProgressBar), userInfo: nil, repeats: true)
+    progressBarTimer = Timer.scheduledTimer(timeInterval: TimeInterval(UIScreen.main.maximumFramesPerSecond.inverse), target: self, selector: #selector(shouldUpdateProgressBar), userInfo: nil, repeats: true)
     progressBar.isHidden = false
   }
   
   @objc private func shouldUpdateProgressBar() {
     guard case KeyType.forfeit(let minDuration) = keyType else { return }
     timerFireCount += 1
-    progressBar.progress = ((1.0/UIScreen.main.maximumFramesPerSecond) * Double(timerFireCount)) / minDuration
-    print(progressBar.progress)
+    progressBar.progress = Float((UIScreen.main.maximumFramesPerSecond.inverse * timerFireCount) / minDuration)
   }
   
   @objc private func didLongPressKey(_ gestureRecognizer: UIGestureRecognizer) {

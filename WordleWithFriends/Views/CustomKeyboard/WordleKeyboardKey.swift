@@ -74,7 +74,7 @@ final class WordleKeyboardKey: UIButton {
         UIDevice.current.playInputClick()
       case .submit:
         delegate?.didTapSubmit()
-        UIDevice.current.playInputClick()
+        AudioServicesPlaySystemSound(1156)
       case .del:
         delegate?.didTapDelete()
         AudioServicesPlaySystemSound(1155)

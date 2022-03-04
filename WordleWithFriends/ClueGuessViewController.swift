@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 final class ClueGuessViewController: UIViewController {
   
@@ -154,6 +155,9 @@ final class ClueGuessViewController: UIViewController {
       gameGuessesModel.markInvalidGuess()
       let currentIndexPath = IndexPath.Row(gameGuessesModel.numberOfGuesses)
       guessTable.reloadRows(at: [currentIndexPath], with: .none)
+            
+      AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+
       return
     }
     
@@ -289,17 +293,12 @@ extension ClueGuessViewController: UITextFieldDelegate {
   
   // Note: We still need this function as users can use bluetooth keyboard etc. to bypass the onscreen input
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    guard !gameGuessesModel.isGameOver else {
-      return false
-    }
-    
-    guard string.isLettersOnly() else {
-      return false
-    }
-    
-    guard (textField.text?.count ?? 0) + string.count <= GameSettings.clueLength.readIntValue() else {
-      return false
-    }
+    guard !gameGuessesModel.isGameOver,
+          string.isLettersOnly(),
+          (textField.text?.count ?? 0) + string.count <= GameSettings.clueLength.readIntValue() else {
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            return false
+          }
     
     gameGuessesModel.clearInvalidGuess()
     
@@ -332,11 +331,12 @@ extension ClueGuessViewController: GameEndDelegate {
 
 extension ClueGuessViewController: KeyTapDelegate {
   func didTapKey(_ char: Character) {
-    guard !gameGuessesModel.isGameOver else { return }
-    
-    guard guessInputTextField.text?.isLettersOnly() ?? false else { return }
-    
-    guard (guessInputTextField.text?.count ?? 0) < GameSettings.clueLength.readIntValue() else { return }
+    guard !gameGuessesModel.isGameOver,
+          guessInputTextField.text?.isLettersOnly() ?? false,
+          (guessInputTextField.text?.count ?? 0) < GameSettings.clueLength.readIntValue() else {
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            return
+          }
     
     guessInputTextField.insertText("\(char)")
   }

@@ -93,6 +93,10 @@ final class WordleKeyboardInputView: UIView {
     return keyboardRowKeyWidths.min() ?? .zero
   }
   
+  func resetKeyboard() {
+    setupKeyboard()
+  }
+  
   private func setupKeyboard(keyWidth: CGFloat = getPortraitModeKeyWidth()) {
     backgroundColor = .tertiarySystemFill
     translatesAutoresizingMaskIntoConstraints = false
@@ -102,6 +106,7 @@ final class WordleKeyboardInputView: UIView {
     ])
     
     mainStackView.removeAllArrangedSubviews()
+    keyReferences = []
     
     type(of: self).keyboardLayout.enumerated().forEach { index, row in
       let keyboardRow = KeyboardRow()

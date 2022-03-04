@@ -320,6 +320,8 @@ extension ClueGuessViewController: GameEndDelegate {
     let newClue = GameUtility.pickWord()
     gameGuessesModel = GameGuessesModel(clue: newClue)
     
+    wordleKeyboard.resetKeyboard()
+    
     DispatchQueue.main.async { [weak self] in
       self?.guessTable.reloadData()
       // TODO: In the future might have to reset `cellHeightCache`

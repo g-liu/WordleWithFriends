@@ -31,6 +31,10 @@ final class WordleKeyboardKey: UIButton {
 
           contentEdgeInsets.left = 8
           contentEdgeInsets.right = 8
+          
+          let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressKey))
+          longPressGestureRecognizer.minimumPressDuration = 1.5
+          addGestureRecognizer(longPressGestureRecognizer)
       }
     }
   }
@@ -44,6 +48,7 @@ final class WordleKeyboardKey: UIButton {
   var delegate: KeyTapDelegate?
   
   init(keyType: KeyType) {
+    // TODO: Hacky AF, any other way to trigger the didSet more gracefully?
     self.keyType = .del
     defer {
       self.keyType = keyType
@@ -85,10 +90,18 @@ final class WordleKeyboardKey: UIButton {
         delegate?.didTapDelete()
         AudioServicesPlaySystemSound(1155)
       case .forfeit:
-        delegate?.didForfeit()
-        isEnabled = false
-        isHidden = true
-        AudioServicesPlaySystemSound(1156)
+//        delegate?.didForfeit()
+//        isEnabled = false
+//        isHidden = true
+//        AudioServicesPlaySystemSound(1156)
+        break // handled by long-press
     }
+  }
+  
+  @objc private func didLongPressKey(_ gestureRecognizer: UIGestureRecognizer) {
+    delegate?.didForfeit()
+    isEnabled = false
+    isHidden = true
+    AudioServicesPlaySystemSound(1156)
   }
 }

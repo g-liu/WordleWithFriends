@@ -167,10 +167,7 @@ final class GameSetupViewController: UIViewController {
   }
   
   @objc private func initiateGameWithRandomWord() {
-    var clue = ""
-    repeat {
-      clue = GameUtility.pickWord()
-    } while !clue.isARealWord()
+    let clue = GameUtility.pickWord()
     
     clueTextField.text = clue
     

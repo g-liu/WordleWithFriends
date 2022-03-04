@@ -47,32 +47,6 @@ final class WordleKeyboardInputView: UIView {
     return stackView
   }()
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-//    setupKeyboard()
-    // TODO: Fuck you this doesn't work with custom inputView
-//    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-  }
-  
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-//    setupKeyboard()
-    // TODO: Fuck you this doesn't work with custom inputView
-//    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-  }
-  
-  @objc private func keyboardWillShow(_ notification: Notification) {
-    guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-    let keyboardRectangle = keyboardFrame.cgRectValue
-    let keyboardWidth = keyboardRectangle.width
-    
-    guard let maxKeysInARow = type(of: self).keyboardLayout.max(by: { $0.count < $1.count })?.count else { return }
-    let totalSpace = KeyboardRow.Layout.interKeySpacing * Double(maxKeysInARow + 1)
-    
-    let keyWidth = CGFloat((keyboardWidth - totalSpace) / Double(maxKeysInARow))
-    setupKeyboard(keyWidth: keyWidth)
-  }
-  
   static func getPortraitModeKeyWidth() -> CGFloat {
     let keyboardWidth = UIScreen.main.bounds.width
     let keyboardRowKeyWidths = keyboardLayout.enumerated().map { index, row -> CGFloat in

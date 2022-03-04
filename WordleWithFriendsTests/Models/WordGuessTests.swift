@@ -9,6 +9,16 @@ import XCTest
 @testable import WordleWithFriends
 
 class WordGuessTests: XCTestCase {
+  // MARK: - word
+  func testWordFromEmptyGuess() {
+    XCTAssertEqual(WordGuess().word, "")
+  }
+  
+  func testWordFromNonEmptyGuess() {
+    XCTAssertEqual(WordGuess(guess: "FIRST").word, "FIRST")
+  }
+  
+  // MARK: - checkGuess
   func testSmokeTests() {
     validateGuess("CATER", against: "RATED", pattern: [.incorrect, .correct, .correct, .correct, .misplaced])
     validateGuess("SMOKE", against: "WATER", pattern: [.incorrect, .incorrect, .incorrect, .incorrect, .misplaced])
@@ -44,8 +54,7 @@ class WordGuessTests: XCTestCase {
   
   func testForceStateMisplaced() {
     let guess = "CRACK"
-    var model = WordGuess()
-    model.updateGuess(guess)
+    var model = WordGuess(guess: guess)
     model.forceState(.misplaced)
     (0..<guess.count).forEach { index in
       XCTAssertEqual(model.guess(at: index)?.state, .misplaced)
@@ -56,8 +65,7 @@ class WordGuessTests: XCTestCase {
     let firstGuess = "DOPES"
     let secondGuess = "MAGICAL"
     
-    var model = WordGuess()
-    model.updateGuess(firstGuess)
+    var model = WordGuess(guess: firstGuess)
     firstGuess.enumerated().forEach { index, character in
       let letterGuess = model.guess(at: index)
       XCTAssertEqual(String(letterGuess!.letter), String(character))
@@ -73,20 +81,17 @@ class WordGuessTests: XCTestCase {
   }
   
   func testGetGuessAtNegativeIndexIsNil() {
-    var model = WordGuess()
-    model.updateGuess("DIFFS")
+    let model = WordGuess(guess: "DIFFS")
     XCTAssertNil(model.guess(at: -1))
   }
   
   func testGetGuessAtIndexOverCountIsNil() {
-    var model = WordGuess()
-    model.updateGuess("DIPPY")
+    let model = WordGuess(guess: "DIPPY")
     XCTAssertNil(model.guess(at: 5))
   }
   
   func testGetGuessAtFirstLetterIsValid() {
-    var model = WordGuess()
-    model.updateGuess("CORES")
+    let model = WordGuess(guess: "CORES")
     let guess = model.guess(at: 0)!
     XCTAssertEqual(guess.letter, "C")
     XCTAssertEqual(guess.state, .unchecked)
@@ -98,8 +103,7 @@ class WordGuessTests: XCTestCase {
   }
   
   func testStringRepresentationForAllStates() {
-    var model = WordGuess()
-    model.updateGuess("WORDS")
+    var model = WordGuess(guess: "WORDS")
     model.forceState(.unchecked)
     
     XCTAssertEqual(model.asString(), "⬛️⬛️⬛️⬛️⬛️")
@@ -127,8 +131,7 @@ extension WordGuessTests {
     assert(guess.count == clue.count, "Guess and clue must be same length")
     assert(clue.count == pattern.count, "Expected pattern must be same length as clue")
     
-    var model = WordGuess()
-    model.updateGuess(guess)
+    var model = WordGuess(guess: guess)
     let _ = model.checkGuess(against: clue)
     
     (0..<clue.count).forEach { index in

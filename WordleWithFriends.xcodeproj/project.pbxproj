@@ -41,7 +41,7 @@
 		6C19F5A927921EFB00062083 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C19F5A727921EFB00062083 /* LaunchScreen.storyboard */; };
 		6C19F5BF27921EFC00062083 /* WordleWithFriendsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5BE27921EFC00062083 /* WordleWithFriendsUITests.swift */; };
 		6C19F5D127922D6700062083 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5D027922D6700062083 /* String+Extension.swift */; };
-		6C19F5D62792356500062083 /* WordGuessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5D52792356500062083 /* WordGuessViewController.swift */; };
+		6C19F5D62792356500062083 /* ClueGuessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5D52792356500062083 /* ClueGuessViewController.swift */; };
 		6C19F5E527923B1400062083 /* WordGuessRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5E427923B1400062083 /* WordGuessRow.swift */; };
 		6C19F5F027923C5900062083 /* NSLayoutConstraint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5EF27923C5900062083 /* NSLayoutConstraint+Extension.swift */; };
 		6C19F5FD27923CBB00062083 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19F5FC27923CBB00062083 /* UIView+Extension.swift */; };
@@ -54,6 +54,12 @@
 		6C78E0C12797902700C501CD /* XCUIElement+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C78E0C02797902700C501CD /* XCUIElement+Extension.swift */; };
 		6C834C8E279C87160024CB13 /* GameUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C834C8D279C87160024CB13 /* GameUtility.swift */; };
 		6C834C90279C897F0024CB13 /* IndexPath+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C834C8F279C897F0024CB13 /* IndexPath+Extension.swift */; };
+		6C94887127D07FD4005252F1 /* WordleKeyboardInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887027D07FD4005252F1 /* WordleKeyboardInputView.swift */; };
+		6C94887327D08598005252F1 /* WordleKeyboardKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887227D08598005252F1 /* WordleKeyboardKey.swift */; };
+		6C94887627D098C7005252F1 /* WeakRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887527D098C7005252F1 /* WeakRef.swift */; };
+		6C94887827D0AAD9005252F1 /* LetterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887727D0AAD9005252F1 /* LetterState.swift */; };
+		6C94887C27D0AB15005252F1 /* LetterStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887B27D0AB15005252F1 /* LetterStateTests.swift */; };
+		6C94887E27D0B4E4005252F1 /* KeyboardRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887D27D0B4E4005252F1 /* KeyboardRow.swift */; };
 		6CBBCECF279BDC7D00875C30 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */; };
 		6CBCC3CD2797565D005EB254 /* DismissableAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCC3CC2797565D005EB254 /* DismissableAlertController.swift */; };
 		6CBCC3D1279764FF005EB254 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */; };
@@ -119,7 +125,7 @@
 		6C19F5BE27921EFC00062083 /* WordleWithFriendsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleWithFriendsUITests.swift; sourceTree = "<group>"; };
 		6C19F5C027921EFC00062083 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6C19F5D027922D6700062083 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		6C19F5D52792356500062083 /* WordGuessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordGuessViewController.swift; sourceTree = "<group>"; };
+		6C19F5D52792356500062083 /* ClueGuessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClueGuessViewController.swift; sourceTree = "<group>"; };
 		6C19F5E427923B1400062083 /* WordGuessRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordGuessRow.swift; sourceTree = "<group>"; };
 		6C19F5EF27923C5900062083 /* NSLayoutConstraint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Extension.swift"; sourceTree = "<group>"; };
 		6C19F5FC27923CBB00062083 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -132,6 +138,12 @@
 		6C78E0C02797902700C501CD /* XCUIElement+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Extension.swift"; sourceTree = "<group>"; };
 		6C834C8D279C87160024CB13 /* GameUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameUtility.swift; sourceTree = "<group>"; };
 		6C834C8F279C897F0024CB13 /* IndexPath+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IndexPath+Extension.swift"; sourceTree = "<group>"; };
+		6C94887027D07FD4005252F1 /* WordleKeyboardInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleKeyboardInputView.swift; sourceTree = "<group>"; };
+		6C94887227D08598005252F1 /* WordleKeyboardKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleKeyboardKey.swift; sourceTree = "<group>"; };
+		6C94887527D098C7005252F1 /* WeakRef.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakRef.swift; sourceTree = "<group>"; };
+		6C94887727D0AAD9005252F1 /* LetterState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterState.swift; sourceTree = "<group>"; };
+		6C94887B27D0AB15005252F1 /* LetterStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterStateTests.swift; sourceTree = "<group>"; };
+		6C94887D27D0B4E4005252F1 /* KeyboardRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardRow.swift; sourceTree = "<group>"; };
 		6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		6CBCC3CC2797565D005EB254 /* DismissableAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissableAlertController.swift; sourceTree = "<group>"; };
 		6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
@@ -177,6 +189,7 @@
 			children = (
 				60D948032793A72800086C51 /* LayoutUtility.swift */,
 				6C834C8D279C87160024CB13 /* GameUtility.swift */,
+				6C94887527D098C7005252F1 /* WeakRef.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -272,7 +285,7 @@
 				6C19F59E27921EFA00062083 /* SceneDelegate.swift */,
 				6C19F5A027921EFA00062083 /* GameSetupViewController.swift */,
 				60D948072793BB0D00086C51 /* Settings */,
-				6C19F5D52792356500062083 /* WordGuessViewController.swift */,
+				6C19F5D52792356500062083 /* ClueGuessViewController.swift */,
 				6C19F5A527921EFB00062083 /* Assets.xcassets */,
 				6C19F5A727921EFB00062083 /* LaunchScreen.storyboard */,
 				6C19F5AA27921EFC00062083 /* Info.plist */,
@@ -319,6 +332,7 @@
 		6C19F5E327923B0B00062083 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6C94887427D08C64005252F1 /* CustomKeyboard */,
 				6C19F5E427923B1400062083 /* WordGuessRow.swift */,
 				6C19F60127923F8400062083 /* LetterTileView.swift */,
 				6C0009E12792AE8200BCC9B6 /* WordInputTextField.swift */,
@@ -333,6 +347,7 @@
 				6C39559E279288D100B0EF29 /* WordGuess.swift */,
 				6C3955A0279288E800B0EF29 /* LetterGuess.swift */,
 				60D948002793A46700086C51 /* GameEndDelegate.swift */,
+				6C94887727D0AAD9005252F1 /* LetterState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -343,6 +358,7 @@
 				6C3955A22792890F00B0EF29 /* WordGuessTests.swift */,
 				60D947F927938A6900086C51 /* LetterGuessTests.swift */,
 				60D947FB27938AD200086C51 /* GameGuessesModelTests.swift */,
+				6C94887B27D0AB15005252F1 /* LetterStateTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -353,6 +369,16 @@
 				6C78E0C02797902700C501CD /* XCUIElement+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6C94887427D08C64005252F1 /* CustomKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				6C94887027D07FD4005252F1 /* WordleKeyboardInputView.swift */,
+				6C94887227D08598005252F1 /* WordleKeyboardKey.swift */,
+				6C94887D27D0B4E4005252F1 /* KeyboardRow.swift */,
+			);
+			path = CustomKeyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -425,6 +451,7 @@
 					};
 					6C19F5AE27921EFC00062083 = {
 						CreatedOnToolsVersion = 12.2;
+						LastSwiftMigration = 1320;
 						TestTargetID = 6C19F59827921EFA00062083;
 					};
 					6C19F5B927921EFC00062083 = {
@@ -498,7 +525,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C19F5D62792356500062083 /* WordGuessViewController.swift in Sources */,
+				6C19F5D62792356500062083 /* ClueGuessViewController.swift in Sources */,
 				6C19F60B2792439600062083 /* GameGuessesModel.swift in Sources */,
 				60D948102793E2BC00086C51 /* GameSettingTableViewCell.swift in Sources */,
 				6C3955A1279288E800B0EF29 /* LetterGuess.swift in Sources */,
@@ -514,15 +541,20 @@
 				60D948092793BD0300086C51 /* GameSettings.swift in Sources */,
 				6CBCC3D32797657B005EB254 /* CGSize+Extension.swift in Sources */,
 				6C19F5E527923B1400062083 /* WordGuessRow.swift in Sources */,
+				6C94887127D07FD4005252F1 /* WordleKeyboardInputView.swift in Sources */,
 				6CBBCECF279BDC7D00875C30 /* Double+Extension.swift in Sources */,
 				6C19F60227923F8400062083 /* LetterTileView.swift in Sources */,
 				6CBCC3CD2797565D005EB254 /* DismissableAlertController.swift in Sources */,
 				60D948062793AE1400086C51 /* GameSettingsViewController.swift in Sources */,
+				6C94887827D0AAD9005252F1 /* LetterState.swift in Sources */,
 				6C834C8E279C87160024CB13 /* GameUtility.swift in Sources */,
 				60D948142793E50100086C51 /* GameSettingProtocol.swift in Sources */,
 				6C0009E22792AE8200BCC9B6 /* WordInputTextField.swift in Sources */,
 				6C19F59F27921EFA00062083 /* SceneDelegate.swift in Sources */,
+				6C94887327D08598005252F1 /* WordleKeyboardKey.swift in Sources */,
+				6C94887627D098C7005252F1 /* WeakRef.swift in Sources */,
 				60D948012793A46700086C51 /* GameEndDelegate.swift in Sources */,
+				6C94887E27D0B4E4005252F1 /* KeyboardRow.swift in Sources */,
 				6CBCC3D1279764FF005EB254 /* CGPoint+Extension.swift in Sources */,
 				6C19F6162792491900062083 /* UIStackView+Extension.swift in Sources */,
 				60D947FF2793A23700086C51 /* GameMessagingViewController.swift in Sources */,
@@ -536,6 +568,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C3955A32792890F00B0EF29 /* WordGuessTests.swift in Sources */,
+				6C94887C27D0AB15005252F1 /* LetterStateTests.swift in Sources */,
 				60D947FA27938A6900086C51 /* LetterGuessTests.swift in Sources */,
 				60D947FC27938AD200086C51 /* GameGuessesModelTests.swift in Sources */,
 			);
@@ -736,6 +769,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2A23N78DMF;
 				INFOPLIST_FILE = WordleWithFriendsTests/Info.plist;
@@ -747,6 +781,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = letsgooo.WordleWithFriendsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordleWithFriends.app/WordleWithFriends";
@@ -758,6 +793,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2A23N78DMF;
 				INFOPLIST_FILE = WordleWithFriendsTests/Info.plist;

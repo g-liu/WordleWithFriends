@@ -1,13 +1,14 @@
 //
-//  WordGuessViewController.swift
+//  ClueGuessViewController.swift
 //  WordleWithFriends
 //
 //  Created by Geoffrey Liu on 1/14/22.
 //
 
 import UIKit
+import AudioToolbox
 
-final class WordGuessViewController: UIViewController {
+final class ClueGuessViewController: UIViewController {
   
   // Extremely hacky workaround of table jumpiness when reloading...
   // https://stackoverflow.com/questions/28244475/reloaddata-of-uitableview-with-dynamic-cell-heights-causes-jumpy-scrolling
@@ -34,6 +35,12 @@ final class WordGuessViewController: UIViewController {
     return tableView
   }()
   
+  private lazy var wordleKeyboard: WordleKeyboardInputView = {
+    let inputView = WordleKeyboardInputView()
+    inputView.delegate = self
+    return inputView
+  }()
+  
   private lazy var guessInputTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
@@ -44,6 +51,7 @@ final class WordGuessViewController: UIViewController {
     textField.delegate = self
     textField.layer.borderWidth = 1
     textField.layer.borderColor = UIColor.darkText.cgColor
+    textField.inputView = wordleKeyboard
     
     return textField
   }()
@@ -90,7 +98,7 @@ final class WordGuessViewController: UIViewController {
     loadingView.pin(to: view.safeAreaLayoutGuide)
     
     guessInputTextField.becomeFirstResponder()
-    title = "Guess the word"
+    title = "Guess the clue"
     
     navigationItem.rightBarButtonItem = shareButton
   }
@@ -140,7 +148,24 @@ final class WordGuessViewController: UIViewController {
   }
   
   private func submitGuess() {
+    // TODO: Move some checks to view model???
+    guard let wordGuess = guessInputTextField.text,
+          wordGuess.count == GameSettings.clueLength.readIntValue(),
+          GameSettings.allowNonDictionaryGuesses.readBoolValue() || wordGuess.isARealWord() else {
+      gameGuessesModel.markInvalidGuess()
+      let currentIndexPath = IndexPath.Row(gameGuessesModel.numberOfGuesses)
+      guessTable.reloadRows(at: [currentIndexPath], with: .none)
+            
+      AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+
+      return
+    }
+    
     let gameState = gameGuessesModel.submitGuess()
+    
+    if let mostRecentGuess = gameGuessesModel.mostRecentGuess {
+      wordleKeyboard.updateState(with: mostRecentGuess)
+    }
     
     guessTable.reloadData()
     
@@ -189,7 +214,7 @@ final class WordGuessViewController: UIViewController {
   }
 }
 
-extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
+extension ClueGuessViewController: UITableViewDelegate, UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     1
   }
@@ -253,18 +278,8 @@ extension WordGuessViewController: UITableViewDelegate, UITableViewDataSource {
   }
 }
 
-extension WordGuessViewController: UITextFieldDelegate {
+extension ClueGuessViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    // this is how we submit a guess
-    guard let wordGuess = textField.text,
-          wordGuess.count == GameSettings.clueLength.readIntValue(),
-          GameSettings.allowNonDictionaryGuesses.readBoolValue() || wordGuess.isARealWord() else {
-      gameGuessesModel.markInvalidGuess()
-      let currentIndexPath = IndexPath.Row(gameGuessesModel.numberOfGuesses)
-      guessTable.reloadRows(at: [currentIndexPath], with: .none)
-      return false
-    }
-    
     submitGuess()
     return false
   }
@@ -276,18 +291,14 @@ extension WordGuessViewController: UITextFieldDelegate {
     return false
   }
   
+  // Note: We still need this function as users can use bluetooth keyboard etc. to bypass the onscreen input
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    guard !gameGuessesModel.isGameOver else {
-      return false
-    }
-    
-    guard string.isLettersOnly() else {
-      return false
-    }
-    
-    guard (textField.text?.count ?? 0) + string.count <= GameSettings.clueLength.readIntValue() else {
-      return false
-    }
+    guard !gameGuessesModel.isGameOver,
+          string.isLettersOnly(),
+          (textField.text?.count ?? 0) + string.count <= GameSettings.clueLength.readIntValue() else {
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            return false
+          }
     
     gameGuessesModel.clearInvalidGuess()
     
@@ -295,7 +306,7 @@ extension WordGuessViewController: UITextFieldDelegate {
   }
 }
 
-extension WordGuessViewController: GameEndDelegate {
+extension ClueGuessViewController: GameEndDelegate {
   func shareResult() {
     shareAction(nil)
   }
@@ -305,13 +316,36 @@ extension WordGuessViewController: GameEndDelegate {
   }
   
   func restartWithNewClue() {
-    let newClue = GameUtility.pickWord(length: GameSettings.clueLength.readIntValue())
+    let newClue = GameUtility.pickWord()
     gameGuessesModel = GameGuessesModel(clue: newClue)
+    
+    wordleKeyboard.resetKeyboard()
     
     DispatchQueue.main.async { [weak self] in
       self?.guessTable.reloadData()
       // TODO: In the future might have to reset `cellHeightCache`
       self?.guessTable.scrollToRow(at: .zero, at: .bottom, animated: true)
     }
+  }
+}
+
+extension ClueGuessViewController: KeyTapDelegate {
+  func didTapKey(_ char: Character) {
+    guard !gameGuessesModel.isGameOver,
+          guessInputTextField.text?.isLettersOnly() ?? false,
+          (guessInputTextField.text?.count ?? 0) < GameSettings.clueLength.readIntValue() else {
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            return
+          }
+    
+    guessInputTextField.insertText("\(char)")
+  }
+  
+  func didTapSubmit() {
+    submitGuess()
+  }
+  
+  func didTapDelete() {
+    guessInputTextField.deleteBackward()
   }
 }

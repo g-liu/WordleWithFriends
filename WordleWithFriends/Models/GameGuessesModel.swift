@@ -25,12 +25,18 @@ struct GameGuessesModel {
     return letterGuesses[index]
   }
   
+  var mostRecentGuess: WordGuess? {
+    guard numberOfGuesses >= 1 else { return nil }
+    return letterGuesses[numberOfGuesses - 1]
+  }
+  
   mutating func updateGuess(_ newGuess: String) {
     letterGuesses[letterGuesses.count - 1].updateGuess(newGuess)
   }
   
   /// Submit a guess
   /// - Returns: if the user guessed the word correctly
+  @discardableResult
   mutating func submitGuess() -> GameState {
     let didGuessCorrectly = letterGuesses[letterGuesses.count - 1].checkGuess(against: clue)
     
@@ -61,14 +67,6 @@ struct GameGuessesModel {
   mutating func clearInvalidGuess() {
     letterGuesses[letterGuesses.count - 1].forceState(.unchecked)
   }
-}
-
-enum LetterState: Character {
-  case unchecked = "⬛️"
-  case correct = "🟩"
-  case misplaced = "🟨"
-  case incorrect = "⬜️"
-  case invalid = "🟥"
 }
 
 enum GameState {

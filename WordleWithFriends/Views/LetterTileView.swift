@@ -50,20 +50,16 @@ final class LetterTileView: UIView {
     layer.borderWidth = 1.0
     
     switch letterGuess.state {
-      case .correct:
-        backgroundColor = .systemGreen
-      case .misplaced:
-        backgroundColor = .systemYellow
-      case .incorrect:
-        backgroundColor = .systemGray
       case .unchecked:
         if letterGuess.letter != .space {
           layer.borderWidth = 3.0
         }
-        backgroundColor = .systemBackground
       case .invalid:
         layer.borderColor = UIColor.systemRed.cgColor
         layer.borderWidth = 3.0
+      default: break
     }
+    
+    backgroundColor = letterGuess.state.associatedColor
   }
 }

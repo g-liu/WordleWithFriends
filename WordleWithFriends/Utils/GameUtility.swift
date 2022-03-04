@@ -8,7 +8,7 @@
 import Foundation
 
 struct GameUtility {
-  static func pickWord(length: Int) -> String {
+  static func pickWord(length: Int = GameSettings.clueLength.readIntValue()) -> String {
     guard let path = Bundle.main.path(forResource: "words_\(GameSettings.clueLength.readIntValue())letters", ofType: "txt"),
           let data = try? String(contentsOfFile: path) else { return "" }
     

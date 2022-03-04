@@ -13,7 +13,7 @@ enum KeyType {
   case char(Character)
   case submit
   case del
-  case forfeit
+  case forfeit(Double)
 }
 
 final class WordleKeyboardKey: UIButton {
@@ -26,15 +26,25 @@ final class WordleKeyboardKey: UIButton {
           setTitle("⏎", for: .normal)
         case .del:
           setTitle("⌫", for: .normal)
-        case .forfeit:
+        case .forfeit(let minDuration):
           setTitle("Give up", for: .normal)
 
           contentEdgeInsets.left = 8
           contentEdgeInsets.right = 8
           
           let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressKey))
-          longPressGestureRecognizer.minimumPressDuration = 1.5
+          longPressGestureRecognizer.minimumPressDuration = minDuration
           addGestureRecognizer(longPressGestureRecognizer)
+          
+          addTarget(self, action: #selector(didBeginLongPressKey), for: .touchDown)
+          
+          addSubview(progressBar)
+          NSLayoutConstraint.activate([
+            progressBar.bottomAnchor.constraint(equalTo: bottomAnchor),
+            progressBar.leadingAnchor.constraint(equalTo: leadingAnchor),
+            progressBar.trailingAnchor.constraint(equalTo: trailingAnchor),
+          ])
+          progressBar.isHidden = true
       }
     }
   }
@@ -44,6 +54,17 @@ final class WordleKeyboardKey: UIButton {
       backgroundColor = guessState.associatedColor // TODO verify
     }
   }
+  
+  private var progressBarTimer: Timer?
+  private var timerFireCount: Int = 0
+  
+  private lazy var progressBar: UIProgressView = {
+    let bar = UIProgressView()
+    bar.translatesAutoresizingMaskIntoConstraints = false
+    bar.heightAnchor.constraint(equalToConstant: 4.0).isActive = true
+    
+    return bar
+  }()
   
   var delegate: KeyTapDelegate?
   
@@ -90,16 +111,37 @@ final class WordleKeyboardKey: UIButton {
         delegate?.didTapDelete()
         AudioServicesPlaySystemSound(1155)
       case .forfeit:
-//        delegate?.didForfeit()
-//        isEnabled = false
-//        isHidden = true
-//        AudioServicesPlaySystemSound(1156)
-        break // handled by long-press
+        resetGiveUpProgress()
+        
+        break // the actual action is handled by long-press
     }
+  }
+  
+  private func resetGiveUpProgress() {
+    progressBar.progress = 0.0
+    timerFireCount = 0
+    progressBarTimer?.invalidate()
+    progressBar.isHidden = true
+  }
+  
+  @objc private func didBeginLongPressKey() {
+    // begin progress bar animation
+    progressBarTimer = Timer.scheduledTimer(timeInterval: TimeInterval(1.0/UIScreen.main.maximumFramesPerSecond), target: self, selector: #selector(shouldUpdateProgressBar), userInfo: nil, repeats: true)
+    progressBar.isHidden = false
+  }
+  
+  @objc private func shouldUpdateProgressBar() {
+    guard case KeyType.forfeit(let minDuration) = keyType else { return }
+    timerFireCount += 1
+    progressBar.progress = ((1.0/UIScreen.main.maximumFramesPerSecond) * Double(timerFireCount)) / minDuration
+    print(progressBar.progress)
   }
   
   @objc private func didLongPressKey(_ gestureRecognizer: UIGestureRecognizer) {
     delegate?.didForfeit()
+    
+    resetGiveUpProgress()
+    
     isEnabled = false
     isHidden = true
     AudioServicesPlaySystemSound(1156)

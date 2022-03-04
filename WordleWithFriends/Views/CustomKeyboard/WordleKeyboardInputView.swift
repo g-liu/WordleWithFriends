@@ -100,7 +100,7 @@ final class WordleKeyboardInputView: UIInputView {
       mainStackView.setCustomSpacing(16.0, after: lastSubview)
     }
     
-    let forfeitKey = WordleKeyboardKey(keyType: .forfeit)
+    let forfeitKey = WordleKeyboardKey(keyType: .forfeit(1.5))
     forfeitKey.delegate = delegate
     mainStackView.addArrangedSubview(forfeitKey)
     forfeitKey.heightAnchor.constraint(equalToConstant: keyWidth * KeyboardRow.Layout.heightToWidthRatio).isActive = true

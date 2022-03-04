@@ -51,6 +51,8 @@
 		6C39559F279288D100B0EF29 /* WordGuess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C39559E279288D100B0EF29 /* WordGuess.swift */; };
 		6C3955A1279288E800B0EF29 /* LetterGuess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3955A0279288E800B0EF29 /* LetterGuess.swift */; };
 		6C3955A32792890F00B0EF29 /* WordGuessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3955A22792890F00B0EF29 /* WordGuessTests.swift */; };
+		6C78656127D204AC001C9F58 /* Float+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C78656027D204AC001C9F58 /* Float+Extension.swift */; };
+		6C78656327D2069C001C9F58 /* CGFloat+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C78656227D2069C001C9F58 /* CGFloat+Extension.swift */; };
 		6C78E0C12797902700C501CD /* XCUIElement+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C78E0C02797902700C501CD /* XCUIElement+Extension.swift */; };
 		6C834C8E279C87160024CB13 /* GameUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C834C8D279C87160024CB13 /* GameUtility.swift */; };
 		6C834C90279C897F0024CB13 /* IndexPath+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C834C8F279C897F0024CB13 /* IndexPath+Extension.swift */; };
@@ -135,6 +137,8 @@
 		6C39559E279288D100B0EF29 /* WordGuess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordGuess.swift; sourceTree = "<group>"; };
 		6C3955A0279288E800B0EF29 /* LetterGuess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterGuess.swift; sourceTree = "<group>"; };
 		6C3955A22792890F00B0EF29 /* WordGuessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordGuessTests.swift; sourceTree = "<group>"; };
+		6C78656027D204AC001C9F58 /* Float+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+Extension.swift"; sourceTree = "<group>"; };
+		6C78656227D2069C001C9F58 /* CGFloat+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extension.swift"; sourceTree = "<group>"; };
 		6C78E0C02797902700C501CD /* XCUIElement+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Extension.swift"; sourceTree = "<group>"; };
 		6C834C8D279C87160024CB13 /* GameUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameUtility.swift; sourceTree = "<group>"; };
 		6C834C8F279C897F0024CB13 /* IndexPath+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IndexPath+Extension.swift"; sourceTree = "<group>"; };
@@ -321,9 +325,11 @@
 				6C19F6152792491900062083 /* UIStackView+Extension.swift */,
 				6C0009DF2792AD8F00BCC9B6 /* Character+Extension.swift */,
 				60D948152793F90600086C51 /* Int+Extension.swift */,
+				6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */,
+				6C78656027D204AC001C9F58 /* Float+Extension.swift */,
+				6C78656227D2069C001C9F58 /* CGFloat+Extension.swift */,
 				6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */,
 				6CBCC3D22797657B005EB254 /* CGSize+Extension.swift */,
-				6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */,
 				6C834C8F279C897F0024CB13 /* IndexPath+Extension.swift */,
 			);
 			path = Extensions;
@@ -551,6 +557,7 @@
 				60D948142793E50100086C51 /* GameSettingProtocol.swift in Sources */,
 				6C0009E22792AE8200BCC9B6 /* WordInputTextField.swift in Sources */,
 				6C19F59F27921EFA00062083 /* SceneDelegate.swift in Sources */,
+				6C78656327D2069C001C9F58 /* CGFloat+Extension.swift in Sources */,
 				6C94887327D08598005252F1 /* WordleKeyboardKey.swift in Sources */,
 				6C94887627D098C7005252F1 /* WeakRef.swift in Sources */,
 				60D948012793A46700086C51 /* GameEndDelegate.swift in Sources */,
@@ -559,6 +566,7 @@
 				6C19F6162792491900062083 /* UIStackView+Extension.swift in Sources */,
 				60D947FF2793A23700086C51 /* GameMessagingViewController.swift in Sources */,
 				6C39559F279288D100B0EF29 /* WordGuess.swift in Sources */,
+				6C78656127D204AC001C9F58 /* Float+Extension.swift in Sources */,
 				6C834C90279C897F0024CB13 /* IndexPath+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

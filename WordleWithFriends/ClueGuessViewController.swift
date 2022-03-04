@@ -323,6 +323,7 @@ extension ClueGuessViewController: GameEndDelegate {
   func restartWithNewClue() {
     let newClue = GameUtility.pickWord()
     gameGuessesModel = GameGuessesModel(clue: newClue)
+    guessInputTextField.text = ""
     
     wordleKeyboard.resetKeyboard()
     

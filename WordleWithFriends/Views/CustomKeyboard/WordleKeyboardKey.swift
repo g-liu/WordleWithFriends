@@ -19,11 +19,11 @@ final class WordleKeyboardKey: UIButton {
     didSet {
       switch keyType {
         case .char(let character):
-          characterLabel.text = "\(character)"
+          setTitle("\(character)", for: .normal)
         case .submit:
-          characterLabel.text = "⏎"
+          setTitle("⏎", for: .normal)
         case .del:
-          characterLabel.text = "⌫"
+          setTitle("⌫", for: .normal)
       }
     }
   }
@@ -35,16 +35,6 @@ final class WordleKeyboardKey: UIButton {
   }
   
   var delegate: KeyTapDelegate?
-  
-  private lazy var characterLabel: UILabel = {
-    let label = UILabel()
-    label.numberOfLines = 1
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.textAlignment = .center
-    label.font = label.font.withSize(24.0)
-    
-    return label
-  }()
   
   init(keyType: KeyType) {
     self.keyType = .del
@@ -66,9 +56,8 @@ final class WordleKeyboardKey: UIButton {
     layer.masksToBounds = false
     backgroundColor = guessState.associatedColor
     
-    addSubview(characterLabel)
-    characterLabel.pin(to: self, margins: UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0))
-    
+    titleLabel?.font = titleLabel?.font.withSize(24.0)
+    titleLabel?.numberOfLines = 1
     addTarget(self, action: #selector(didTapKey), for: .touchUpInside)
   }
   

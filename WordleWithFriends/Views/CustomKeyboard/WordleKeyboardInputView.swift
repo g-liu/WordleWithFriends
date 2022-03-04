@@ -41,7 +41,7 @@ final class WordleKeyboardInputView: UIInputView {
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.alignment = .center
     stackView.axis = .vertical
-    stackView.distribution = .equalSpacing
+    stackView.distribution = .fill
     stackView.spacing = Layout.rowSpacing
     
     return stackView
@@ -94,6 +94,15 @@ final class WordleKeyboardInputView: UIInputView {
       
       mainStackView.addArrangedSubview(keyboardRow)
     }
+    
+    if let lastSubview = mainStackView.arrangedSubviews.last {
+      mainStackView.setCustomSpacing(16.0, after: lastSubview)
+    }
+    
+    let forfeitKey = WordleKeyboardKey(keyType: .forfeit)
+    forfeitKey.delegate = delegate
+    mainStackView.addArrangedSubview(forfeitKey)
+    forfeitKey.heightAnchor.constraint(equalToConstant: keyWidth * KeyboardRow.Layout.heightToWidthRatio).isActive = true
     
     // Sort key references A->Z for better lookup later
     keyReferences.sort { keyRef1, keyRef2 in

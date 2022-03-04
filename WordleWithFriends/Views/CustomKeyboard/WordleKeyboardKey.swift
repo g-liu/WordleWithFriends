@@ -13,6 +13,7 @@ enum KeyType {
   case char(Character)
   case submit
   case del
+  case forfeit
 }
 
 final class WordleKeyboardKey: UIButton {
@@ -25,6 +26,11 @@ final class WordleKeyboardKey: UIButton {
           setTitle("⏎", for: .normal)
         case .del:
           setTitle("⌫", for: .normal)
+        case .forfeit:
+          setTitle("Give up", for: .normal)
+
+          contentEdgeInsets.left = 8
+          contentEdgeInsets.right = 8
       }
     }
   }
@@ -78,6 +84,9 @@ final class WordleKeyboardKey: UIButton {
       case .del:
         delegate?.didTapDelete()
         AudioServicesPlaySystemSound(1155)
+      case .forfeit:
+        // TODO: impl
+        AudioServicesPlaySystemSound(1156)
     }
   }
 }

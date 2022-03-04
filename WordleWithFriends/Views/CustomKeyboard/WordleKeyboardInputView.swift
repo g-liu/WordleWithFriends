@@ -118,7 +118,7 @@ final class WordleKeyboardInputView: UIView {
       
       keyReferences.append(contentsOf: keyRowRefs)
       
-      mainStackView.addArrangedSubview(keyboardRow)
+      mainStackView.addArrangedSubview(keyboardRow.makeStackView())
     }
     
     // Sort key references A->Z for better lookup later

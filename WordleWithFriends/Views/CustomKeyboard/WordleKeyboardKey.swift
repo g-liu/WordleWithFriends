@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import AudioToolbox
 
 enum KeyType {
   case char(Character)
@@ -67,14 +68,16 @@ final class WordleKeyboardKey: UIButton {
   }
   
   @objc private func didTapKey() {
-    UIDevice.current.playInputClick()
     switch keyType {
       case .char(let character):
         delegate?.didTapKey(character)
+        UIDevice.current.playInputClick()
       case .submit:
         delegate?.didTapSubmit()
+        UIDevice.current.playInputClick()
       case .del:
         delegate?.didTapDelete()
+        AudioServicesPlaySystemSound(1155)
     }
   }
 }

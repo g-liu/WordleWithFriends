@@ -14,7 +14,7 @@ protocol KeyTapDelegate {
   func didTapDelete()
 }
 
-final class WordleKeyboardInputView: UIView {
+final class WordleKeyboardInputView: UIInputView {
   private struct Layout {
     static let rowSpacing = 8.0
     static let topPadding = 8.0
@@ -118,4 +118,8 @@ final class WordleKeyboardInputView: UIView {
       keyReferences[indexInRefArray].value?.updateGuessState(letterGuess.state)
     }
   }
+}
+
+extension WordleKeyboardInputView: UIInputViewAudioFeedback {
+  var enableInputClicksWhenVisible: Bool { true }
 }

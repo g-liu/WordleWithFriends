@@ -89,6 +89,7 @@ final class WordleKeyboardKey: UIButton {
     
     titleLabel?.font = titleLabel?.font.withSize(24.0)
     titleLabel?.numberOfLines = 1
+    setTitleColor(.label, for: .normal)
     addTarget(self, action: #selector(didTapKey), for: .touchUpInside)
   }
   

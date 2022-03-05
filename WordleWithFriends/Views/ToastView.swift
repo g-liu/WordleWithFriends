@@ -19,11 +19,11 @@ final class ToastView: UIView {
   
   private func setupView(_ text: String = "") {
     translatesAutoresizingMaskIntoConstraints = false
-    backgroundColor = .systemGray2
+    backgroundColor = .systemGray5
     layer.cornerRadius = 3.0
     layer.masksToBounds = false
     layer.shadowOffset = .init(width: 1, height: 1)
-    layer.shadowColor = UIColor.systemGray5.cgColor
+    layer.shadowColor = UIColor.systemGray6.cgColor
     layer.shadowRadius = 2
     layer.shadowOpacity = 0.5
     layer.shouldRasterize = true

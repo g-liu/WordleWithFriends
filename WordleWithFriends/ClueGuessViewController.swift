@@ -70,9 +70,9 @@ final class ClueGuessViewController: UIViewController {
   
   private var isBeingScrolled = false
   
-  init(clue: String, clueSource: ClueSource) {
-    gameGuessesModel = GameGuessesModel(clue: clue)
-    gameMessagingVC = GameMessagingViewController(clueSource: clueSource)
+  init(clue: String, gamemode: GameMode) {
+    gameGuessesModel = GameGuessesModel(clue: clue, gamemode: gamemode)
+    gameMessagingVC = GameMessagingViewController(gamemode: gamemode)
     super.init(nibName: nil, bundle: nil)
     gameMessagingVC.delegate = self
   }
@@ -100,7 +100,9 @@ final class ClueGuessViewController: UIViewController {
     guessInputTextField.becomeFirstResponder()
     title = "Guess the clue"
     
-    navigationItem.rightBarButtonItem = shareButton
+    if gameGuessesModel.gamemode != .infinite {
+      navigationItem.rightBarButtonItem = shareButton
+    }
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -174,9 +176,16 @@ final class ClueGuessViewController: UIViewController {
     
     switch gameState {
       case .win:
-        shareButton.isEnabled = true
-        gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
         wordleKeyboard.gameDidEnd()
+        if gameGuessesModel.gamemode == .infinite {
+          presentToast("Good job! \(gameGuessesModel.numberOfGuesses) guess(es)")
+          DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            self?.restartWithNewClue()
+          }
+        } else {
+          shareButton.isEnabled = true
+          gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
+        }
       case .lose:
         forceLoss()
       case .keepGuessing:
@@ -187,10 +196,17 @@ final class ClueGuessViewController: UIViewController {
   }
   
   private func forceLoss() {
-    shareButton.isEnabled = true
     gameGuessesModel.forceGameOver()
-    gameMessagingVC.showLose(clue: gameGuessesModel.clue)
     wordleKeyboard.gameDidEnd()
+    if gameGuessesModel.gamemode == .infinite {
+      presentToast(gameGuessesModel.clue)
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+        self?.restartWithNewClue()
+      }
+    } else {
+      shareButton.isEnabled = true
+      gameMessagingVC.showLose(clue: gameGuessesModel.clue)
+    }
   }
   
   @objc private func adjustForKeyboard(notification: Notification) {
@@ -227,7 +243,11 @@ extension ClueGuessViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    GameSettings.maxGuesses.readIntValue()
+    if gameGuessesModel.gamemode == .infinite {
+      return gameGuessesModel.numberOfGuesses + 1
+    }
+    
+    return GameSettings.maxGuesses.readIntValue()
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -324,7 +344,7 @@ extension ClueGuessViewController: GameEndDelegate {
   
   func restartWithNewClue() {
     let newClue = GameUtility.pickWord()
-    gameGuessesModel = GameGuessesModel(clue: newClue)
+    gameGuessesModel = GameGuessesModel(clue: newClue, gamemode: gameGuessesModel.gamemode)
     guessInputTextField.text = ""
     
     wordleKeyboard.resetKeyboard()

@@ -50,6 +50,17 @@ final class GameSetupViewController: UIViewController {
     return button
   }()
   
+  private lazy var infiniteModeButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle("Infinite mode", for: .normal)
+    button.setTitleColor(.systemRed, for: .normal)
+    button.addTarget(self, action: #selector(initiateGameOnInfiniteMode), for: .touchUpInside)
+    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    
+    return button
+  }()
+  
   private lazy var clueTextField: UITextField = {
     let textField = WordInputTextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
@@ -78,6 +89,7 @@ final class GameSetupViewController: UIViewController {
     stackView.addArrangedSubview(clueTextField)
     stackView.addArrangedSubview(startGameButton)
     stackView.addArrangedSubview(randomWordButton)
+    stackView.addArrangedSubview(infiniteModeButton)
     view.addSubview(stackView)
     
     let maxWidth = LayoutUtility.size(screenWidthPercentage: 85.0, maxWidth: 300)
@@ -169,16 +181,20 @@ final class GameSetupViewController: UIViewController {
   }
   
   @objc private func initiateGameWithRandomWord() {
-    let clue = GameUtility.pickWord()
-    
-    clueTextField.text = clue
+    clueTextField.text = GameUtility.pickWord()
     
     initiateGame(.computer)
   }
+  
+  @objc private func initiateGameOnInfiniteMode() {
+    clueTextField.text = GameUtility.pickWord()
+    
+    initiateGame(.infinite)
+  }
 
-  private func initiateGame(_ clueSource: ClueSource) {
+  private func initiateGame(_ gamemode: GameMode) {
     // start game
-    let clueGuessVC = ClueGuessViewController(clue: clueTextField.text?.uppercased() ?? "", clueSource: clueSource)
+    let clueGuessVC = ClueGuessViewController(clue: clueTextField.text?.uppercased() ?? "", gamemode: gamemode)
     clueTextField.text = ""
     startGameButton.isEnabled = false
     

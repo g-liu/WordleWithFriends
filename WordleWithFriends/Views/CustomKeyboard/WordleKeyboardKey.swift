@@ -41,7 +41,6 @@ final class WordleKeyboardKey: UIButton {
           
           addSubview(progressBar)
           progressBar.pin(to: self)
-          progressBar.trackTintColor = .clear
           sendSubviewToBack(progressBar)
           progressBar.isHidden = true
       }
@@ -50,7 +49,7 @@ final class WordleKeyboardKey: UIButton {
   
   private var guessState: LetterState = .unchecked {
     didSet {
-      backgroundColor = guessState.associatedColor // TODO verify
+      backgroundColor = guessState.associatedColor
     }
   }
   
@@ -60,7 +59,7 @@ final class WordleKeyboardKey: UIButton {
   private lazy var progressBar: UIProgressView = {
     let bar = UIProgressView()
     bar.translatesAutoresizingMaskIntoConstraints = false
-    bar.heightAnchor.constraint(equalToConstant: 4.0).isActive = true
+    bar.trackTintColor = .clear
     
     return bar
   }()
@@ -139,6 +138,8 @@ final class WordleKeyboardKey: UIButton {
   
   @objc private func didLongPressKey(_ gestureRecognizer: UIGestureRecognizer) {
     delegate?.didForfeit()
+    
+    removeGestureRecognizer(gestureRecognizer)
     
     resetGiveUpProgress()
 

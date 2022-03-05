@@ -15,5 +15,7 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-      - name: "Build"
-        uses: devbotsxyz/xcode-build@v1
+      - name: Xcode Test
+        # You may pin to the exact commit or the version.
+        # uses: devbotsxyz/xcode-test@8f7f94ea653de78092a24ccc5cf6e3da59268d83
+        uses: devbotsxyz/xcode-test@v1.1.0

@@ -1,6 +1,8 @@
-# WordleWithFriends
+# Wordle With Friends
 
 An implementation of [Wordle](https://www.powerlanguage.co.uk/wordle/) that allows you to choose your own clue and play with a friend.
+
+Also has several different game modes, and customizable settings allowing you to choose word length and number of guesses.
 
 <Table><tr><td>
   

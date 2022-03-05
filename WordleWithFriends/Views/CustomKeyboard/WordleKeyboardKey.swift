@@ -49,7 +49,7 @@ final class WordleKeyboardKey: UIButton {
   
   private var guessState: LetterState = .unchecked {
     didSet {
-      backgroundColor = guessState.associatedColor // TODO verify
+      backgroundColor = guessState.associatedColor
     }
   }
   

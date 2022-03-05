@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 final class GameSetupViewController: UIViewController {
   
@@ -161,16 +162,14 @@ final class GameSetupViewController: UIViewController {
     } else {
       let ctrl = UIAlertController(title: "Error", message: wordValidity.rawValue, preferredStyle: .alert)
       ctrl.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+      AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
       self.present(ctrl, animated: true, completion: nil)
     }
     return isValid
   }
   
   @objc private func initiateGameWithRandomWord() {
-    var clue = ""
-    repeat {
-      clue = GameUtility.pickWord()
-    } while !clue.isARealWord()
+    let clue = GameUtility.pickWord()
     
     clueTextField.text = clue
     
@@ -195,13 +194,11 @@ extension GameSetupViewController: UITextFieldDelegate {
   }
   
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    guard string.isLettersOnly() else {
-      return false
-    }
-    
-    guard (textField.text?.count ?? 0) + string.count <= GameSettings.clueLength.readIntValue() else {
-      return false
-    }
+    guard string.isLettersOnly(),
+          (textField.text?.count ?? 0) + string.count <= GameSettings.clueLength.readIntValue() else {
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            return false
+          }
     
     return true
   }

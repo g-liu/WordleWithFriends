@@ -63,13 +63,17 @@ final class GameMessagingViewController: UIViewController {
       alertController.message = "You guessed the word in \(numGuesses) tries."
     }
     
-    (navigationController?.topViewController ?? parent)?.present(alertController, animated: true)
+    if !alertController.isBeingPresented {
+      (navigationController?.topViewController ?? parent)?.present(alertController, animated: true)
+    }
   }
   
   func showLose(clue: String) {
     alertController.title = "Aww 😢"
     alertController.message = "The actual word was \(clue). Good try!"
     
-    (navigationController?.topViewController ?? parent)?.present(alertController, animated: true)
+    if !alertController.isBeingPresented {
+      (navigationController?.topViewController ?? parent)?.present(alertController, animated: true)
+    }
   }
 }

@@ -18,7 +18,7 @@ struct LayoutUtility {
   
   static func gridPadding(numberOfColumns: Int) -> Int {
     // logistic curve
-    Int(round(16.0 / (1.0 + pow(Double.e, -0.75*(6.0-Double(numberOfColumns))))))
+    Int(round(16 / (1 + pow(Double.e, -0.75*(6-numberOfColumns)))))
   }
   
   /// Determines the max size of a square grid, given the variables
@@ -31,11 +31,11 @@ struct LayoutUtility {
       return 0
     }
     
-    let totalAllowedWidth = Double(screenWidth) * (screenWidthPercentage / 100.0)
+    let totalAllowedWidth = screenWidth * (screenWidthPercentage / 100)
     
     // subtract padding
-    let totalAllowedLengthOfCells = totalAllowedWidth - Double(Double(numberOfColumns - 1) * padding)
-    let calculatedLength = totalAllowedLengthOfCells / Double(numberOfColumns)
+    let totalAllowedLengthOfCells = totalAllowedWidth - ((numberOfColumns - 1) * padding)
+    let calculatedLength = totalAllowedLengthOfCells / numberOfColumns
     return min(calculatedLength, maxSize)
   }
   
@@ -45,7 +45,7 @@ struct LayoutUtility {
   ///   - maxWidth: the max width
   /// - Returns: `screenWidthPercentage`% of the screen width, up to and including `maxWidth`
   static func size(screenWidthPercentage: Double, maxWidth: Int) -> Double {
-    let sizeGivenPercentage = Double(screenWidth) * (screenWidthPercentage / 100.0)
+    let sizeGivenPercentage = screenWidth * (screenWidthPercentage / 100)
     return min(sizeGivenPercentage, Double(maxWidth))
   }
 }

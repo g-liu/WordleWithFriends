@@ -12,6 +12,7 @@ protocol KeyTapDelegate {
   func didTapKey(_ char: Character)
   func didTapSubmit()
   func didTapDelete()
+  func didForfeit()
 }
 
 final class WordleKeyboardInputView: UIInputView {
@@ -20,6 +21,7 @@ final class WordleKeyboardInputView: UIInputView {
     static let topPadding = 8.0
   }
   private var keyReferences: [WeakRef<WordleKeyboardKey>] = []
+  private weak var forfeitKey: WordleKeyboardKey?
   
   // TODO make customizable?
   private static let keyboardLayout: [[Character]] = [[
@@ -41,7 +43,7 @@ final class WordleKeyboardInputView: UIInputView {
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.alignment = .center
     stackView.axis = .vertical
-    stackView.distribution = .equalSpacing
+    stackView.distribution = .fill
     stackView.spacing = Layout.rowSpacing
     
     return stackView
@@ -54,10 +56,10 @@ final class WordleKeyboardInputView: UIInputView {
       
       let totalSpace: Double; let keysInRow: Double
       if isLastRow {
-        totalSpace = KeyboardRow.Layout.interKeySpacing * Double(row.count + 1) + 2 * KeyboardRow.Layout.specialKeySpacing
-        keysInRow = Double(row.count) + 2.0 + (2.0 * (KeyboardRow.Layout.specialKeyWidthMultiplier - 1.0))
+        totalSpace = KeyboardRow.Layout.interKeySpacing * (row.count + 1) + 2 * KeyboardRow.Layout.specialKeySpacing
+        keysInRow = row.count + 2 + (2 * (KeyboardRow.Layout.specialKeyWidthMultiplier-1))
       } else {
-        totalSpace = KeyboardRow.Layout.interKeySpacing * Double(row.count + 1)
+        totalSpace = KeyboardRow.Layout.interKeySpacing * (row.count + 1)
         keysInRow = Double(row.count)
       }
       
@@ -95,6 +97,16 @@ final class WordleKeyboardInputView: UIInputView {
       mainStackView.addArrangedSubview(keyboardRow)
     }
     
+    if let lastSubview = mainStackView.arrangedSubviews.last {
+      mainStackView.setCustomSpacing(16.0, after: lastSubview)
+    }
+    
+    let forfeitKey = WordleKeyboardKey(keyType: .forfeit(0.75))
+    forfeitKey.delegate = delegate
+    mainStackView.addArrangedSubview(forfeitKey)
+    forfeitKey.heightAnchor.constraint(equalToConstant: keyWidth * KeyboardRow.Layout.heightToWidthRatio).isActive = true
+    self.forfeitKey = forfeitKey
+    
     // Sort key references A->Z for better lookup later
     keyReferences.sort { keyRef1, keyRef2 in
       guard let key1 = keyRef1.value, let key2 = keyRef2.value,
@@ -109,6 +121,10 @@ final class WordleKeyboardInputView: UIInputView {
       mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: Layout.topPadding),
       mainStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
     ])
+  }
+  
+  func gameDidEnd() {
+    forfeitKey?.isEnabled = false
   }
   
   func updateState(with wordGuess: WordGuess) {

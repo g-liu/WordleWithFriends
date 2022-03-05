@@ -176,14 +176,21 @@ final class ClueGuessViewController: UIViewController {
       case .win:
         shareButton.isEnabled = true
         gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
+        wordleKeyboard.gameDidEnd()
       case .lose:
-        shareButton.isEnabled = true
-        gameMessagingVC.showLose(clue: gameGuessesModel.clue)
+        forceLoss()
       case .keepGuessing:
         shareButton.isEnabled = false
         guessTable.scrollToRow(at: IndexPath.Row(gameGuessesModel.numberOfGuesses), at: .bottom, animated: true)
         break
     }
+  }
+  
+  private func forceLoss() {
+    shareButton.isEnabled = true
+    gameGuessesModel.forceGameOver()
+    gameMessagingVC.showLose(clue: gameGuessesModel.clue)
+    wordleKeyboard.gameDidEnd()
   }
   
   @objc private func adjustForKeyboard(notification: Notification) {
@@ -293,8 +300,8 @@ extension ClueGuessViewController: UITextFieldDelegate {
   
   // Note: We still need this function as users can use bluetooth keyboard etc. to bypass the onscreen input
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    guard !gameGuessesModel.isGameOver,
-          string.isLettersOnly(),
+    guard !gameGuessesModel.isGameOver else { return false }
+    guard string.isLettersOnly(),
           (textField.text?.count ?? 0) + string.count <= GameSettings.clueLength.readIntValue() else {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             return false
@@ -318,6 +325,7 @@ extension ClueGuessViewController: GameEndDelegate {
   func restartWithNewClue() {
     let newClue = GameUtility.pickWord()
     gameGuessesModel = GameGuessesModel(clue: newClue)
+    guessInputTextField.text = ""
     
     wordleKeyboard.resetKeyboard()
     
@@ -331,8 +339,8 @@ extension ClueGuessViewController: GameEndDelegate {
 
 extension ClueGuessViewController: KeyTapDelegate {
   func didTapKey(_ char: Character) {
-    guard !gameGuessesModel.isGameOver,
-          guessInputTextField.text?.isLettersOnly() ?? false,
+    guard !gameGuessesModel.isGameOver else { return }
+    guard guessInputTextField.text?.isLettersOnly() ?? false,
           (guessInputTextField.text?.count ?? 0) < GameSettings.clueLength.readIntValue() else {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             return
@@ -347,5 +355,9 @@ extension ClueGuessViewController: KeyTapDelegate {
   
   func didTapDelete() {
     guessInputTextField.deleteBackward()
+  }
+  
+  func didForfeit() {
+    forceLoss()
   }
 }

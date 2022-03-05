@@ -176,6 +176,7 @@ final class ClueGuessViewController: UIViewController {
       case .win:
         wordleKeyboard.gameDidEnd()
         if gameGuessesModel.gamemode == .infinite {
+          presentToast("Good job! \(gameGuessesModel.numberOfGuesses) guess(es)")
           DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
             self?.restartWithNewClue()
           }
@@ -197,6 +198,7 @@ final class ClueGuessViewController: UIViewController {
     gameGuessesModel.forceGameOver()
     wordleKeyboard.gameDidEnd()
     if gameGuessesModel.gamemode == .infinite {
+      presentToast(gameGuessesModel.clue)
       // TODO: Display what the actual word was, non-intrusively
       DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
         self?.restartWithNewClue()
@@ -232,6 +234,44 @@ final class ClueGuessViewController: UIViewController {
     navigationController?.present(ac, animated: true) { [weak self] in
       self?.loadingView.isHidden = true
     }
+  }
+}
+
+extension ClueGuessViewController {
+  func presentToast(_ text: String) {
+    let toastView = UIView()
+    toastView.translatesAutoresizingMaskIntoConstraints = false
+    toastView.backgroundColor = .systemGray4
+    toastView.isOpaque = true
+    
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.textAlignment = .center
+    label.text = text
+    
+    toastView.addSubview(label)
+    label.pin(to: toastView, margins: UIEdgeInsets(top: 12, left: 18, bottom: 12, right: 18))
+    
+    view.addSubview(toastView)
+    NSLayoutConstraint.activate([
+      toastView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+      toastView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), // will be animated.
+    ])
+    
+//    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//      toastView.removeFromSuperview()
+//    }
+    
+    UIView.animate(withDuration: 0.1, delay: 0, options: [.curveEaseOut]) {
+      toastView.transform = CGAffineTransform(translationX: 0, y: 52)
+    } completion: { finished in
+      UIView.animate(withDuration: 0.1, delay: 1.9, options: [.curveEaseOut]) {
+        toastView.transform = CGAffineTransform(translationX: 0, y: 0)
+      } completion: { finished2 in
+        toastView.removeFromSuperview()
+      }
+    }
+
   }
 }
 

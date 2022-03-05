@@ -140,9 +140,7 @@ final class WordleKeyboardKey: UIButton {
     delegate?.didForfeit()
     
     resetGiveUpProgress()
-    
-    isEnabled = false
-    isHidden = true
+
     AudioServicesPlaySystemSound(1156)
   }
 }

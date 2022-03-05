@@ -176,8 +176,9 @@ final class ClueGuessViewController: UIViewController {
       case .win:
         shareButton.isEnabled = true
         gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
+        wordleKeyboard.gameDidEnd()
       case .lose:
-        forceGameOver()
+        forceLoss()
       case .keepGuessing:
         shareButton.isEnabled = false
         guessTable.scrollToRow(at: IndexPath.Row(gameGuessesModel.numberOfGuesses), at: .bottom, animated: true)
@@ -185,10 +186,11 @@ final class ClueGuessViewController: UIViewController {
     }
   }
   
-  private func forceGameOver() {
+  private func forceLoss() {
     shareButton.isEnabled = true
     gameGuessesModel.forceGameOver()
     gameMessagingVC.showLose(clue: gameGuessesModel.clue)
+    wordleKeyboard.gameDidEnd()
   }
   
   @objc private func adjustForKeyboard(notification: Notification) {
@@ -356,6 +358,6 @@ extension ClueGuessViewController: KeyTapDelegate {
   }
   
   func didForfeit() {
-    forceGameOver()
+    forceLoss()
   }
 }

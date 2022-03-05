@@ -21,6 +21,7 @@ final class WordleKeyboardInputView: UIInputView {
     static let topPadding = 8.0
   }
   private var keyReferences: [WeakRef<WordleKeyboardKey>] = []
+  private weak var forfeitKey: WordleKeyboardKey?
   
   // TODO make customizable?
   private static let keyboardLayout: [[Character]] = [[
@@ -104,6 +105,7 @@ final class WordleKeyboardInputView: UIInputView {
     forfeitKey.delegate = delegate
     mainStackView.addArrangedSubview(forfeitKey)
     forfeitKey.heightAnchor.constraint(equalToConstant: keyWidth * KeyboardRow.Layout.heightToWidthRatio).isActive = true
+    self.forfeitKey = forfeitKey
     
     // Sort key references A->Z for better lookup later
     keyReferences.sort { keyRef1, keyRef2 in
@@ -119,6 +121,10 @@ final class WordleKeyboardInputView: UIInputView {
       mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: Layout.topPadding),
       mainStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
     ])
+  }
+  
+  func gameDidEnd() {
+    forfeitKey?.isEnabled = false
   }
   
   func updateState(with wordGuess: WordGuess) {

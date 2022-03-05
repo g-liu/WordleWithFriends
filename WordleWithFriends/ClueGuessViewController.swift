@@ -70,9 +70,9 @@ final class ClueGuessViewController: UIViewController {
   
   private var isBeingScrolled = false
   
-  init(clue: String, clueSource: ClueSource) {
-    gameGuessesModel = GameGuessesModel(clue: clue)
-    gameMessagingVC = GameMessagingViewController(clueSource: clueSource)
+  init(clue: String, gamemode: GameMode) {
+    gameGuessesModel = GameGuessesModel(clue: clue, gamemode: gamemode)
+    gameMessagingVC = GameMessagingViewController(gamemode: gamemode)
     super.init(nibName: nil, bundle: nil)
     gameMessagingVC.delegate = self
   }
@@ -324,7 +324,7 @@ extension ClueGuessViewController: GameEndDelegate {
   
   func restartWithNewClue() {
     let newClue = GameUtility.pickWord()
-    gameGuessesModel = GameGuessesModel(clue: newClue)
+    gameGuessesModel = GameGuessesModel(clue: newClue, gamemode: gameGuessesModel.gamemode)
     guessInputTextField.text = ""
     
     wordleKeyboard.resetKeyboard()

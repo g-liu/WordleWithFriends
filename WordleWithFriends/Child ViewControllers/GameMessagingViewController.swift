@@ -30,10 +30,10 @@ final class GameMessagingViewController: UIViewController {
     }
   }()
   
-  private let clueSource: ClueSource
+  private let gamemode: GameMode
   
-  init(clueSource: ClueSource) {
-    self.clueSource = clueSource
+  init(gamemode: GameMode) {
+    self.gamemode = gamemode
     super.init(nibName: nil, bundle: nil)
     setupVC()
   }
@@ -46,12 +46,14 @@ final class GameMessagingViewController: UIViewController {
     alertController.addAction(shareButton)
     alertController.addAction(mainMenuButton)
     
-    switch clueSource {
+    switch gamemode {
       case .human:
         mainMenuButton.setValue("Play again", forKeyPath: "title")
       case .computer:
         mainMenuButton.setValue("Main menu", forKeyPath: "title")
         alertController.addAction(newClueButton)
+      case .infinite:
+        break // Infinite game mode never touches this VC
     }
   }
   

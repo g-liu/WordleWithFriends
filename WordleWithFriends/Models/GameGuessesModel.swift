@@ -9,6 +9,7 @@ import UIKit
 
 struct GameGuessesModel {
   let clue: String
+  let gamemode: GameMode
   private(set) var isGameOver: Bool = false
   
   private var letterGuesses: [WordGuess] = [WordGuess()]
@@ -16,8 +17,9 @@ struct GameGuessesModel {
   /// The number of completed guesses
   var numberOfGuesses: Int { letterGuesses.count - 1 }
   
-  init(clue: String) {
+  init(clue: String, gamemode: GameMode) {
     self.clue = clue
+    self.gamemode = gamemode
   }
   
   func guess(at index: Int) -> WordGuess? {
@@ -79,7 +81,8 @@ enum GameState {
   case keepGuessing
 }
 
-enum ClueSource {
+enum GameMode {
   case human
   case computer
+  case infinite
 }

@@ -40,11 +40,9 @@ final class WordleKeyboardKey: UIButton {
           addGestureRecognizer(longPressGestureRecognizer)
           
           addSubview(progressBar)
-          NSLayoutConstraint.activate([
-            progressBar.bottomAnchor.constraint(equalTo: bottomAnchor),
-            progressBar.leadingAnchor.constraint(equalTo: leadingAnchor),
-            progressBar.trailingAnchor.constraint(equalTo: trailingAnchor),
-          ])
+          progressBar.pin(to: self)
+          progressBar.trackTintColor = .clear
+          sendSubviewToBack(progressBar)
           progressBar.isHidden = true
       }
     }
@@ -99,7 +97,9 @@ final class WordleKeyboardKey: UIButton {
     guessState = state
   }
   
-  @objc private func didTapKey() {
+  @objc private func didTapKey(_ sender: UIButton, event: UIEvent) {
+    guard let touchLocation = event.allTouches?.first?.location(in: sender),
+          sender.bounds.contains(touchLocation) else { return }
     switch keyType {
       case .char(let character):
         delegate?.didTapKey(character)

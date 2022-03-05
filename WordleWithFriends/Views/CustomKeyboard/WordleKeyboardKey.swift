@@ -17,7 +17,7 @@ enum KeyType {
 }
 
 final class WordleKeyboardKey: UIButton {
-  var keyType: KeyType {
+  var keyType: KeyType = .char(" ") /* NB: The initial value is only a placeholder */ {
     didSet {
       switch keyType {
         case .char(let character):
@@ -28,6 +28,7 @@ final class WordleKeyboardKey: UIButton {
           setTitle("⌫", for: .normal)
         case .forfeit(let minDuration):
           setTitle("Give up", for: .normal)
+          setTitleColor(.systemFill, for: .disabled)
 
           contentEdgeInsets.left = 8
           contentEdgeInsets.right = 8
@@ -69,9 +70,8 @@ final class WordleKeyboardKey: UIButton {
   var delegate: KeyTapDelegate?
   
   init(keyType: KeyType) {
-    // TODO: Hacky AF, any other way to trigger the didSet more gracefully?
-    self.keyType = .del
     defer {
+      // defer is necessary here to trigger the `didSet`
       self.keyType = keyType
     }
     super.init(frame: .zero)

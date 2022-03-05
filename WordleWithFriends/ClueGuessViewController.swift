@@ -100,7 +100,9 @@ final class ClueGuessViewController: UIViewController {
     guessInputTextField.becomeFirstResponder()
     title = "Guess the clue"
     
-    navigationItem.rightBarButtonItem = shareButton
+    if gameGuessesModel.gamemode != .infinite {
+      navigationItem.rightBarButtonItem = shareButton
+    }
   }
   
   override func viewWillDisappear(_ animated: Bool) {

@@ -174,9 +174,15 @@ final class ClueGuessViewController: UIViewController {
     
     switch gameState {
       case .win:
-        shareButton.isEnabled = true
-        gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
         wordleKeyboard.gameDidEnd()
+        if gameGuessesModel.gamemode == .infinite {
+          DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            self?.restartWithNewClue()
+          }
+        } else {
+          shareButton.isEnabled = true
+          gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
+        }
       case .lose:
         forceLoss()
       case .keepGuessing:
@@ -187,10 +193,18 @@ final class ClueGuessViewController: UIViewController {
   }
   
   private func forceLoss() {
-    shareButton.isEnabled = true
+    // TODO: This is getting double-called????
     gameGuessesModel.forceGameOver()
-    gameMessagingVC.showLose(clue: gameGuessesModel.clue)
     wordleKeyboard.gameDidEnd()
+    if gameGuessesModel.gamemode == .infinite {
+      // TODO: Display what the actual word was, non-intrusively
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+        self?.restartWithNewClue()
+      }
+    } else {
+      shareButton.isEnabled = true
+      gameMessagingVC.showLose(clue: gameGuessesModel.clue)
+    }
   }
   
   @objc private func adjustForKeyboard(notification: Notification) {
@@ -227,7 +241,11 @@ extension ClueGuessViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    GameSettings.maxGuesses.readIntValue()
+    if gameGuessesModel.gamemode == .infinite {
+      return gameGuessesModel.numberOfGuesses + 1
+    }
+    
+    return GameSettings.maxGuesses.readIntValue()
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

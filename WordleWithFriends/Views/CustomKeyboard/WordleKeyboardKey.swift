@@ -139,6 +139,8 @@ final class WordleKeyboardKey: UIButton {
   @objc private func didLongPressKey(_ gestureRecognizer: UIGestureRecognizer) {
     delegate?.didForfeit()
     
+    removeGestureRecognizer(gestureRecognizer)
+    
     resetGiveUpProgress()
 
     AudioServicesPlaySystemSound(1156)

@@ -50,7 +50,7 @@ struct GameGuessesModel {
     if didGuessCorrectly {
       isGameOver = true
       return .win
-    } else if letterGuesses.count > GameSettings.maxGuesses.readIntValue() {
+    } else if gamemode != .infinite && letterGuesses.count > GameSettings.maxGuesses.readIntValue() {
       isGameOver = true
       return .lose
     } else {

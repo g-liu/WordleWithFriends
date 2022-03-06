@@ -24,15 +24,8 @@ final class WordGuessRow: UITableViewCell {
     return CGFloat(padding)
   }()
   
-  private lazy var letterStack: UIStackView = {
-    let stackView = UIStackView()
-    stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.axis = .horizontal
-    stackView.distribution = .fillEqually
-    stackView.alignment = .fill
-    stackView.spacing = CGFloat(LayoutUtility.gridPadding(numberOfColumns: GameSettings.clueLength.readIntValue()))
-    
-    return stackView
+  private lazy var guessRowView: WordGuessRowView = {
+    .init()
   }()
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -48,26 +41,57 @@ final class WordGuessRow: UITableViewCell {
   }
   
   private func setupCell() {
-    (0...(GameSettings.clueLength.readIntValue()-1)).forEach { _ in
-      let tile = LetterTileView()
-      letterStack.addArrangedSubview(tile)
-    }
-    
-    contentView.addSubview(letterStack)
+    contentView.addSubview(guessRowView)
     
     NSLayoutConstraint.activate([
-      letterStack.topAnchor.constraint(equalTo: contentView.topAnchor),
-      letterStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -calculatedPadding),
-      letterStack.heightAnchor.constraint(equalToConstant: calculatedHeight),
-      letterStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+      guessRowView.topAnchor.constraint(equalTo: contentView.topAnchor),
+      guessRowView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -calculatedPadding),
+      guessRowView.heightAnchor.constraint(equalToConstant: calculatedHeight),
+      guessRowView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
     ])
   }
   
   func configure(with wordGuess: WordGuess = .init()) {
-    letterStack.removeAllArrangedSubviews()
+    guessRowView.configure(with: wordGuess)
+  }
+}
+
+final class WordGuessRowView: UIStackView {
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    setupView()
+  }
+  
+  required init(coder: NSCoder) {
+    super.init(coder: coder)
+    setupView()
+  }
+  
+  private func setupView() {
+    translatesAutoresizingMaskIntoConstraints = false
+    axis = .horizontal
+    distribution = .fillEqually
+    alignment = .fill
+    spacing = CGFloat(LayoutUtility.gridPadding(numberOfColumns: GameSettings.clueLength.readIntValue()))
+    
+    (0...(GameSettings.clueLength.readIntValue()-1)).forEach { _ in
+      let tile = LetterTileView()
+      addArrangedSubview(tile)
+    }
+  }
+  
+  func configure(with wordGuess: WordGuess = .init()) {
+    removeAllArrangedSubviews()
     (0...(GameSettings.clueLength.readIntValue()-1)).forEach { index in
       let tile = LetterTileView(letterGuess: wordGuess.guess(at: index))
-      letterStack.addArrangedSubview(tile)
+      addArrangedSubview(tile)
     }
+  }
+  
+  func mark(_ index: Int, as letterState: LetterState) {
+    guard index >= 0, index < arrangedSubviews.count,
+          let letterTile = arrangedSubviews[index] as? LetterTileView else { return }
+    
+    letterTile.setState(letterState)
   }
 }

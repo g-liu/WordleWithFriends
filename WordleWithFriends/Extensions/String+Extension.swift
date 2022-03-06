@@ -43,6 +43,15 @@ extension String {
   }
 }
 
+extension String {
+  func append(_ attributedString: NSAttributedString) -> NSAttributedString {
+    let mutableString = NSMutableAttributedString(string: self)
+    mutableString.append(attributedString)
+    
+    return .init(attributedString: mutableString)
+  }
+}
+
 extension StringProtocol {
   subscript(offset: Int) -> Character {
     self[index(startIndex, offsetBy: offset)]

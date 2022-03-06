@@ -96,6 +96,22 @@ final class GameSetupViewController: UIViewController {
     return button
   }()
   
+  private lazy var instructionsButton: UIBarButtonItem = {
+    let button = UIBarButtonItem(title: "❓", style: .plain, target: self, action: #selector(showInstructions))
+    button.accessibilityLabel = "How to play"
+    
+    return button
+  }()
+  
+  private lazy var instructionsTextLabel: UILabel = {
+    let label = UILabel()
+    label.numberOfLines = 0
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.textAlignment = .center
+    
+    return label
+  }()
+  
   private lazy var startGameButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -138,6 +154,7 @@ final class GameSetupViewController: UIViewController {
     view.backgroundColor = .systemBackground
     
     navigationItem.leftBarButtonItem = settingsButton
+    navigationItem.rightBarButtonItem = instructionsButton
     
     let stackView = UIStackView()
     stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -189,6 +206,12 @@ final class GameSetupViewController: UIViewController {
   @objc private func openSettings() {
     let vc = GameSettingsViewController()
     vc.delegate = self
+    navigationController?.present(UINavigationController(rootViewController: vc), animated: true)
+  }
+  
+  @objc private func showInstructions() {
+    let vc = GameInstructionsViewController()
+    
     navigationController?.present(UINavigationController(rootViewController: vc), animated: true)
   }
   

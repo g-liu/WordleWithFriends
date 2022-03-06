@@ -34,7 +34,7 @@ final class GameSettingsViewController: UIViewController {
     
     title = "Settings"
     navigationItem.title = "Settings"
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapCloseSettings))
+    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapClose))
     view.backgroundColor = .systemBackground
     
     let table = UITableView(frame: .zero, style: .insetGrouped)
@@ -49,7 +49,7 @@ final class GameSettingsViewController: UIViewController {
     table.pin(to: view.safeAreaLayoutGuide)
   }
   
-  @objc private func didTapCloseSettings() {
+  @objc private func didTapClose() {
     dismiss(animated: true) { [weak self] in self?.delegate?.didDismissSettings() }
   }
 }

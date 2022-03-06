@@ -29,7 +29,6 @@ final class LetterTileView: UIView {
     super.init(coder: coder)
     configure()
   }
-  
 
   private func configure(_ letterGuess: LetterGuess? = nil) {
     let letterGuess = letterGuess ?? .default
@@ -62,4 +61,9 @@ final class LetterTileView: UIView {
     
     backgroundColor = letterGuess.state.associatedColor
   }
+  
+  func setState(_ letterState: LetterState) {
+    // TODO: IMPL
+  }
+  
 }

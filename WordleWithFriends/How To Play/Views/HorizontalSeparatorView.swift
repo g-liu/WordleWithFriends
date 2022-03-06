@@ -8,6 +8,8 @@
 import UIKit
 
 final class HorizontalSeparatorView: UIView {
+  private weak var widthConstraint: NSLayoutConstraint?
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupView()
@@ -22,11 +24,19 @@ final class HorizontalSeparatorView: UIView {
     backgroundColor = .systemGray
     translatesAutoresizingMaskIntoConstraints = false
     
-    heightAnchor.constraint(equalToConstant: 2.0).with(priority: .required).isActive = true
+    heightAnchor.constraint(equalToConstant: 1.0).with(priority: .required).isActive = true
     setContentCompressionResistancePriority(.required, for: .vertical)
+  }
+  
+  override func didMoveToSuperview() {
+    super.didMoveToSuperview()
     
     if let superview = superview {
-      widthAnchor.constraint(equalTo: superview.widthAnchor).isActive = true
+      if let widthConstraint = widthConstraint {
+        widthConstraint.isActive = false
+      }
+      widthConstraint = widthAnchor.constraint(equalTo: superview.widthAnchor)
+      widthConstraint?.isActive = true
     }
   }
 }

@@ -13,7 +13,7 @@ final class GameInstructionsViewController: UIViewController {
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .vertical
     stackView.alignment = .top
-    stackView.spacing = 8.0
+    stackView.spacing = 16.0
     
     return stackView
   }()
@@ -41,12 +41,6 @@ final class GameInstructionsViewController: UIViewController {
     label.numberOfLines = 0
     
     return label
-  }()
-  
-  private lazy var horizontalSeparator: HorizontalSeparatorView = {
-    let sv = HorizontalSeparatorView()
-    sv.translatesAutoresizingMaskIntoConstraints = false
-    return sv
   }()
   
   private lazy var headerLabel: UILabel = {
@@ -116,7 +110,7 @@ final class GameInstructionsViewController: UIViewController {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.numberOfLines = 0
-    label.attributedText = "✨ Pro tip! ".bolded.appending("You can change stuff like the number of guesses in the Settings.") // TODO: deeplink to settings
+    label.attributedText = "✨ Pro tip! ".bolded.appending("You can change stuff like the number of guesses in the Settings.\n\n") // TODO: deeplink to settings
     
     return label
   }()
@@ -132,7 +126,7 @@ final class GameInstructionsViewController: UIViewController {
     view.backgroundColor = .systemBackground
     
     stackView.addArrangedSubview(instructionsHeader)
-    stackView.addArrangedSubview(horizontalSeparator)
+    stackView.addArrangedSubview(HorizontalSeparatorView())
     stackView.addArrangedSubview(headerLabel)
     stackView.addArrangedSubview(correctGuessExampleRow)
     stackView.addArrangedSubview(correctGuessExplanation)
@@ -140,7 +134,7 @@ final class GameInstructionsViewController: UIViewController {
     stackView.addArrangedSubview(misplacedGuessExplanation)
     stackView.addArrangedSubview(incorrectGuessExampleRow)
     stackView.addArrangedSubview(incorrectGuessExplanation)
-    stackView.addArrangedSubview(horizontalSeparator)
+    stackView.addArrangedSubview(HorizontalSeparatorView())
     stackView.addArrangedSubview(settingsTeaser)
     
     

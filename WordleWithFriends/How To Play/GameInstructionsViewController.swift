@@ -60,7 +60,7 @@ After each guess, the color of the tiles will change to show how close your gues
   private lazy var correctGuessExampleRow: WordGuessRowView = {
     let row = WordGuessRowView()
     var guess = WordGuess(guess: "GEOFF")
-    guess.checkGuess(against: "XXOXX")
+    guess.mark(2, as: .correct)
     row.configure(with: guess)
     
     return row
@@ -69,6 +69,7 @@ After each guess, the color of the tiles will change to show how close your gues
   private lazy var correctGuessExplanation: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
+    label.numberOfLines = 0
     let boldOString = NSAttributedString(string: "O", attributes: [.font: UIFont.boldSystemFont(ofSize: 16.0)])
     label.attributedText = "The letter ".append(boldOString).append(" is in the correct place.")
     
@@ -78,7 +79,7 @@ After each guess, the color of the tiles will change to show how close your gues
   private lazy var misplacedGuessExampleRow: WordGuessRowView = {
     let row = WordGuessRowView()
     var guess = WordGuess(guess: "APPLE")
-    guess.checkGuess(against: "XXLXX")
+    guess.mark(3, as: .misplaced)
     row.configure(with: guess)
     
     return row
@@ -87,6 +88,7 @@ After each guess, the color of the tiles will change to show how close your gues
   private lazy var misplacedGuessExplanation: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
+    label.numberOfLines = 0
     let boldOString = NSAttributedString(string: "L", attributes: [.font: UIFont.boldSystemFont(ofSize: 16.0)])
     label.attributedText = "The letter ".append(boldOString).append(" is in the clue but in the wrong place.")
     
@@ -96,7 +98,7 @@ After each guess, the color of the tiles will change to show how close your gues
   private lazy var incorrectGuessExampleRow: WordGuessRowView = {
     let row = WordGuessRowView()
     var guess = WordGuess(guess: "PARKS")
-    guess.checkGuess(against: "PACKS")
+    guess.mark(2, as: .incorrect)
     row.configure(with: guess)
     
     return row
@@ -105,6 +107,7 @@ After each guess, the color of the tiles will change to show how close your gues
   private lazy var incorrectGuessExplanation: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
+    label.numberOfLines = 0
     let boldOString = NSAttributedString(string: "R", attributes: [.font: UIFont.boldSystemFont(ofSize: 16.0)])
     label.attributedText = "The letter ".append(boldOString).append(" is not in the clue.")
     

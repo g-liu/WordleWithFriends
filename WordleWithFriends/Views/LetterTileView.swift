@@ -61,9 +61,4 @@ final class LetterTileView: UIView {
     
     backgroundColor = letterGuess.state.associatedColor
   }
-  
-  func setState(_ letterState: LetterState) {
-    // TODO: IMPL
-  }
-  
 }

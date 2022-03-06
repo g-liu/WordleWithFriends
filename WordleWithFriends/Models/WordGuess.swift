@@ -51,9 +51,9 @@ struct WordGuess {
     guess.enumerated().forEach { index, letterGuess in
       if letterGuess.letter == clue[index] {
         clue.replaceAt(index, with: "#")
-        guess[index].state = .correct
+        mark(index, as: .correct)
       } else if !clue.contains(letterGuess.letter) {
-        guess[index].state = .incorrect
+        mark(index, as: .incorrect)
         didGuessCorrectly = false
       }
     }
@@ -61,18 +61,22 @@ struct WordGuess {
     // pass 2: the rest are misplaced or incorrect
     (0..<guess.count).forEach { index in
       if guess[index].state == .unchecked {
+        didGuessCorrectly = false
         if let indexInClue = clue.firstIndex(of: guess[index].letter) {
           clue.replaceAt(indexInClue, with: "#")
-          guess[index].state = .misplaced
-          didGuessCorrectly = false
+          mark(index, as: .misplaced)
         } else {
-          guess[index].state = .incorrect
-          didGuessCorrectly = false
+          mark(index, as: .incorrect)
         }
       }
     }
     
     return didGuessCorrectly
+  }
+  
+  mutating func mark(_ index: Int, as letterState: LetterState) {
+    guard index >= 0, index < guess.count else { return }
+    guess[index].state = letterState
   }
   
   func asString() -> String {

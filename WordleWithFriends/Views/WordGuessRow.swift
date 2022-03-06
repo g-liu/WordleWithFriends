@@ -87,11 +87,4 @@ final class WordGuessRowView: UIStackView {
       addArrangedSubview(tile)
     }
   }
-  
-  func mark(_ index: Int, as letterState: LetterState) {
-    guard index >= 0, index < arrangedSubviews.count,
-          let letterTile = arrangedSubviews[index] as? LetterTileView else { return }
-    
-    letterTile.setState(letterState)
-  }
 }

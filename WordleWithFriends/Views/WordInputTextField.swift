@@ -36,9 +36,9 @@ final class WordInputTextField: UITextField {
     []
   }
   
-  override func caretRect(for position: UITextPosition) -> CGRect {
-    .zero
-  }
+//  override func caretRect(for position: UITextPosition) -> CGRect {
+//    .zero
+//  }
   
   override func closestPosition(to point: CGPoint) -> UITextPosition? {
     let beginning = self.beginningOfDocument

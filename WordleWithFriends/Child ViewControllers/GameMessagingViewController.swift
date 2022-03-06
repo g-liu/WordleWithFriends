@@ -48,7 +48,7 @@ final class GameMessagingViewController: UIViewController {
     
     switch gamemode {
       case .human:
-        mainMenuButton.setValue("Play again", forKeyPath: "title")
+        mainMenuButton.setValue("Main menu", forKeyPath: "title")
       case .computer:
         mainMenuButton.setValue("Main menu", forKeyPath: "title")
         alertController.addAction(newClueButton)

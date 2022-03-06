@@ -10,6 +10,28 @@ import AudioToolbox
 
 final class GameSetupViewController: UIViewController {
   
+  private var selectedGamemode: GameMode? {
+    didSet {
+      switch selectedGamemode {
+        case .none:
+          break
+        case .some(.human):
+          humanInstructionsTextLabel.isHidden = false
+          clueTextField.isHidden = false
+          clueTextField.becomeFirstResponder()
+          versusHumanButton.isHidden = true
+          versusComputerButton.isHidden = false
+          infiniteModeButton.isHidden = false
+        case .some(.computer),
+            .some(.infinite):
+          humanInstructionsTextLabel.isHidden = true
+          clueTextField.isHidden = true
+          clueTextField.resignFirstResponder()
+          versusHumanButton.isHidden = false
+      }
+    }
+  }
+  
   private lazy var settingsButton: UIBarButtonItem = {
     let button = UIBarButtonItem(title: "⚙", style: .plain, target: self, action: #selector(openSettings))
     button.accessibilityLabel = "Game settings"
@@ -17,13 +39,54 @@ final class GameSetupViewController: UIViewController {
     return button
   }()
   
-  private lazy var instructionsTextLabel: UILabel = {
+  private lazy var welcomeTextLabel: UILabel = {
     let label = UILabel()
     label.numberOfLines = 0
     label.translatesAutoresizingMaskIntoConstraints = false
     label.textAlignment = .center
+    label.text = "Welcome to Wordle With Friends!"
     
     return label
+  }()
+  
+  private lazy var humanInstructionsTextLabel: UILabel = {
+    let label = UILabel()
+    label.numberOfLines = 0
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.textAlignment = .center
+    label.isHidden = true
+    
+    return label
+  }()
+  
+  private lazy var versusHumanButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle("Play vs. human", for: .normal)
+    button.addTarget(self, action: #selector(promptForClue), for: .touchUpInside)
+    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    
+    return button
+  }()
+  
+  private lazy var versusComputerButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle("Play vs. computer", for: .normal)
+    button.addTarget(self, action: #selector(initiateGameVersusComputer), for: .touchUpInside)
+    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    
+    return button
+  }()
+  
+  private lazy var infiniteModeButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle("Infinite mode", for: .normal)
+    button.addTarget(self, action: #selector(initiateGameOnInfiniteMode), for: .touchUpInside)
+    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    
+    return button
   }()
   
   private lazy var startGameButton: UIButton = {
@@ -35,28 +98,7 @@ final class GameSetupViewController: UIViewController {
     button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
     button.setTitleColor(.systemGray, for: .disabled)
     button.isEnabled = false
-    
-    return button
-  }()
-  
-  private lazy var randomWordButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("Random word", for: .normal)
-    button.setTitleColor(.systemOrange, for: .normal)
-    button.addTarget(self, action: #selector(initiateGameWithRandomWord), for: .touchUpInside)
-    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
-    
-    return button
-  }()
-  
-  private lazy var infiniteModeButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("Infinite mode", for: .normal)
-    button.setTitleColor(.systemRed, for: .normal)
-    button.addTarget(self, action: #selector(initiateGameOnInfiniteMode), for: .touchUpInside)
-    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    button.isHidden = true
     
     return button
   }()
@@ -66,6 +108,7 @@ final class GameSetupViewController: UIViewController {
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.delegate = self
     textField.accessibilityIdentifier = "GameSetupViewController.clueTextField"
+    textField.isHidden = true
     
     return textField
   }()
@@ -85,10 +128,12 @@ final class GameSetupViewController: UIViewController {
     stackView.spacing = 8.0
     
     updateScreen()
-    stackView.addArrangedSubview(instructionsTextLabel)
+    stackView.addArrangedSubview(welcomeTextLabel)
+    stackView.addArrangedSubview(humanInstructionsTextLabel)
     stackView.addArrangedSubview(clueTextField)
     stackView.addArrangedSubview(startGameButton)
-    stackView.addArrangedSubview(randomWordButton)
+    stackView.addArrangedSubview(versusHumanButton)
+    stackView.addArrangedSubview(versusComputerButton)
     stackView.addArrangedSubview(infiniteModeButton)
     view.addSubview(stackView)
     
@@ -101,7 +146,7 @@ final class GameSetupViewController: UIViewController {
       clueTextField.widthAnchor.constraint(equalToConstant: CGFloat(maxWidth)),
     ])
     
-    clueTextField.becomeFirstResponder()
+    updateScreen()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -110,8 +155,6 @@ final class GameSetupViewController: UIViewController {
     startGameButton.isEnabled = false
     
     NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: nil)
-    
-    clueTextField.resignFirstResponder()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -119,8 +162,6 @@ final class GameSetupViewController: UIViewController {
     startGameButton.isEnabled = false
     
     NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidUpdate), name: UITextField.textDidChangeNotification, object: nil)
-    
-    clueTextField.becomeFirstResponder()
   }
   
   @objc private func openSettings() {
@@ -130,10 +171,15 @@ final class GameSetupViewController: UIViewController {
   }
   
   func updateScreen() {
-    let clueLength = GameSettings.clueLength.readIntValue()
-    instructionsTextLabel.text = "Welcome to Wordle with Friends.\nTo get started, enter a \(clueLength.spelledOut ?? "??")-letter English word below."
-    
+    let clueLength = GameSettings.clueLength.readIntValue().spelledOut ?? " "
+    humanInstructionsTextLabel.text = "Enter your \(GameSettings.clueLength.readIntValue().spelledOut ?? " ")-letter clue below:"
+
     clueTextField.accessibilityLabel = "Enter a \(clueLength)-letter word here."
+  }
+  
+  @objc private func promptForClue() {
+    // TODO: Ensure this stays uptodate
+    selectedGamemode = .human
   }
   
   @objc private func textFieldDidUpdate(_ notification: Notification) {
@@ -170,7 +216,11 @@ final class GameSetupViewController: UIViewController {
     let wordValidity = isWordValid()
     let isValid = wordValidity == .valid
     if isValid {
-      initiateGame(.human)
+      clueTextField.isHidden = true
+      humanInstructionsTextLabel.isHidden = true
+      versusHumanButton.isHidden = false
+      
+      initiateGame()
     } else {
       let ctrl = UIAlertController(title: "Error", message: wordValidity.rawValue, preferredStyle: .alert)
       ctrl.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
@@ -180,25 +230,26 @@ final class GameSetupViewController: UIViewController {
     return isValid
   }
   
-  @objc private func initiateGameWithRandomWord() {
+  @objc private func initiateGameVersusComputer() {
+    selectedGamemode = .computer
     clueTextField.text = GameUtility.pickWord()
     
-    initiateGame(.computer)
+    initiateGame()
   }
   
   @objc private func initiateGameOnInfiniteMode() {
+    selectedGamemode = .infinite
     clueTextField.text = GameUtility.pickWord()
     
-    initiateGame(.infinite)
+    initiateGame()
   }
 
-  private func initiateGame(_ gamemode: GameMode) {
+  private func initiateGame() {
+    guard let gamemode = selectedGamemode else { return }
     // start game
     let clueGuessVC = ClueGuessViewController(clue: clueTextField.text?.uppercased() ?? "", gamemode: gamemode)
     clueTextField.text = ""
     startGameButton.isEnabled = false
-    
-    clueTextField.resignFirstResponder()
     
     navigationController?.pushViewController(clueGuessVC, animated: true)
   }

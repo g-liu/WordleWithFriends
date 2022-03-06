@@ -69,9 +69,18 @@ final class GameSetupViewController: UIViewController {
   private lazy var versusHumanButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
+<<<<<<< HEAD
     button.setTitle("Play vs. human", for: .normal)
     button.addTarget(self, action: #selector(promptForClue), for: .touchUpInside)
     button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+=======
+    button.setTitle("Start", for: .normal)
+    button.setTitleColor(.systemGreen, for: .normal)
+    button.addTarget(self, action: #selector(checkAndInitiateGame), for: .touchUpInside)
+    button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
+    button.setTitleColor(.systemGray, for: .disabled)
+    button.isEnabled = false
+>>>>>>> b3f7d16 (Teaser to settings)
     
     return button
   }()
@@ -79,9 +88,16 @@ final class GameSetupViewController: UIViewController {
   private lazy var versusComputerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
+<<<<<<< HEAD
     button.setTitle("Play vs. computer", for: .normal)
     button.addTarget(self, action: #selector(initiateGameVersusComputer), for: .touchUpInside)
     button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+=======
+    button.setTitle("Random word", for: .normal)
+    button.setTitleColor(.systemOrange, for: .normal)
+    button.addTarget(self, action: #selector(initiateGameWithRandomWord), for: .touchUpInside)
+    button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
+>>>>>>> b3f7d16 (Teaser to settings)
     
     return button
   }()
@@ -91,7 +107,7 @@ final class GameSetupViewController: UIViewController {
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Infinite mode", for: .normal)
     button.addTarget(self, action: #selector(initiateGameOnInfiniteMode), for: .touchUpInside)
-    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
     
     return button
   }()
@@ -117,7 +133,7 @@ final class GameSetupViewController: UIViewController {
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Start", for: .normal)
     button.addTarget(self, action: #selector(checkAndInitiateGame), for: .touchUpInside)
-    button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
+    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
     button.setTitleColor(.systemGray, for: .disabled)
     button.isEnabled = false
     button.isHidden = true

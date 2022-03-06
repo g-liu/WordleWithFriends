@@ -26,17 +26,18 @@ final class GameInstructionsViewController: UIViewController {
   }()
   
   private lazy var instructionsHeader: UILabel = {
+    // TODO: Pluralization?
+    let numberOfAttemptsText = "\(GameSettings.maxGuesses.readIntValue().spelledOut ?? " ") tries".bolded
+    let clueLengthText = "\(GameSettings.clueLength.readIntValue().spelledOut ?? " ")-letter".bolded
+    
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.text =
-"""
-Guess the clue in six tries.
+    label.attributedText = "Guess the clue in "
+      .appending(numberOfAttemptsText)
+      .appending(" or less. The clue will be a ")
+      .appending(clueLengthText)
+      .appending(" word.")
 
-Each guess must be a valid word. Hit the enter button to submit.
-
-After each guess, the color of the tiles will change to show how close your guess was to the word.
-"""
-    
     label.numberOfLines = 0
     
     return label
@@ -52,7 +53,7 @@ After each guess, the color of the tiles will change to show how close your gues
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "Examples"
-    label.font = UIFont.boldSystemFont(ofSize: 18.0)
+    label.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
     
     return label
   }()
@@ -70,8 +71,7 @@ After each guess, the color of the tiles will change to show how close your gues
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.numberOfLines = 0
-    let boldOString = NSAttributedString(string: "O", attributes: [.font: UIFont.boldSystemFont(ofSize: 16.0)])
-    label.attributedText = "The letter ".append(boldOString).append(" is in the correct place.")
+    label.attributedText = "The letter ".appending("O".bolded).appending(" is in the correct place.".asAttributedString)
     
     return label
   }()
@@ -89,8 +89,7 @@ After each guess, the color of the tiles will change to show how close your gues
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.numberOfLines = 0
-    let boldOString = NSAttributedString(string: "L", attributes: [.font: UIFont.boldSystemFont(ofSize: 16.0)])
-    label.attributedText = "The letter ".append(boldOString).append(" is in the clue but in the wrong place.")
+    label.attributedText = "The letter ".appending("L".bolded).appending(" is in the clue but in the wrong place.".asAttributedString)
     
     return label
   }()
@@ -98,7 +97,7 @@ After each guess, the color of the tiles will change to show how close your gues
   private lazy var incorrectGuessExampleRow: WordGuessRowView = {
     let row = WordGuessRowView()
     var guess = WordGuess(guess: "PARKS")
-    guess.mark(2, as: .incorrect)
+    guess.mark(0, as: .incorrect)
     row.configure(with: guess)
     
     return row
@@ -108,8 +107,16 @@ After each guess, the color of the tiles will change to show how close your gues
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.numberOfLines = 0
-    let boldOString = NSAttributedString(string: "R", attributes: [.font: UIFont.boldSystemFont(ofSize: 16.0)])
-    label.attributedText = "The letter ".append(boldOString).append(" is not in the clue.")
+    label.attributedText = "The letter ".appending("P".bolded).appending(" is not in the clue.".asAttributedString)
+    
+    return label
+  }()
+  
+  private lazy var settingsTeaser: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.numberOfLines = 0
+    label.attributedText = "✨ Pro tip! ".bolded.appending("You can change stuff like the number of guesses in the Settings.") // TODO: deeplink to settings
     
     return label
   }()
@@ -133,7 +140,8 @@ After each guess, the color of the tiles will change to show how close your gues
     stackView.addArrangedSubview(misplacedGuessExplanation)
     stackView.addArrangedSubview(incorrectGuessExampleRow)
     stackView.addArrangedSubview(incorrectGuessExplanation)
-    
+    stackView.addArrangedSubview(horizontalSeparator)
+    stackView.addArrangedSubview(settingsTeaser)
     
     
     scrollView.addSubview(stackView)

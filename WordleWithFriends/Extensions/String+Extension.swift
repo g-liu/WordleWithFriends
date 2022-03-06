@@ -44,11 +44,28 @@ extension String {
 }
 
 extension String {
-  func append(_ attributedString: NSAttributedString) -> NSAttributedString {
+  var asAttributedString: NSAttributedString { .init(string: self) }
+  
+  var bolded: NSMutableAttributedString {
+    .init(string: self, attributes: [.font: UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)])
+  }
+  
+  func appending(_ attributedString: NSAttributedString) -> NSMutableAttributedString {
     let mutableString = NSMutableAttributedString(string: self)
     mutableString.append(attributedString)
     
-    return .init(attributedString: mutableString)
+    return mutableString
+  }
+}
+
+extension NSMutableAttributedString {
+  func appending(_ attributedString: NSAttributedString) -> NSMutableAttributedString {
+    append(attributedString)
+    return self
+  }
+  
+  func appending(_ string: String) -> NSMutableAttributedString {
+    appending(string.asAttributedString)
   }
 }
 

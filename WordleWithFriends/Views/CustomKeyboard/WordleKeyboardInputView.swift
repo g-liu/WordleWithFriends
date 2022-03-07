@@ -25,13 +25,18 @@ final class WordleKeyboardInputView: UIInputView {
   private weak var forfeitKey: WordleKeyboardKey?
   
   // TODO make customizable?
-  private static let keyboardLayout: [[Character]] = [[
-    "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
-  ], [
-    "A", "S", "D", "F", "G", "H", "J", "K", "L",
-  ], [
-    "Z", "X", "C", "V", "B", "N", "M",
-  ]]
+  private static let keyboardLayout: [[WordleKeyboardKey]] = {
+    let characterRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]
+    var keyRows = characterRows.map { row in
+      row.map {
+        WordleKeyboardKey(keyType: .char($0))
+      }
+    }
+    keyRows[keyRows.count-1].prepend(WordleKeyboardKey(keyType: .submit))
+    keyRows[keyRows.count-1].append(WordleKeyboardKey(keyType: .del))
+    
+    return keyRows
+  }()
   
   var delegate: KeyTapDelegate? {
     didSet {
@@ -64,15 +69,25 @@ final class WordleKeyboardInputView: UIInputView {
   static func getPortraitModeKeyWidth() -> CGFloat {
     let keyboardWidth = UIScreen.main.bounds.width
     let keyboardRowKeyWidths = keyboardLayout.enumerated().map { index, row -> CGFloat in
-      let isLastAlphaRow = index == keyboardLayout.count - 1
+      let totalSpace = row.reduce(0) { res, key in
+        switch key.keyType {
+          case .char(_), .forfeit(_), .mainMenu:
+            return res + KeyboardRow.Layout.interKeySpacing
+          case .del, .submit:
+            return res + KeyboardRow.Layout.specialKeySpacing
+        }
+      } + KeyboardRow.Layout.interKeySpacing
       
-      let totalSpace: Double; let keysInRow: Double
-      if isLastAlphaRow {
-        totalSpace = KeyboardRow.Layout.interKeySpacing * (row.count + 1) + 2 * KeyboardRow.Layout.specialKeySpacing
-        keysInRow = row.count + 2 + (2 * (KeyboardRow.Layout.specialKeyWidthMultiplier-1))
-      } else {
-        totalSpace = KeyboardRow.Layout.interKeySpacing * (row.count + 1)
-        keysInRow = Double(row.count)
+      let keysInRow = row.reduce(0.0) { res, key in
+        switch key.keyType {
+          case .del, .submit:
+            return res + KeyboardRow.Layout.specialKeyWidthMultiplier
+          case .mainMenu, .forfeit(_):
+            // TODO: This needs to be handled specially!!!
+            return res + 1
+          case .char(_):
+            return res + 1
+        }
       }
       
       return CGFloat((keyboardWidth - totalSpace) / keysInRow)
@@ -99,10 +114,7 @@ final class WordleKeyboardInputView: UIInputView {
     type(of: self).keyboardLayout.enumerated().forEach { index, row in
       let keyboardRow = KeyboardRow()
       keyboardRow.delegate = delegate
-      
-      let isLastAlphaRow = index == type(of: self).keyboardLayout.count - 1
-      
-      let keyRowRefs = keyboardRow.configure(keys: row, keyWidth: keyWidth, isLastAlphaRow: isLastAlphaRow)
+      let keyRowRefs = keyboardRow.configure(keys: row, keyWidth: keyWidth)
       
       keyReferences.append(contentsOf: keyRowRefs)
       

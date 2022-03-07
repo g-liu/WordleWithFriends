@@ -36,7 +36,7 @@ final class ClueGuessViewController: UIViewController {
   }()
   
   private lazy var wordleKeyboard: WordleKeyboardInputView = {
-    let inputView = WordleKeyboardInputView()
+    let inputView = WordleKeyboardInputView(gamemode: gameGuessesModel.gamemode)
     inputView.delegate = self
     return inputView
   }()

@@ -56,7 +56,9 @@ final class KeyboardRow: UIStackView {
     
     keys.enumerated().forEach { index, keyView in
       keyView.delegate = delegate
-      keyView.widthAnchor.constraint(equalToConstant: keyWidth).isActive = true
+      if case .char(_) = keyView.keyType {
+        keyView.widthAnchor.constraint(equalToConstant: keyWidth).isActive = true
+      }
       addArrangedSubview(keyView)
       
       keyReferences.append(WeakRef(value: keyView))

@@ -39,6 +39,17 @@ final class WordleKeyboardInputView: UIInputView {
     }
   }
   
+  private let gamemode: GameMode
+  
+  init(gamemode: GameMode) {
+    self.gamemode = gamemode
+    super.init(frame: .zero, inputViewStyle: .keyboard)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   private lazy var mainStackView: UIStackView = {
     let stackView = UIStackView()
     stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -103,18 +114,19 @@ final class WordleKeyboardInputView: UIInputView {
     }
     
     let forfeitKey = WordleKeyboardKey(keyType: .forfeit(0.75))
-    forfeitKey.delegate = delegate
-    
     self.forfeitKey = forfeitKey
     
     let mainMenuKey = WordleKeyboardKey(keyType: .mainMenu)
-    mainMenuKey.delegate = delegate
     
-    // TODO: IS this abuse of KeyboardRow???
-    let lastRowStackView = KeyboardRow() // arrangedSubviews: [forfeitKey, mainMenuKey])
-    lastRowStackView.configure(keys: [forfeitKey, mainMenuKey], keyWidth: keyWidth)
-//    lastRowStackView.heightAnchor.constraint(equalToConstant: keyWidth * KeyboardRow.Layout.heightToWidthRatio).isActive = true
-    mainStackView.addArrangedSubview(lastRowStackView)
+    let operationKeysRow = KeyboardRow()
+    operationKeysRow.delegate = delegate
+    if gamemode == .infinite {
+      operationKeysRow.configure(keys: [forfeitKey, mainMenuKey], keyWidth: keyWidth)
+    } else {
+      operationKeysRow.configure(keys: [forfeitKey], keyWidth: keyWidth)
+    }
+    
+    mainStackView.addArrangedSubview(operationKeysRow)
     
     // Sort key references A->Z for better lookup later
     keyReferences.sort { keyRef1, keyRef2 in

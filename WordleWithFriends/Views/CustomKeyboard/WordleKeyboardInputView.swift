@@ -13,6 +13,7 @@ protocol KeyTapDelegate {
   func didTapSubmit()
   func didTapDelete()
   func didForfeit()
+  func didTapMainMenu()
 }
 
 final class WordleKeyboardInputView: UIInputView {
@@ -23,19 +24,34 @@ final class WordleKeyboardInputView: UIInputView {
   private var keyReferences: [WeakRef<WordleKeyboardKey>] = []
   private weak var forfeitKey: WordleKeyboardKey?
   
-  // TODO make customizable?
-  private static let keyboardLayout: [[Character]] = [[
-    "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
-  ], [
-    "A", "S", "D", "F", "G", "H", "J", "K", "L",
-  ], [
-    "Z", "X", "C", "V", "B", "N", "M",
-  ]]
+  private static let keyboardLayout: [[WordleKeyboardKey]] = {
+    let characterRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]
+    var keyRows = characterRows.map { row in
+      row.map {
+        WordleKeyboardKey(keyType: .char($0))
+      }
+    }
+    keyRows[keyRows.count-1].prepend(WordleKeyboardKey(keyType: .submit))
+    keyRows[keyRows.count-1].append(WordleKeyboardKey(keyType: .del))
+    
+    return keyRows
+  }()
   
   var delegate: KeyTapDelegate? {
     didSet {
       setupKeyboard()
     }
+  }
+  
+  private let gamemode: GameMode
+  
+  init(gamemode: GameMode) {
+    self.gamemode = gamemode
+    super.init(frame: .zero, inputViewStyle: .keyboard)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
   private lazy var mainStackView: UIStackView = {
@@ -52,15 +68,25 @@ final class WordleKeyboardInputView: UIInputView {
   static func getPortraitModeKeyWidth() -> CGFloat {
     let keyboardWidth = UIScreen.main.bounds.width
     let keyboardRowKeyWidths = keyboardLayout.enumerated().map { index, row -> CGFloat in
-      let isLastRow = index == keyboardLayout.count - 1
+      let totalSpace = row.reduce(0) { res, key in
+        switch key.keyType {
+          case .char(_), .forfeit(_), .mainMenu:
+            return res + KeyboardRow.Layout.interKeySpacing
+          case .del, .submit:
+            return res + KeyboardRow.Layout.specialKeySpacing
+        }
+      } + KeyboardRow.Layout.interKeySpacing
       
-      let totalSpace: Double; let keysInRow: Double
-      if isLastRow {
-        totalSpace = KeyboardRow.Layout.interKeySpacing * (row.count + 1) + 2 * KeyboardRow.Layout.specialKeySpacing
-        keysInRow = row.count + 2 + (2 * (KeyboardRow.Layout.specialKeyWidthMultiplier-1))
-      } else {
-        totalSpace = KeyboardRow.Layout.interKeySpacing * (row.count + 1)
-        keysInRow = Double(row.count)
+      let keysInRow = row.reduce(0.0) { res, key in
+        switch key.keyType {
+          case .del, .submit:
+            return res + KeyboardRow.Layout.specialKeyWidthMultiplier
+          case .mainMenu, .forfeit(_):
+            // TODO: This needs to be handled specially!!!
+            return res + 1
+          case .char(_):
+            return res + 1
+        }
       }
       
       return CGFloat((keyboardWidth - totalSpace) / keysInRow)
@@ -87,10 +113,7 @@ final class WordleKeyboardInputView: UIInputView {
     type(of: self).keyboardLayout.enumerated().forEach { index, row in
       let keyboardRow = KeyboardRow()
       keyboardRow.delegate = delegate
-      
-      let isLastRow = index == type(of: self).keyboardLayout.count - 1
-      
-      let keyRowRefs = keyboardRow.configure(keys: row, keyWidth: keyWidth, isLastRow: isLastRow)
+      let keyRowRefs = keyboardRow.configure(keys: row, keyWidth: keyWidth)
       
       keyReferences.append(contentsOf: keyRowRefs)
       
@@ -102,10 +125,19 @@ final class WordleKeyboardInputView: UIInputView {
     }
     
     let forfeitKey = WordleKeyboardKey(keyType: .forfeit(0.75))
-    forfeitKey.delegate = delegate
-    mainStackView.addArrangedSubview(forfeitKey)
-    forfeitKey.heightAnchor.constraint(equalToConstant: keyWidth * KeyboardRow.Layout.heightToWidthRatio).isActive = true
     self.forfeitKey = forfeitKey
+    
+    let mainMenuKey = WordleKeyboardKey(keyType: .mainMenu)
+    
+    let operationKeysRow = KeyboardRow()
+    operationKeysRow.delegate = delegate
+    if gamemode == .infinite {
+      operationKeysRow.configure(keys: [forfeitKey, mainMenuKey], keyWidth: keyWidth)
+    } else {
+      operationKeysRow.configure(keys: [forfeitKey], keyWidth: keyWidth)
+    }
+    
+    mainStackView.addArrangedSubview(operationKeysRow)
     
     // Sort key references A->Z for better lookup later
     keyReferences.sort { keyRef1, keyRef2 in

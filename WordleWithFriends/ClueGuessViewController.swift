@@ -36,7 +36,7 @@ final class ClueGuessViewController: UIViewController {
   }()
   
   private lazy var wordleKeyboard: WordleKeyboardInputView = {
-    let inputView = WordleKeyboardInputView()
+    let inputView = WordleKeyboardInputView(gamemode: gameGuessesModel.gamemode)
     inputView.delegate = self
     return inputView
   }()
@@ -103,6 +103,8 @@ final class ClueGuessViewController: UIViewController {
     if gameGuessesModel.gamemode != .infinite {
       navigationItem.rightBarButtonItem = shareButton
     }
+    
+    navigationItem.setHidesBackButton(true, animated: true)
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -379,5 +381,9 @@ extension ClueGuessViewController: KeyTapDelegate {
   
   func didForfeit() {
     forceLoss()
+  }
+  
+  func didTapMainMenu() {
+    navigationController?.popViewController(animated: true)
   }
 }

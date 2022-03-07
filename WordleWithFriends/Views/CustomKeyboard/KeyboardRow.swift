@@ -35,36 +35,23 @@ final class KeyboardRow: UIStackView {
   }
   
   @discardableResult
-  func configure(keys: [Character], keyWidth: CGFloat, isLastRow: Bool = false) -> [WeakRef<WordleKeyboardKey>]{
+  func configure(keys: [WordleKeyboardKey], keyWidth: CGFloat) -> [WeakRef<WordleKeyboardKey>]{
     var keyReferences: [WeakRef<WordleKeyboardKey>] = []
     
-    if isLastRow {
-      // last row must add Enter key (Submit guess)
-      let enterKey = WordleKeyboardKey(keyType: .submit)
-      enterKey.delegate = delegate
-      enterKey.widthAnchor.constraint(equalToConstant: keyWidth * Layout.specialKeyWidthMultiplier).isActive = true
-      addArrangedSubview(enterKey)
-      setCustomSpacing(Layout.specialKeySpacing, after: enterKey)
-    }
-    
-    keys.enumerated().forEach { index, char in
-      let keyView = WordleKeyboardKey(keyType: .char(char))
+    keys.enumerated().forEach { index, keyView in
       keyView.delegate = delegate
-      keyView.widthAnchor.constraint(equalToConstant: keyWidth).isActive = true
-      addArrangedSubview(keyView)
-      
-      keyReferences.append(WeakRef(value: keyView))
-    }
-    
-    if isLastRow {
-      if let lastKey = arrangedSubviews.last {
-        setCustomSpacing(Layout.specialKeySpacing, after: lastKey)
+      switch keyView.keyType {
+        case .char(_):
+          keyReferences.append(WeakRef(value: keyView))
+          keyView.widthAnchor.constraint(equalToConstant: keyWidth).isActive = true
+        case .submit, .del:
+          keyView.widthAnchor.constraint(equalToConstant: keyWidth * Layout.specialKeyWidthMultiplier).isActive = true
+          setCustomSpacing(Layout.specialKeySpacing, after: keyView)
+        case .forfeit(_), .mainMenu:
+          break
       }
-      // last row must add Backspace key
-      let backspaceKey = WordleKeyboardKey(keyType: .del)
-      backspaceKey.delegate = delegate
-      backspaceKey.widthAnchor.constraint(equalToConstant: keyWidth * Layout.specialKeyWidthMultiplier).isActive = true
-      addArrangedSubview(backspaceKey)
+      
+      addArrangedSubview(keyView)
     }
     
     heightAnchor.constraint(equalToConstant: keyWidth * Layout.heightToWidthRatio).isActive = true

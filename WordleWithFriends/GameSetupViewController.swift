@@ -13,21 +13,27 @@ final class GameSetupViewController: UIViewController {
   private var selectedGamemode: GameMode? {
     didSet {
       switch selectedGamemode {
-        case .none:
-          break
         case .some(.human):
+          // WHY THIS SO LAGGY???
           humanInstructionsTextLabel.isHidden = false
           clueTextField.isHidden = false
           clueTextField.becomeFirstResponder()
+          startGameButton.isHidden = false
           versusHumanButton.isHidden = true
-          versusComputerButton.isHidden = false
-          infiniteModeButton.isHidden = false
-        case .some(.computer),
+          versusComputerButton.isHidden = true
+          infiniteModeButton.isHidden = true
+          switchGamemodeButton.isHidden = false
+        case .none,
+            .some(.computer),
             .some(.infinite):
           humanInstructionsTextLabel.isHidden = true
+          startGameButton.isHidden = true
           clueTextField.isHidden = true
           clueTextField.resignFirstResponder()
           versusHumanButton.isHidden = false
+          versusComputerButton.isHidden = false
+          infiniteModeButton.isHidden = false
+          switchGamemodeButton.isHidden = true
       }
     }
   }
@@ -93,11 +99,22 @@ final class GameSetupViewController: UIViewController {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Start", for: .normal)
-    button.setTitleColor(.systemGreen, for: .normal)
     button.addTarget(self, action: #selector(checkAndInitiateGame), for: .touchUpInside)
     button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
     button.setTitleColor(.systemGray, for: .disabled)
     button.isEnabled = false
+    button.isHidden = true
+    
+    return button
+  }()
+  
+  private lazy var switchGamemodeButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle("Switch gamemode", for: .normal)
+    button.addTarget(self, action: #selector(resetGamemode), for: .touchUpInside)
+    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    button.setTitleColor(.systemGray, for: .disabled)
     button.isHidden = true
     
     return button
@@ -132,6 +149,7 @@ final class GameSetupViewController: UIViewController {
     stackView.addArrangedSubview(humanInstructionsTextLabel)
     stackView.addArrangedSubview(clueTextField)
     stackView.addArrangedSubview(startGameButton)
+    stackView.addArrangedSubview(switchGamemodeButton)
     stackView.addArrangedSubview(versusHumanButton)
     stackView.addArrangedSubview(versusComputerButton)
     stackView.addArrangedSubview(infiniteModeButton)
@@ -228,6 +246,10 @@ final class GameSetupViewController: UIViewController {
       self.present(ctrl, animated: true, completion: nil)
     }
     return isValid
+  }
+  
+  @objc private func resetGamemode() {
+    selectedGamemode = nil
   }
   
   @objc private func initiateGameVersusComputer() {

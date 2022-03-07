@@ -44,11 +44,15 @@ final class WordleKeyboardKey: UIButton {
           progressBar.pin(to: self)
           sendSubviewToBack(progressBar)
           progressBar.isHidden = true
+          
+          titleLabel?.font = titleLabel?.font.withSize(22.0)
         case .mainMenu:
           setTitle("Main menu", for: .normal)
           
           contentEdgeInsets.left = 8
           contentEdgeInsets.right = 8
+          
+          titleLabel?.font = titleLabel?.font.withSize(22.0)
       }
     }
   }

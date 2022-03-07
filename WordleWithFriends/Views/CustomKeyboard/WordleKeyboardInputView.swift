@@ -24,7 +24,6 @@ final class WordleKeyboardInputView: UIInputView {
   private var keyReferences: [WeakRef<WordleKeyboardKey>] = []
   private weak var forfeitKey: WordleKeyboardKey?
   
-  // TODO make customizable?
   private static let keyboardLayout: [[WordleKeyboardKey]] = {
     let characterRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]
     var keyRows = characterRows.map { row in

@@ -42,6 +42,7 @@ final class KeyboardRow: UIStackView {
       keyView.delegate = delegate
       switch keyView.keyType {
         case .char(_):
+          keyReferences.append(WeakRef(value: keyView))
           keyView.widthAnchor.constraint(equalToConstant: keyWidth).isActive = true
         case .submit, .del:
           keyView.widthAnchor.constraint(equalToConstant: keyWidth * Layout.specialKeyWidthMultiplier).isActive = true
@@ -51,8 +52,6 @@ final class KeyboardRow: UIStackView {
       }
       
       addArrangedSubview(keyView)
-      
-      keyReferences.append(WeakRef(value: keyView))
     }
     
     heightAnchor.constraint(equalToConstant: keyWidth * Layout.heightToWidthRatio).isActive = true

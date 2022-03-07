@@ -51,6 +51,7 @@ final class GameSetupViewController: UIViewController {
     label.translatesAutoresizingMaskIntoConstraints = false
     label.textAlignment = .center
     label.text = "Welcome to Wordle With Friends!"
+    label.font = UIFont.boldSystemFont(ofSize: 24.0) // TODO: Dynamic font sizes
     
     return label
   }()
@@ -155,6 +156,9 @@ final class GameSetupViewController: UIViewController {
     stackView.addArrangedSubview(infiniteModeButton)
     view.addSubview(stackView)
     
+    stackView.setCustomSpacing(32.0, after: welcomeTextLabel)
+    stackView.setCustomSpacing(16.0, after: humanInstructionsTextLabel)
+    
     let maxWidth = LayoutUtility.size(screenWidthPercentage: 85.0, maxWidth: 300)
     
     NSLayoutConstraint.activate([
@@ -234,10 +238,6 @@ final class GameSetupViewController: UIViewController {
     let wordValidity = isWordValid()
     let isValid = wordValidity == .valid
     if isValid {
-      clueTextField.isHidden = true
-      humanInstructionsTextLabel.isHidden = true
-      versusHumanButton.isHidden = false
-      
       initiateGame()
     } else {
       let ctrl = UIAlertController(title: "Error", message: wordValidity.rawValue, preferredStyle: .alert)

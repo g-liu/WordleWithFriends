@@ -13,6 +13,7 @@ protocol KeyTapDelegate {
   func didTapSubmit()
   func didTapDelete()
   func didForfeit()
+  func didTapMainMenu()
 }
 
 final class WordleKeyboardInputView: UIInputView {
@@ -52,10 +53,10 @@ final class WordleKeyboardInputView: UIInputView {
   static func getPortraitModeKeyWidth() -> CGFloat {
     let keyboardWidth = UIScreen.main.bounds.width
     let keyboardRowKeyWidths = keyboardLayout.enumerated().map { index, row -> CGFloat in
-      let isLastRow = index == keyboardLayout.count - 1
+      let isLastAlphaRow = index == keyboardLayout.count - 1
       
       let totalSpace: Double; let keysInRow: Double
-      if isLastRow {
+      if isLastAlphaRow {
         totalSpace = KeyboardRow.Layout.interKeySpacing * (row.count + 1) + 2 * KeyboardRow.Layout.specialKeySpacing
         keysInRow = row.count + 2 + (2 * (KeyboardRow.Layout.specialKeyWidthMultiplier-1))
       } else {
@@ -88,9 +89,9 @@ final class WordleKeyboardInputView: UIInputView {
       let keyboardRow = KeyboardRow()
       keyboardRow.delegate = delegate
       
-      let isLastRow = index == type(of: self).keyboardLayout.count - 1
+      let isLastAlphaRow = index == type(of: self).keyboardLayout.count - 1
       
-      let keyRowRefs = keyboardRow.configure(keys: row, keyWidth: keyWidth, isLastRow: isLastRow)
+      let keyRowRefs = keyboardRow.configure(keys: row, keyWidth: keyWidth, isLastAlphaRow: isLastAlphaRow)
       
       keyReferences.append(contentsOf: keyRowRefs)
       
@@ -103,9 +104,17 @@ final class WordleKeyboardInputView: UIInputView {
     
     let forfeitKey = WordleKeyboardKey(keyType: .forfeit(0.75))
     forfeitKey.delegate = delegate
-    mainStackView.addArrangedSubview(forfeitKey)
-    forfeitKey.heightAnchor.constraint(equalToConstant: keyWidth * KeyboardRow.Layout.heightToWidthRatio).isActive = true
+    
     self.forfeitKey = forfeitKey
+    
+    let mainMenuKey = WordleKeyboardKey(keyType: .mainMenu)
+    mainMenuKey.delegate = delegate
+    
+    // TODO: IS this abuse of KeyboardRow???
+    let lastRowStackView = KeyboardRow() // arrangedSubviews: [forfeitKey, mainMenuKey])
+    lastRowStackView.configure(keys: [forfeitKey, mainMenuKey], keyWidth: keyWidth)
+//    lastRowStackView.heightAnchor.constraint(equalToConstant: keyWidth * KeyboardRow.Layout.heightToWidthRatio).isActive = true
+    mainStackView.addArrangedSubview(lastRowStackView)
     
     // Sort key references A->Z for better lookup later
     keyReferences.sort { keyRef1, keyRef2 in

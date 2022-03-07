@@ -14,6 +14,7 @@ enum KeyType {
   case submit
   case del
   case forfeit(Double)
+  case mainMenu
 }
 
 final class WordleKeyboardKey: UIButton {
@@ -43,6 +44,11 @@ final class WordleKeyboardKey: UIButton {
           progressBar.pin(to: self)
           sendSubviewToBack(progressBar)
           progressBar.isHidden = true
+        case .mainMenu:
+          setTitle("Main menu", for: .normal)
+          
+          contentEdgeInsets.left = 8
+          contentEdgeInsets.right = 8
       }
     }
   }
@@ -112,6 +118,9 @@ final class WordleKeyboardKey: UIButton {
         AudioServicesPlaySystemSound(1155)
       case .forfeit:
         resetGiveUpProgress()
+      case .mainMenu:
+        delegate?.didTapMainMenu()
+        AudioServicesPlaySystemSound(1156)
         
         break // the actual action is handled by long-press
     }

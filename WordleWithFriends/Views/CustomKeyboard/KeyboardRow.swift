@@ -35,10 +35,17 @@ final class KeyboardRow: UIStackView {
   }
   
   @discardableResult
-  func configure(keys: [Character], keyWidth: CGFloat, isLastRow: Bool = false) -> [WeakRef<WordleKeyboardKey>]{
+  // TODO: Get rid of this config and just accept the raw keys as input
+  // Then we don't have to worry about `isLastAlphaRow`
+  func configure(keys: [Character], keyWidth: CGFloat, isLastAlphaRow: Bool = false) -> [WeakRef<WordleKeyboardKey>]{
+    self.configure(keys: keys.map { WordleKeyboardKey(keyType: .char($0)) }, keyWidth: keyWidth, isLastAlphaRow: isLastAlphaRow)
+  }
+  
+  @discardableResult
+  func configure(keys: [WordleKeyboardKey], keyWidth: CGFloat, isLastAlphaRow: Bool = false) -> [WeakRef<WordleKeyboardKey>]{
     var keyReferences: [WeakRef<WordleKeyboardKey>] = []
     
-    if isLastRow {
+    if isLastAlphaRow {
       // last row must add Enter key (Submit guess)
       let enterKey = WordleKeyboardKey(keyType: .submit)
       enterKey.delegate = delegate
@@ -47,8 +54,7 @@ final class KeyboardRow: UIStackView {
       setCustomSpacing(Layout.specialKeySpacing, after: enterKey)
     }
     
-    keys.enumerated().forEach { index, char in
-      let keyView = WordleKeyboardKey(keyType: .char(char))
+    keys.enumerated().forEach { index, keyView in
       keyView.delegate = delegate
       keyView.widthAnchor.constraint(equalToConstant: keyWidth).isActive = true
       addArrangedSubview(keyView)
@@ -56,7 +62,7 @@ final class KeyboardRow: UIStackView {
       keyReferences.append(WeakRef(value: keyView))
     }
     
-    if isLastRow {
+    if isLastAlphaRow {
       if let lastKey = arrangedSubviews.last {
         setCustomSpacing(Layout.specialKeySpacing, after: lastKey)
       }

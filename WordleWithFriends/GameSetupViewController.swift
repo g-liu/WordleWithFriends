@@ -119,6 +119,7 @@ final class GameSetupViewController: UIViewController {
     button.addTarget(self, action: #selector(checkAndInitiateGame), for: .touchUpInside)
     button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
     button.setTitleColor(.systemGray, for: .disabled)
+    button.setTitleColor(.systemGreen, for: .normal)
     button.isEnabled = false
     button.isHidden = true
     

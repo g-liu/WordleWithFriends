@@ -64,9 +64,10 @@
 		6C94887827D0AAD9005252F1 /* LetterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887727D0AAD9005252F1 /* LetterState.swift */; };
 		6C94887C27D0AB15005252F1 /* LetterStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887B27D0AB15005252F1 /* LetterStateTests.swift */; };
 		6C94887E27D0B4E4005252F1 /* KeyboardRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887D27D0B4E4005252F1 /* KeyboardRow.swift */; };
-		6C94F50227D5C23D00C19D43 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94F50127D5C23D00C19D43 /* Array+Extension.swift */; };
 		6C94F4F727D4494C00C19D43 /* GameInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94F4F627D4494C00C19D43 /* GameInstructionsViewController.swift */; };
 		6C94F4FA27D44A8100C19D43 /* HorizontalSeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94F4F927D44A8100C19D43 /* HorizontalSeparatorView.swift */; };
+		6C94F50227D5C23D00C19D43 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94F50127D5C23D00C19D43 /* Array+Extension.swift */; };
+		6C94F50427D9D11500C19D43 /* CharacterSet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94F50327D9D11500C19D43 /* CharacterSet+Extension.swift */; };
 		6CBBCECF279BDC7D00875C30 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */; };
 		6CBCC3CD2797565D005EB254 /* DismissableAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCC3CC2797565D005EB254 /* DismissableAlertController.swift */; };
 		6CBCC3D1279764FF005EB254 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */; };
@@ -155,9 +156,10 @@
 		6C94887727D0AAD9005252F1 /* LetterState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterState.swift; sourceTree = "<group>"; };
 		6C94887B27D0AB15005252F1 /* LetterStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterStateTests.swift; sourceTree = "<group>"; };
 		6C94887D27D0B4E4005252F1 /* KeyboardRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardRow.swift; sourceTree = "<group>"; };
-		6C94F50127D5C23D00C19D43 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		6C94F4F627D4494C00C19D43 /* GameInstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInstructionsViewController.swift; sourceTree = "<group>"; };
 		6C94F4F927D44A8100C19D43 /* HorizontalSeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalSeparatorView.swift; sourceTree = "<group>"; };
+		6C94F50127D5C23D00C19D43 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		6C94F50327D9D11500C19D43 /* CharacterSet+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Extension.swift"; sourceTree = "<group>"; };
 		6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		6CBCC3CC2797565D005EB254 /* DismissableAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissableAlertController.swift; sourceTree = "<group>"; };
 		6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
@@ -335,6 +337,7 @@
 				6C19F5EF27923C5900062083 /* NSLayoutConstraint+Extension.swift */,
 				6C19F6152792491900062083 /* UIStackView+Extension.swift */,
 				6C0009DF2792AD8F00BCC9B6 /* Character+Extension.swift */,
+				6C94F50327D9D11500C19D43 /* CharacterSet+Extension.swift */,
 				60D948152793F90600086C51 /* Int+Extension.swift */,
 				6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */,
 				6C78656027D204AC001C9F58 /* Float+Extension.swift */,
@@ -581,6 +584,7 @@
 				6CBCC3D32797657B005EB254 /* CGSize+Extension.swift in Sources */,
 				6C19F5E527923B1400062083 /* WordGuessRow.swift in Sources */,
 				6C94887127D07FD4005252F1 /* WordleKeyboardInputView.swift in Sources */,
+				6C94F50427D9D11500C19D43 /* CharacterSet+Extension.swift in Sources */,
 				6CBBCECF279BDC7D00875C30 /* Double+Extension.swift in Sources */,
 				6C94F4FA27D44A8100C19D43 /* HorizontalSeparatorView.swift in Sources */,
 				6C19F60227923F8400062083 /* LetterTileView.swift in Sources */,

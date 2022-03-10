@@ -43,7 +43,7 @@ struct WordGuess {
   /// - Parameter clue: the word to check against
   /// - Returns: true if the user guessed correctly; false otherwise
   @discardableResult
-  mutating func checkGuess(against clue: String) -> Bool {
+  mutating func checkGuess(against clue: String, givenHints: inout CharacterSet) -> Bool {
     var clue = clue
     var didGuessCorrectly = true
     
@@ -51,6 +51,7 @@ struct WordGuess {
     guess.enumerated().forEach { index, letterGuess in
       if letterGuess.letter == clue[index] {
         clue.replaceAt(index, with: "#")
+        givenHints.insert(letterGuess.letter)
         mark(index, as: .correct)
       } else if !clue.contains(letterGuess.letter) {
         mark(index, as: .incorrect)
@@ -64,6 +65,7 @@ struct WordGuess {
         didGuessCorrectly = false
         if let indexInClue = clue.firstIndex(of: guess[index].letter) {
           clue.replaceAt(indexInClue, with: "#")
+          givenHints.insert(guess[index].letter)
           mark(index, as: .misplaced)
         } else {
           mark(index, as: .incorrect)

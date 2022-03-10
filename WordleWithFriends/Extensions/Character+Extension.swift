@@ -9,4 +9,12 @@ import Foundation
 
 extension Character {
   static let space: Character = " "
+  
+  var asUnicodeScalar: Unicode.Scalar? {
+    if let asciiValue = asciiValue {
+      return .init(asciiValue)
+    }
+    
+    return nil
+  }
 }

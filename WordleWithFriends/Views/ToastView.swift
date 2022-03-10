@@ -34,6 +34,7 @@ final class ToastView: UIView {
     label.translatesAutoresizingMaskIntoConstraints = false
     label.textAlignment = .center
     label.text = text
+    label.numberOfLines = 2
     
     addSubview(label)
     label.pin(to: self, margins: UIEdgeInsets(top: 12, left: 18, bottom: 12, right: 18))

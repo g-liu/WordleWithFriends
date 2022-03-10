@@ -14,6 +14,8 @@ struct GameGuessesModel {
   
   private var letterGuesses: [WordGuess] = [WordGuess()]
   
+  private var givenHints: CharacterSet = .init()
+  
   /// The number of completed guesses
   var numberOfGuesses: Int { letterGuesses.count - 1 }
   
@@ -55,7 +57,24 @@ struct GameGuessesModel {
   /// - Returns: if the user guessed the word correctly
   @discardableResult
   mutating func submitGuess() -> GameState {
-    let didGuessCorrectly = letterGuesses[letterGuesses.count - 1].checkGuess(against: clue)
+    guard let wordGuess = letterGuesses.last?.word else {
+      return .invalidLength
+    }
+    
+    guard wordGuess.count == GameSettings.clueLength.readIntValue() else {
+      return .invalidLength
+    }
+    
+    guard (GameSettings.allowNonDictionaryGuesses.readBoolValue() || wordGuess.isARealWord()) else {
+      return .notAWord
+    }
+    
+    if GameSettings.isHardModeEnabled.readBoolValue(),
+       !guessContainsAllPreviousClues() {
+      return .invalidGuess
+    }
+          
+    let didGuessCorrectly = letterGuesses[letterGuesses.count - 1].checkGuess(against: clue, givenHints: &givenHints)
     
     letterGuesses.append(WordGuess())
     if didGuessCorrectly {
@@ -68,6 +87,15 @@ struct GameGuessesModel {
       isGameOver = false
       return .keepGuessing
     }
+  }
+  
+  private func guessContainsAllPreviousClues() -> Bool {
+    guard numberOfGuesses > 0,
+          !givenHints.isEmpty else { return true }
+    
+    guard let wordGuess = letterGuesses.last?.word else { return false }
+    
+    return wordGuess.containsAll(in: givenHints)
   }
   
   func copyResult() {
@@ -87,9 +115,18 @@ struct GameGuessesModel {
 }
 
 enum GameState {
+  // Guess is correct
   case win
+  // Guess is incorrect and player is out of guesses
   case lose
+  // Guess is valid but incorrect
   case keepGuessing
+  // Guess does not meet length requirements
+  case invalidLength
+  // Guess is not a dictionary word
+  case notAWord
+  // Guess does not meet previous clue requirements
+  case invalidGuess
 }
 
 enum GameMode {

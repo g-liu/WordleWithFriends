@@ -46,11 +46,12 @@ final class GameMessagingViewController: UIViewController {
     alertController.addAction(shareButton)
     alertController.addAction(mainMenuButton)
     
+    mainMenuButton.setValue("Main menu", forKeyPath: "title")
+    
     switch gamemode {
       case .human:
-        mainMenuButton.setValue("Main menu", forKeyPath: "title")
+        break
       case .computer:
-        mainMenuButton.setValue("Main menu", forKeyPath: "title")
         alertController.addAction(newClueButton)
       case .infinite:
         break // Infinite game mode never touches this VC

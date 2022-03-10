@@ -14,7 +14,7 @@ struct GameGuessesModel {
   
   private var letterGuesses: [WordGuess] = [WordGuess()]
   
-  private var givenHints: CharacterSet = .init()
+  private var givenHints: Set<Character> = .init()
   
   /// The number of completed guesses
   var numberOfGuesses: Int { letterGuesses.count - 1 }
@@ -70,8 +70,9 @@ struct GameGuessesModel {
     }
     
     if GameSettings.isHardModeEnabled.readBoolValue(),
-       !guessContainsAllPreviousClues() {
-      return .invalidGuess
+       let missingClues = missingCluesFromGuess(),
+       !missingClues.isEmpty {
+         return .invalidGuess(missingClues)
     }
           
     let didGuessCorrectly = letterGuesses[letterGuesses.count - 1].checkGuess(against: clue, givenHints: &givenHints)
@@ -89,13 +90,12 @@ struct GameGuessesModel {
     }
   }
   
-  private func guessContainsAllPreviousClues() -> Bool {
+  private func missingCluesFromGuess() -> Set<Character>? {
     guard numberOfGuesses > 0,
-          !givenHints.isEmpty else { return true }
+          !givenHints.isEmpty,
+          let wordGuess = letterGuesses.last?.word else { return nil }
     
-    guard let wordGuess = letterGuesses.last?.word else { return false }
-    
-    return wordGuess.containsAll(in: givenHints)
+    return givenHints.subtracting(wordGuess)
   }
   
   func copyResult() {
@@ -126,7 +126,8 @@ enum GameState {
   // Guess is not a dictionary word
   case notAWord
   // Guess does not meet previous clue requirements
-  case invalidGuess
+  // Param contains a list of characters missing
+  case invalidGuess(Set<Character>)
 }
 
 enum GameMode {

@@ -43,7 +43,7 @@ struct WordGuess {
   /// - Parameter clue: the word to check against
   /// - Returns: true if the user guessed correctly; false otherwise
   @discardableResult
-  mutating func checkGuess(against clue: String, givenHints: inout CharacterSet) -> Bool {
+  mutating func checkGuess(against clue: String, givenHints: inout Set<Character>) -> Bool {
     var clue = clue
     var didGuessCorrectly = true
     

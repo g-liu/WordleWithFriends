@@ -22,10 +22,6 @@ extension String {
     return misspelledRange.location == NSNotFound
   }
   
-  func containsAll(in characterSet: CharacterSet) -> Bool {
-    characterSet.subtracting(.init(charactersIn: self)).isEmpty
-  }
-  
   func index(_ i: Int) -> String.Index {
     index(startIndex, offsetBy: i)
   }

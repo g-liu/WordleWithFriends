@@ -183,9 +183,8 @@ final class ClueGuessViewController: UIViewController {
         guessInputTextField.text = ""
         
         guessTable.scrollToRow(at: IndexPath.Row(gameGuessesModel.numberOfGuesses), at: .bottom, animated: true)
-      case .invalidGuess:
-        // TODO: Indicate missing letter(s)
-        presentToast("Guess must contain all prior hints")
+      case .invalidGuess(let missingCharacters):
+        presentToast("Guess must contain letters: \(missingCharacters.asCommaSeparatedList)")
         indicateInvalidGuess()
       case .notAWord:
         presentToast("That's not a word in our dictionary.")

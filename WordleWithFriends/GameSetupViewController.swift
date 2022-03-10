@@ -224,7 +224,6 @@ final class GameSetupViewController: UIViewController {
   }
   
   @objc private func promptForClue() {
-    // TODO: Ensure this stays uptodate
     selectedGamemode = .human
   }
   

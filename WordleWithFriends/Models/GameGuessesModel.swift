@@ -43,7 +43,6 @@ struct GameGuessesModel {
   }
   
   // Determines whether the guess is valid or not
-  // TODO: Roll this into submitGuess
   func validateGuess() -> Bool {
     guard let guess = letterGuesses.last else { return false }
     

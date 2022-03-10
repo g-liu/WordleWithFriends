@@ -56,7 +56,7 @@ final class GameInstructionsViewController: UIViewController {
     let row = WordGuessRowView()
     var guess = WordGuess(guess: "GEOFF")
     guess.mark(2, as: .correct)
-    row.configure(with: guess)
+    row.configureExample(with: guess)
     
     return row
   }()
@@ -74,7 +74,7 @@ final class GameInstructionsViewController: UIViewController {
     let row = WordGuessRowView()
     var guess = WordGuess(guess: "APPLE")
     guess.mark(3, as: .misplaced)
-    row.configure(with: guess)
+    row.configureExample(with: guess)
     
     return row
   }()
@@ -92,7 +92,7 @@ final class GameInstructionsViewController: UIViewController {
     let row = WordGuessRowView()
     var guess = WordGuess(guess: "PARKS")
     guess.mark(0, as: .incorrect)
-    row.configure(with: guess)
+    row.configureExample(with: guess)
     
     return row
   }()
@@ -149,5 +149,15 @@ final class GameInstructionsViewController: UIViewController {
   
   @objc private func didTapClose() {
     dismiss(animated: true)
+  }
+}
+
+private extension WordGuessRowView {
+  func configureExample(with wordGuess: WordGuess) {
+    removeAllArrangedSubviews()
+    wordGuess.forEach { letterGuess in
+      let tile = LetterTileView(letterGuess: letterGuess)
+      addArrangedSubview(tile)
+    }
   }
 }

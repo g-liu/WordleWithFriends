@@ -245,10 +245,6 @@ extension ClueGuessViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if gameGuessesModel.gamemode == .infinite {
-      return gameGuessesModel.numberOfGuesses + 1
-    }
-    
     return GameSettings.maxGuesses.readIntValue()
   }
 
@@ -384,6 +380,12 @@ extension ClueGuessViewController: KeyTapDelegate {
   }
   
   func didTapMainMenu() {
-    navigationController?.popViewController(animated: true)
+    let alertController = DismissableAlertController(title: nil, message: "Return to main menu?", preferredStyle: .alert)
+    alertController.addAction(.init(title: "Yes", style: .default, handler: { [weak self] _ in
+      self?.navigationController?.popViewController(animated: true)
+    }))
+    alertController.addAction(.init(title: "Cancel", style: .cancel, handler: nil))
+    
+    present(alertController, animated: true)
   }
 }

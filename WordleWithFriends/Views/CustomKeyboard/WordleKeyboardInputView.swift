@@ -24,7 +24,7 @@ final class WordleKeyboardInputView: UIInputView {
   private var keyReferences: [WeakRef<WordleKeyboardKey>] = []
   private weak var forfeitKey: WordleKeyboardKey?
   
-  private let keyboardLayout: [[WordleKeyboardKey]] = {
+  private var keyboardLayout: [[WordleKeyboardKey]] {
     let characterRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]
     var keyRows = characterRows.map { row in
       row.map {
@@ -35,23 +35,12 @@ final class WordleKeyboardInputView: UIInputView {
     keyRows[keyRows.count-1].append(WordleKeyboardKey(keyType: .del))
     
     return keyRows
-  }()
+  }
   
   var delegate: KeyTapDelegate? {
     didSet {
       setupKeyboard()
     }
-  }
-  
-  private let gamemode: GameMode
-  
-  init(gamemode: GameMode) {
-    self.gamemode = gamemode
-    super.init(frame: .zero, inputViewStyle: .keyboard)
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
   
   private lazy var mainStackView: UIStackView = {
@@ -64,6 +53,17 @@ final class WordleKeyboardInputView: UIInputView {
     
     return stackView
   }()
+  
+  private let gamemode: GameMode
+  
+  init(gamemode: GameMode) {
+    self.gamemode = gamemode
+    super.init(frame: .zero, inputViewStyle: .keyboard)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   func getPortraitModeKeyWidth() -> CGFloat {
     let keyboardWidth = UIScreen.main.bounds.width
@@ -134,11 +134,7 @@ final class WordleKeyboardInputView: UIInputView {
     let operationKeysRow = KeyboardRow()
     operationKeysRow.delegate = delegate
     
-    if gamemode == .infinite {
-      operationKeysRow.configure(keys: [forfeitKey, mainMenuKey], keyWidth: keyWidth)
-    } else {
-      operationKeysRow.configure(keys: [forfeitKey], keyWidth: keyWidth)
-    }
+    operationKeysRow.configure(keys: [forfeitKey, mainMenuKey], keyWidth: keyWidth)
     
     mainStackView.addArrangedSubview(operationKeysRow)
     

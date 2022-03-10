@@ -24,6 +24,19 @@ final class WordleKeyboardInputView: UIInputView {
   private var keyReferences: [WeakRef<WordleKeyboardKey>] = []
   private weak var forfeitKey: WordleKeyboardKey?
   
+  private var keyboardLayout: [[WordleKeyboardKey]] {
+    let characterRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]
+    var keyRows = characterRows.map { row in
+      row.map {
+        WordleKeyboardKey(keyType: .char($0))
+      }
+    }
+    keyRows[keyRows.count-1].prepend(WordleKeyboardKey(keyType: .submit))
+    keyRows[keyRows.count-1].append(WordleKeyboardKey(keyType: .del))
+    
+    return keyRows
+  }
+  
   var delegate: KeyTapDelegate? {
     didSet {
       setupKeyboard()
@@ -52,22 +65,9 @@ final class WordleKeyboardInputView: UIInputView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  private func getKeyboardLayout() -> [[WordleKeyboardKey]] {
-    let characterRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]
-    var keyRows = characterRows.map { row in
-      row.map {
-        WordleKeyboardKey(keyType: .char($0))
-      }
-    }
-    keyRows[keyRows.count-1].prepend(WordleKeyboardKey(keyType: .submit))
-    keyRows[keyRows.count-1].append(WordleKeyboardKey(keyType: .del))
-    
-    return keyRows
-  }
-  
   func getPortraitModeKeyWidth() -> CGFloat {
     let keyboardWidth = UIScreen.main.bounds.width
-    let keyboardRowKeyWidths = getKeyboardLayout().enumerated().map { index, row -> CGFloat in
+    let keyboardRowKeyWidths = keyboardLayout.enumerated().map { index, row -> CGFloat in
       let totalSpace = row.reduce(0) { res, key in
         switch key.keyType {
           case .char(_), .forfeit(_), .mainMenu:
@@ -112,7 +112,7 @@ final class WordleKeyboardInputView: UIInputView {
     
     let keyWidth = getPortraitModeKeyWidth()
     
-    getKeyboardLayout().enumerated().forEach { index, row in
+    keyboardLayout.enumerated().forEach { index, row in
       let keyboardRow = KeyboardRow()
       keyboardRow.delegate = delegate
       let keyRowRefs = keyboardRow.configure(keys: row, keyWidth: keyWidth)

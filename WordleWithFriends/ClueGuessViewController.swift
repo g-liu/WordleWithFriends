@@ -152,32 +152,15 @@ final class ClueGuessViewController: UIViewController {
   }
   
   private func submitGuess() {
-    // TODO: Move some checks to view model???
-    guard let wordGuess = guessInputTextField.text,
-          wordGuess.count == GameSettings.clueLength.readIntValue(),
-          GameSettings.allowNonDictionaryGuesses.readBoolValue() || wordGuess.isARealWord() else {
-      gameGuessesModel.markInvalidGuess()
-      let currentIndexPath = IndexPath.Row(gameGuessesModel.numberOfGuesses)
-      guessTable.reloadRows(at: [currentIndexPath], with: .none)
-            
-      AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-
-      return
-    }
-    
     let gameState = gameGuessesModel.submitGuess()
     
     if let mostRecentGuess = gameGuessesModel.mostRecentGuess {
       wordleKeyboard.updateState(with: mostRecentGuess)
     }
     
-    guessTable.reloadData()
-    
-    guessInputTextField.text = ""
-    guessInputTextField.becomeFirstResponder()
-    
     switch gameState {
       case .win:
+        guessTable.reloadData()
         wordleKeyboard.gameDidEnd()
         if gameGuessesModel.gamemode == .infinite {
           presentToast("Good job! \(gameGuessesModel.numberOfGuesses) guess(es)")
@@ -188,13 +171,38 @@ final class ClueGuessViewController: UIViewController {
           shareButton.isEnabled = true
           gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
         }
+        guessInputTextField.text = ""
+        
       case .lose:
+        guessTable.reloadData()
+        guessInputTextField.text = ""
+        
         forceLoss()
       case .keepGuessing:
-        shareButton.isEnabled = false
+        guessTable.reloadData()
+        guessInputTextField.text = ""
+        
         guessTable.scrollToRow(at: IndexPath.Row(gameGuessesModel.numberOfGuesses), at: .bottom, animated: true)
-        break
+      case .invalidGuess(let missingCharacters):
+        indicateInvalidGuess(reason: "Guess must contain letters: \(missingCharacters.asCommaSeparatedList)")
+      case .notAWord:
+        indicateInvalidGuess(reason: "That's not a word in our dictionary.")
+      case .invalidLength:
+        indicateInvalidGuess(reason: "Guess must be exactly \(GameSettings.clueLength.readIntValue()) letters")
     }
+  }
+  
+  private func indicateInvalidGuess(reason: String) {
+    gameGuessesModel.markInvalidGuess()
+    let currentIndexPath = IndexPath.Row(gameGuessesModel.numberOfGuesses)
+    guessTable.reloadRows(at: [currentIndexPath], with: .none)
+    
+    dismissAllToasts()
+    presentToast(reason)
+          
+    AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+
+    return
   }
   
   private func forceLoss() {

@@ -14,6 +14,8 @@ struct GameGuessesModel {
   
   private var letterGuesses: [WordGuess] = [WordGuess()]
   
+  private var givenHints: Set<Character> = .init()
+  
   /// The number of completed guesses
   var numberOfGuesses: Int { letterGuesses.count - 1 }
   
@@ -40,11 +42,40 @@ struct GameGuessesModel {
     isGameOver = true
   }
   
+  // Determines whether the guess is valid or not
+  // TODO: Roll this into submitGuess
+  func validateGuess() -> Bool {
+    guard let guess = letterGuesses.last else { return false }
+    
+    let wordGuess = guess.word
+    
+    return wordGuess.count == GameSettings.clueLength.readIntValue()
+      && (GameSettings.allowNonDictionaryGuesses.readBoolValue() || wordGuess.isARealWord())
+  }
+  
   /// Submit a guess
   /// - Returns: if the user guessed the word correctly
   @discardableResult
   mutating func submitGuess() -> GameState {
-    let didGuessCorrectly = letterGuesses[letterGuesses.count - 1].checkGuess(against: clue)
+    guard let wordGuess = letterGuesses.last?.word else {
+      return .invalidLength
+    }
+    
+    guard wordGuess.count == GameSettings.clueLength.readIntValue() else {
+      return .invalidLength
+    }
+    
+    guard (GameSettings.allowNonDictionaryGuesses.readBoolValue() || wordGuess.isARealWord()) else {
+      return .notAWord
+    }
+    
+    if GameSettings.isHardModeEnabled.readBoolValue(),
+       let missingClues = missingCluesFromGuess(),
+       !missingClues.isEmpty {
+         return .invalidGuess(missingClues)
+    }
+          
+    let didGuessCorrectly = letterGuesses[letterGuesses.count - 1].checkGuess(against: clue, givenHints: &givenHints)
     
     letterGuesses.append(WordGuess())
     if didGuessCorrectly {
@@ -57,6 +88,14 @@ struct GameGuessesModel {
       isGameOver = false
       return .keepGuessing
     }
+  }
+  
+  private func missingCluesFromGuess() -> Set<Character>? {
+    guard numberOfGuesses > 0,
+          !givenHints.isEmpty,
+          let wordGuess = letterGuesses.last?.word else { return nil }
+    
+    return givenHints.subtracting(wordGuess)
   }
   
   func copyResult() {
@@ -76,9 +115,19 @@ struct GameGuessesModel {
 }
 
 enum GameState {
+  // Guess is correct
   case win
+  // Guess is incorrect and player is out of guesses
   case lose
+  // Guess is valid but incorrect
   case keepGuessing
+  // Guess does not meet length requirements
+  case invalidLength
+  // Guess is not a dictionary word
+  case notAWord
+  // Guess does not meet previous clue requirements
+  // Param contains a list of characters missing
+  case invalidGuess(Set<Character>)
 }
 
 enum GameMode {

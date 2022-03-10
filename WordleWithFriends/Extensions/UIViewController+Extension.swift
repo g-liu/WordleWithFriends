@@ -35,6 +35,12 @@ extension UIViewController {
         toastView.removeFromSuperview()
       }
     }
-
+  }
+  
+  func dismissAllToasts() {
+    view.subviews.forEach { subview in
+      guard let toastView = subview as? ToastView else { return }
+      toastView.removeFromSuperview()
+    }
   }
 }

@@ -6,6 +6,8 @@
 	<integer>6</integer>
 	<key>clueLength</key>
 	<integer>5</integer>
+	<key>hardMode</key>
+	<false/>
 	<key>allowNonDictionaryGuesses</key>
 	<false/>
 </dict>

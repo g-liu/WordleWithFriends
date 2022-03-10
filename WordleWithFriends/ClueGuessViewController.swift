@@ -152,16 +152,9 @@ final class ClueGuessViewController: UIViewController {
   }
   
   private func submitGuess() {
-    // TODO: Move some checks to view model???
-    guard let wordGuess = guessInputTextField.text,
-          wordGuess.count == GameSettings.clueLength.readIntValue(),
-          GameSettings.allowNonDictionaryGuesses.readBoolValue() || wordGuess.isARealWord() else {
-      gameGuessesModel.markInvalidGuess()
-      let currentIndexPath = IndexPath.Row(gameGuessesModel.numberOfGuesses)
-      guessTable.reloadRows(at: [currentIndexPath], with: .none)
-            
-      AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-
+    guard gameGuessesModel.validateGuess() else {
+      // TODO: Messaging
+      indicateInvalidGuess()
       return
     }
     
@@ -195,6 +188,16 @@ final class ClueGuessViewController: UIViewController {
         guessTable.scrollToRow(at: IndexPath.Row(gameGuessesModel.numberOfGuesses), at: .bottom, animated: true)
         break
     }
+  }
+  
+  private func indicateInvalidGuess() {
+    gameGuessesModel.markInvalidGuess()
+    let currentIndexPath = IndexPath.Row(gameGuessesModel.numberOfGuesses)
+    guessTable.reloadRows(at: [currentIndexPath], with: .none)
+          
+    AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+
+    return
   }
   
   private func forceLoss() {

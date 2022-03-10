@@ -40,6 +40,17 @@ struct GameGuessesModel {
     isGameOver = true
   }
   
+  // Determines whether the guess is valid or not
+  // TODO: Roll this into submitGuess
+  func validateGuess() -> Bool {
+    guard let guess = letterGuesses.last else { return false }
+    
+    let wordGuess = guess.word
+    
+    return wordGuess.count == GameSettings.clueLength.readIntValue()
+      && (GameSettings.allowNonDictionaryGuesses.readBoolValue() || wordGuess.isARealWord())
+  }
+  
   /// Submit a guess
   /// - Returns: if the user guessed the word correctly
   @discardableResult

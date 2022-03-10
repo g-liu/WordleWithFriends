@@ -244,11 +244,7 @@ extension ClueGuessViewController: UITableViewDelegate, UITableViewDataSource {
     1
   }
   
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if gameGuessesModel.gamemode == .infinite {
-      return gameGuessesModel.numberOfGuesses + 1
-    }
-    
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {    
     return GameSettings.maxGuesses.readIntValue()
   }
 

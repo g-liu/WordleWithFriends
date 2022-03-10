@@ -313,6 +313,9 @@ extension ClueGuessViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension ClueGuessViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    // TODO: Coalesce logic with didTapSubmit
+    guard !gameGuessesModel.isGameOver else { return false }
+    
     submitGuess()
     return false
   }
@@ -376,6 +379,7 @@ extension ClueGuessViewController: KeyTapDelegate {
   }
   
   func didTapSubmit() {
+    guard !gameGuessesModel.isGameOver else { return }
     submitGuess()
   }
   

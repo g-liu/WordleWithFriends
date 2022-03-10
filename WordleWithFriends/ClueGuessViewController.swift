@@ -184,21 +184,20 @@ final class ClueGuessViewController: UIViewController {
         
         guessTable.scrollToRow(at: IndexPath.Row(gameGuessesModel.numberOfGuesses), at: .bottom, animated: true)
       case .invalidGuess(let missingCharacters):
-        presentToast("Guess must contain letters: \(missingCharacters.asCommaSeparatedList)")
-        indicateInvalidGuess()
+        indicateInvalidGuess(reason: "Guess must contain letters: \(missingCharacters.asCommaSeparatedList)")
       case .notAWord:
-        presentToast("That's not a word in our dictionary.")
-        indicateInvalidGuess()
+        indicateInvalidGuess(reason: "That's not a word in our dictionary.")
       case .invalidLength:
-        presentToast("Guess must be exactly \(GameSettings.clueLength.readIntValue()) letters")
-        indicateInvalidGuess()
+        indicateInvalidGuess(reason: "Guess must be exactly \(GameSettings.clueLength.readIntValue()) letters")
     }
   }
   
-  private func indicateInvalidGuess() {
+  private func indicateInvalidGuess(reason: String) {
     gameGuessesModel.markInvalidGuess()
     let currentIndexPath = IndexPath.Row(gameGuessesModel.numberOfGuesses)
     guessTable.reloadRows(at: [currentIndexPath], with: .none)
+    
+    presentToast(reason)
           
     AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
 

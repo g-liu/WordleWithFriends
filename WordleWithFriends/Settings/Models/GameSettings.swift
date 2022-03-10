@@ -8,6 +8,7 @@
 import Foundation
 
 struct GameSettings {
+  /* TODO: Can be placed into plist? */
   static var clueLength = GameSettingIntRange(key: "clueLength",
                                               description: "Length of clue",
                                               minValue: 3,
@@ -16,11 +17,13 @@ struct GameSettings {
                                               description: "Max guesses",
                                               minValue: 1,
                                               maxValue: 20)
+  static var isHardModeEnabled = GameSettingBool(key: "hardMode",
+                                                 description: "Hard mode")
   static var allowNonDictionaryGuesses = GameSettingBool(key: "allowNonDictionaryGuesses",
                                                          description: "Allow non-word guesses")
   
   static var allSettings: [GameSetting] {
-    return [clueLength, maxGuesses, allowNonDictionaryGuesses]
+    return [clueLength, maxGuesses, isHardModeEnabled, allowNonDictionaryGuesses]
   }
   
   static var numSettings: Int {

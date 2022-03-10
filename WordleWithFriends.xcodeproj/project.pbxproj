@@ -65,6 +65,8 @@
 		6C94887C27D0AB15005252F1 /* LetterStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887B27D0AB15005252F1 /* LetterStateTests.swift */; };
 		6C94887E27D0B4E4005252F1 /* KeyboardRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887D27D0B4E4005252F1 /* KeyboardRow.swift */; };
 		6C94F50227D5C23D00C19D43 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94F50127D5C23D00C19D43 /* Array+Extension.swift */; };
+		6C94F4F727D4494C00C19D43 /* GameInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94F4F627D4494C00C19D43 /* GameInstructionsViewController.swift */; };
+		6C94F4FA27D44A8100C19D43 /* HorizontalSeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94F4F927D44A8100C19D43 /* HorizontalSeparatorView.swift */; };
 		6CBBCECF279BDC7D00875C30 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */; };
 		6CBCC3CD2797565D005EB254 /* DismissableAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCC3CC2797565D005EB254 /* DismissableAlertController.swift */; };
 		6CBCC3D1279764FF005EB254 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */; };
@@ -154,6 +156,8 @@
 		6C94887B27D0AB15005252F1 /* LetterStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterStateTests.swift; sourceTree = "<group>"; };
 		6C94887D27D0B4E4005252F1 /* KeyboardRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardRow.swift; sourceTree = "<group>"; };
 		6C94F50127D5C23D00C19D43 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		6C94F4F627D4494C00C19D43 /* GameInstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInstructionsViewController.swift; sourceTree = "<group>"; };
+		6C94F4F927D44A8100C19D43 /* HorizontalSeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalSeparatorView.swift; sourceTree = "<group>"; };
 		6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		6CBCC3CC2797565D005EB254 /* DismissableAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissableAlertController.swift; sourceTree = "<group>"; };
 		6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
@@ -294,6 +298,7 @@
 				6C19F59C27921EFA00062083 /* AppDelegate.swift */,
 				6C19F59E27921EFA00062083 /* SceneDelegate.swift */,
 				6C19F5A027921EFA00062083 /* GameSetupViewController.swift */,
+				6C94F4F527D4493A00C19D43 /* How To Play */,
 				60D948072793BB0D00086C51 /* Settings */,
 				6C19F5D52792356500062083 /* ClueGuessViewController.swift */,
 				6C19F5A527921EFB00062083 /* Assets.xcassets */,
@@ -394,6 +399,23 @@
 				6C94887D27D0B4E4005252F1 /* KeyboardRow.swift */,
 			);
 			path = CustomKeyboard;
+			sourceTree = "<group>";
+		};
+		6C94F4F527D4493A00C19D43 /* How To Play */ = {
+			isa = PBXGroup;
+			children = (
+				6C94F4F827D44A7200C19D43 /* Views */,
+				6C94F4F627D4494C00C19D43 /* GameInstructionsViewController.swift */,
+			);
+			path = "How To Play";
+			sourceTree = "<group>";
+		};
+		6C94F4F827D44A7200C19D43 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6C94F4F927D44A8100C19D43 /* HorizontalSeparatorView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -560,7 +582,9 @@
 				6C19F5E527923B1400062083 /* WordGuessRow.swift in Sources */,
 				6C94887127D07FD4005252F1 /* WordleKeyboardInputView.swift in Sources */,
 				6CBBCECF279BDC7D00875C30 /* Double+Extension.swift in Sources */,
+				6C94F4FA27D44A8100C19D43 /* HorizontalSeparatorView.swift in Sources */,
 				6C19F60227923F8400062083 /* LetterTileView.swift in Sources */,
+				6C94F4F727D4494C00C19D43 /* GameInstructionsViewController.swift in Sources */,
 				6CBCC3CD2797565D005EB254 /* DismissableAlertController.swift in Sources */,
 				60D948062793AE1400086C51 /* GameSettingsViewController.swift in Sources */,
 				6C94887827D0AAD9005252F1 /* LetterState.swift in Sources */,

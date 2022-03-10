@@ -43,6 +43,32 @@ extension String {
   }
 }
 
+extension String {
+  var asAttributedString: NSAttributedString { .init(string: self) }
+  
+  var bolded: NSMutableAttributedString {
+    .init(string: self, attributes: [.font: UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)])
+  }
+  
+  func appending(_ attributedString: NSAttributedString) -> NSMutableAttributedString {
+    let mutableString = NSMutableAttributedString(string: self)
+    mutableString.append(attributedString)
+    
+    return mutableString
+  }
+}
+
+extension NSMutableAttributedString {
+  func appending(_ attributedString: NSAttributedString) -> NSMutableAttributedString {
+    append(attributedString)
+    return self
+  }
+  
+  func appending(_ string: String) -> NSMutableAttributedString {
+    appending(string.asAttributedString)
+  }
+}
+
 extension StringProtocol {
   subscript(offset: Int) -> Character {
     self[index(startIndex, offsetBy: offset)]

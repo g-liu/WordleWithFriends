@@ -197,6 +197,7 @@ final class ClueGuessViewController: UIViewController {
     let currentIndexPath = IndexPath.Row(gameGuessesModel.numberOfGuesses)
     guessTable.reloadRows(at: [currentIndexPath], with: .none)
     
+    dismissAllToasts()
     presentToast(reason)
           
     AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))

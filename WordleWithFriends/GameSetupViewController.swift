@@ -38,6 +38,14 @@ final class GameSetupViewController: UIViewController {
     }
   }
   
+  private lazy var scrollView: UIScrollView = {
+    let scrollView = UIScrollView()
+//    scrollView.delegate = self
+    scrollView.translatesAutoresizingMaskIntoConstraints = false
+    
+    return scrollView
+  }()
+  
   private lazy var settingsButton: UIBarButtonItem = {
     let button = UIBarButtonItem(title: "⚙", style: .plain, target: self, action: #selector(openSettings))
     button.accessibilityLabel = "Game settings"
@@ -150,7 +158,10 @@ final class GameSetupViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view.
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+    
     title = "Wordle with Friends"
     view.backgroundColor = .systemBackground
     
@@ -172,7 +183,10 @@ final class GameSetupViewController: UIViewController {
     stackView.addArrangedSubview(versusHumanButton)
     stackView.addArrangedSubview(versusComputerButton)
     stackView.addArrangedSubview(infiniteModeButton)
-    view.addSubview(stackView)
+    scrollView.addSubview(stackView)
+    
+    view.addSubview(scrollView)
+    scrollView.pin(to: view.safeAreaLayoutGuide)
     
     stackView.setCustomSpacing(32.0, after: welcomeTextLabel)
     stackView.setCustomSpacing(16.0, after: humanInstructionsTextLabel)
@@ -180,9 +194,10 @@ final class GameSetupViewController: UIViewController {
     let maxWidth = LayoutUtility.size(screenWidthPercentage: 85.0, maxWidth: 300)
     
     NSLayoutConstraint.activate([
-      stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-      stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      stackView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor),
+      stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+      stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+      stackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
       clueTextField.widthAnchor.constraint(equalToConstant: CGFloat(maxWidth)),
     ])
     
@@ -202,6 +217,21 @@ final class GameSetupViewController: UIViewController {
     startGameButton.isEnabled = false
     
     NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidUpdate), name: UITextField.textDidChangeNotification, object: nil)
+  }
+  
+  @objc private func adjustForKeyboard(notification: Notification) {
+    guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+    
+    let keyboardScreenEndFrame = keyboardValue.cgRectValue
+    let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+    
+    if notification.name == UIResponder.keyboardWillHideNotification {
+      scrollView.contentInset = .zero
+    } else {
+      scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+    }
+    
+    scrollView.scrollIndicatorInsets = scrollView.contentInset
   }
   
   @objc private func openSettings() {

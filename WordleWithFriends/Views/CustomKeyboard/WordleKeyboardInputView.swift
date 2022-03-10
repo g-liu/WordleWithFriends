@@ -134,11 +134,7 @@ final class WordleKeyboardInputView: UIInputView {
     let operationKeysRow = KeyboardRow()
     operationKeysRow.delegate = delegate
     
-    if gamemode == .infinite {
-      operationKeysRow.configure(keys: [forfeitKey, mainMenuKey], keyWidth: keyWidth)
-    } else {
-      operationKeysRow.configure(keys: [forfeitKey], keyWidth: keyWidth)
-    }
+    operationKeysRow.configure(keys: [forfeitKey, mainMenuKey], keyWidth: keyWidth)
     
     mainStackView.addArrangedSubview(operationKeysRow)
     

@@ -223,6 +223,10 @@ final class GameSetupViewController: UIViewController {
     super.viewWillAppear(animated)
     startGameButton.isEnabled = false
     
+    if !clueTextField.isHidden {
+      clueTextField.becomeFirstResponder()
+    }
+    
     NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidUpdate), name: UITextField.textDidChangeNotification, object: nil)
   }
   

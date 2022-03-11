@@ -231,8 +231,13 @@ final class GameSetupViewController: UIViewController {
     let keyboardRect = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
     let keyboardFrame = view.convert(keyboardRect, from: view.window)
 
-    scrollView.contentInset.top = -keyboardFrame.height / 2
-    scrollView.contentInset.bottom = keyboardFrame.height / 2
+    if notification.name == UIResponder.keyboardWillShowNotification {
+      scrollView.contentInset.top = -keyboardFrame.height / 2
+      scrollView.contentInset.bottom = keyboardFrame.height / 2
+    } else {
+      scrollView.contentInset.top = 0
+      scrollView.contentInset.bottom = 0
+    }
   }
   
   @objc private func openSettings() {

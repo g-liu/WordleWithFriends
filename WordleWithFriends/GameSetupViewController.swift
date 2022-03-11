@@ -78,6 +78,7 @@ final class GameSetupViewController: UIViewController {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Play vs. human", for: .normal)
+    button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(promptForClue), for: .touchUpInside)
     button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
     
@@ -88,6 +89,7 @@ final class GameSetupViewController: UIViewController {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Play vs. computer", for: .normal)
+    button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(initiateGameVersusComputer), for: .touchUpInside)
     button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
     
@@ -98,6 +100,7 @@ final class GameSetupViewController: UIViewController {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Infinite mode", for: .normal)
+    button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(initiateGameOnInfiniteMode), for: .touchUpInside)
     button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
     

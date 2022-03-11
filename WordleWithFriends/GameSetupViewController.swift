@@ -38,6 +38,23 @@ final class GameSetupViewController: UIViewController {
     }
   }
   
+  private lazy var scrollView: UIScrollView = {
+    let scrollView = UIScrollView()
+    scrollView.translatesAutoresizingMaskIntoConstraints = false
+    
+    return scrollView
+  }()
+  
+  private lazy var stackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.axis = .vertical
+    stackView.alignment = .center
+    stackView.spacing = 8.0
+    
+    return stackView
+  }()
+  
   private lazy var settingsButton: UIBarButtonItem = {
     let button = UIBarButtonItem(title: "⚙", style: .plain, target: self, action: #selector(openSettings))
     button.accessibilityLabel = "Game settings"
@@ -70,6 +87,7 @@ final class GameSetupViewController: UIViewController {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Play vs. human", for: .normal)
+    button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(promptForClue), for: .touchUpInside)
     button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
     
@@ -80,6 +98,7 @@ final class GameSetupViewController: UIViewController {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Play vs. computer", for: .normal)
+    button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(initiateGameVersusComputer), for: .touchUpInside)
     button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
     
@@ -90,6 +109,7 @@ final class GameSetupViewController: UIViewController {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Infinite mode", for: .normal)
+    button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(initiateGameOnInfiniteMode), for: .touchUpInside)
     button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
     
@@ -130,6 +150,7 @@ final class GameSetupViewController: UIViewController {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Switch gamemode", for: .normal)
+    button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(resetGamemode), for: .touchUpInside)
     button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
     button.setTitleColor(.systemGray, for: .disabled)
@@ -150,18 +171,15 @@ final class GameSetupViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view.
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+    
     title = "Wordle with Friends"
     view.backgroundColor = .systemBackground
     
     navigationItem.leftBarButtonItem = settingsButton
     navigationItem.rightBarButtonItem = instructionsButton
-    
-    let stackView = UIStackView()
-    stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.axis = .vertical
-    stackView.alignment = .center
-    stackView.spacing = 8.0
     
     updateScreen()
     stackView.addArrangedSubview(welcomeTextLabel)
@@ -172,7 +190,10 @@ final class GameSetupViewController: UIViewController {
     stackView.addArrangedSubview(versusHumanButton)
     stackView.addArrangedSubview(versusComputerButton)
     stackView.addArrangedSubview(infiniteModeButton)
-    view.addSubview(stackView)
+    scrollView.addSubview(stackView)
+    
+    view.addSubview(scrollView)
+    scrollView.pin(to: view.safeAreaLayoutGuide)
     
     stackView.setCustomSpacing(32.0, after: welcomeTextLabel)
     stackView.setCustomSpacing(16.0, after: humanInstructionsTextLabel)
@@ -180,9 +201,10 @@ final class GameSetupViewController: UIViewController {
     let maxWidth = LayoutUtility.size(screenWidthPercentage: 85.0, maxWidth: 300)
     
     NSLayoutConstraint.activate([
-      stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-      stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      stackView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor),
+      stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+      stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+      stackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
       clueTextField.widthAnchor.constraint(equalToConstant: CGFloat(maxWidth)),
     ])
     
@@ -202,6 +224,15 @@ final class GameSetupViewController: UIViewController {
     startGameButton.isEnabled = false
     
     NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidUpdate), name: UITextField.textDidChangeNotification, object: nil)
+  }
+  
+  @objc private func adjustForKeyboard(notification: Notification) {
+    guard let userInfo = notification.userInfo else { return }
+    let keyboardRect = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+    let keyboardFrame = view.convert(keyboardRect, from: view.window)
+
+    scrollView.contentInset.top = -keyboardFrame.height / 2
+    scrollView.contentInset.bottom = keyboardFrame.height / 2
   }
   
   @objc private func openSettings() {

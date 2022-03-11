@@ -12,7 +12,7 @@ final class KeyboardRow: UIStackView {
     static let interKeySpacing = 4.0
     static let specialKeySpacing = 8.0
     static let specialKeyWidthMultiplier = 1.5
-    static let heightToWidthRatio = 1.4
+    static let heightToWidthRatio = 1.3333
   }
   
   var delegate: KeyTapDelegate?

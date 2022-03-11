@@ -40,7 +40,6 @@ final class GameSetupViewController: UIViewController {
   
   private lazy var scrollView: UIScrollView = {
     let scrollView = UIScrollView()
-//    scrollView.delegate = self
     scrollView.translatesAutoresizingMaskIntoConstraints = false
     
     return scrollView

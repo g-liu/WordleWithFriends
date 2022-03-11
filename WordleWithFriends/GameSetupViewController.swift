@@ -228,15 +228,44 @@ final class GameSetupViewController: UIViewController {
   }
   
   @objc func keyboardWillShow(notification: Notification) {
+    guard let userInfo = notification.userInfo else { return }
+    var keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+    keyboardFrame = view.convert(keyboardFrame, from: view.window)
+
+    let stackviewFrame = view.convert(stackView.frame, from: scrollView)
     var contentInset = scrollView.contentInset
-    contentInset.top = -(stackView.frame.minY - view.safeAreaLayoutGuide.layoutFrame.minY)
+    contentInset.top = -keyboardFrame.height / 2
+    contentInset.bottom = keyboardFrame.height / 2
     
     scrollView.contentInset = contentInset
   }
   
   @objc func keyboardWillHide(notification: Notification) {
+    guard let userInfo = notification.userInfo else { return }
+    var keyboardFrame = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
+    keyboardFrame = self.view.convert(keyboardFrame, from: nil)
+    
     scrollView.contentInset = .zero
+    
+//    scrollView.setContentOffset(.zero, animated: true)
   }
+  
+//  @objc private func adjustForKeyboard(notification: Notification) {
+//    guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+//
+//    let keyboardScreenEndFrame = keyboardValue.cgRectValue
+//    let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+//
+////    if notification.name == UIResponder.keyboardWillHideNotification {
+////      scrollView.contentInset = .zero
+//////      scrollView.setContentOffset(.init(x: 0, y: 0), animated: true)
+////    } else {
+////      scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+//////      scrollView.setContentOffset(.init(x: 0, y: keyboardViewEndFrame.height), animated: true)
+////    }
+//
+////    scrollView.scrollIndicatorInsets = scrollView.contentInset
+//  }
   
   @objc private func openSettings() {
     let vc = GameSettingsViewController()

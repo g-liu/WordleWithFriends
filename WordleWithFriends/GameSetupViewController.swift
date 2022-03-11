@@ -46,6 +46,16 @@ final class GameSetupViewController: UIViewController {
     return scrollView
   }()
   
+  private lazy var stackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.axis = .vertical
+    stackView.alignment = .center
+    stackView.spacing = 8.0
+    
+    return stackView
+  }()
+  
   private lazy var settingsButton: UIBarButtonItem = {
     let button = UIBarButtonItem(title: "⚙", style: .plain, target: self, action: #selector(openSettings))
     button.accessibilityLabel = "Game settings"
@@ -141,6 +151,7 @@ final class GameSetupViewController: UIViewController {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Switch gamemode", for: .normal)
+    button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(resetGamemode), for: .touchUpInside)
     button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
     button.setTitleColor(.systemGray, for: .disabled)
@@ -162,20 +173,14 @@ final class GameSetupViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     
     title = "Wordle with Friends"
     view.backgroundColor = .systemBackground
     
     navigationItem.leftBarButtonItem = settingsButton
     navigationItem.rightBarButtonItem = instructionsButton
-    
-    let stackView = UIStackView()
-    stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.axis = .vertical
-    stackView.alignment = .center
-    stackView.spacing = 8.0
     
     updateScreen()
     stackView.addArrangedSubview(welcomeTextLabel)
@@ -222,19 +227,15 @@ final class GameSetupViewController: UIViewController {
     NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidUpdate), name: UITextField.textDidChangeNotification, object: nil)
   }
   
-  @objc private func adjustForKeyboard(notification: Notification) {
-    guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+  @objc func keyboardWillShow(notification: Notification) {
+    var contentInset = scrollView.contentInset
+    contentInset.top = -(stackView.frame.minY - view.safeAreaLayoutGuide.layoutFrame.minY)
     
-    let keyboardScreenEndFrame = keyboardValue.cgRectValue
-    let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
-    
-    if notification.name == UIResponder.keyboardWillHideNotification {
-      scrollView.contentInset = .zero
-    } else {
-      scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
-    }
-    
-    scrollView.scrollIndicatorInsets = scrollView.contentInset
+    scrollView.contentInset = contentInset
+  }
+  
+  @objc func keyboardWillHide(notification: Notification) {
+    scrollView.contentInset = .zero
   }
   
   @objc private func openSettings() {

@@ -344,7 +344,7 @@ final class GameSetupViewController: UIViewController {
   }
   
   @objc private func initiateGameOnTimeTrialMode() {
-    selectedGamemode = .timeTrial(300) // TODO: Customize
+    selectedGamemode = .timeTrial(60) // TODO: Customize
     clueTextField.text = GameUtility.pickWord()
     
     initiateGame()

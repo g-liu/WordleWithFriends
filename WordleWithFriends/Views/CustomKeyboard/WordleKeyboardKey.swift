@@ -32,10 +32,12 @@ final class WordleKeyboardKey: UIButton {
           setTitle("⌫", for: .normal)
         case .nextClue:
           setTitle("Next clue", for: .normal)
+          setTitleColor(.systemFill, for: .disabled)
           contentEdgeInsets.left = 8
           contentEdgeInsets.right = 8
         case .endGame:
           setTitle("End game", for: .normal)
+          setTitleColor(.systemFill, for: .disabled)
           contentEdgeInsets.left = 8
           contentEdgeInsets.right = 8
         case .forfeit(let minDuration):

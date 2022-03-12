@@ -12,7 +12,7 @@ protocol TimeTrialGameProtocol {
 }
 
 struct TimeTrialTracker {
-  private var timestamps: [GuessTimestamp] = .init() {
+  private var guessActions: [GuessAction] = .init() {
     didSet {
       if numCompletedClues > highScore {
         highScore = numCompletedClues
@@ -40,7 +40,7 @@ struct TimeTrialTracker {
   }
   
   private var numSkippedClues: Int {
-    skipppedClueAttempts.count
+    skippedClueAttempts.count
   }
   
   var numGivenClues: Int {
@@ -48,7 +48,7 @@ struct TimeTrialTracker {
   }
   
   private var totalGuesses: Int {
-    timestamps.count
+    guessActions.filter { $0.outcome != .skipped }.count
   }
   
   private var averageTimePerCorrectClue: Double {
@@ -62,13 +62,10 @@ struct TimeTrialTracker {
   private var averageTimePerSkippedClue: Double {
     guard numSkippedClues > 0 else { return 0 }
     
-    let totalTimeTaken = skipppedClueAttempts.reduce(0) { $0 + $1.totalTimeElapsed }
+    let totalTimeTaken = skippedClueAttempts.reduce(0) { $0 + $1.totalTimeElapsed }
     
     return totalTimeTaken / numSkippedClues
   }
-  
-  // TODO: How to handle case where last clue attempt is incomplete?
-  // Answer - count last clue attempt as skipped
   
   private var averageGuessesPerCorrectClue: Double {
     guard numCompletedClues > 0 else { return 0.0 }
@@ -81,7 +78,7 @@ struct TimeTrialTracker {
   private var averageGuessesPerSkippedClue: Double {
     guard numSkippedClues > 0 else { return 0.0 }
     
-    let totalGuessesTaken = skipppedClueAttempts.reduce(0.0) { $0 + $1.numGuesses }
+    let totalGuessesTaken = skippedClueAttempts.reduce(0.0) { $0 + $1.numGuesses }
     
     return totalGuessesTaken / numSkippedClues
   }
@@ -99,17 +96,25 @@ struct TimeTrialTracker {
   }
   
   private var attemptsPerClue: [ClueAttempt] {
-    let result1 = timestamps.splitIncludeDelimiter { timestamp in
-      timestamp.outcome == .correct || timestamp.outcome == .skipped
+    var guessActions = guessActions
+    if guessActions.last?.outcome == .incorrect {
+      // This condition is triggered if the user is still working on guessing a clue when the timer runs out
+      guessActions.append(.init(timeRemaining: 0, outcome: .skipped))
+    }
+    let result1 = guessActions.splitIncludeDelimiter { action in
+      action.outcome == .correct || action.outcome == .skipped
     }
     
-    let result2 = result1.compactMap { timestampsPerClue -> ClueAttempt? in
-      guard let timeOfFirstGuess = timestampsPerClue.first?.timeRemaining,
-            let timeOfLastGuess = timestampsPerClue.last?.timeRemaining,
-            let outcome = timestampsPerClue.last?.outcome else { return nil }
+    let result2 = result1.compactMap { actionsPerClue -> ClueAttempt? in
+      guard let timeOfFirstGuess = actionsPerClue.first?.timeRemaining,
+            let timeOfLastGuess = actionsPerClue.last?.timeRemaining,
+            let outcome = actionsPerClue.last?.outcome else { return nil }
   
       let totalTimeElapsed = timeOfFirstGuess - timeOfLastGuess
-      return .init(numGuesses: timestampsPerClue.count, outcome: outcome, totalTimeElapsed: totalTimeElapsed)
+      // A skip in and of itself does not count as a guess. The attempts before it will be counted in the number of guesses.
+      let numGuesses = outcome == .skipped ? actionsPerClue.count - 1 : actionsPerClue.count
+      
+      return .init(numGuesses: numGuesses, outcome: outcome, totalTimeElapsed: totalTimeElapsed)
     }
     
     return result2
@@ -119,7 +124,7 @@ struct TimeTrialTracker {
     attemptsPerClue.filter { $0.outcome == .correct }
   }
   
-  private var skipppedClueAttempts: [ClueAttempt] {
+  private var skippedClueAttempts: [ClueAttempt] {
     attemptsPerClue.filter { $0.outcome == .skipped }
   }
   
@@ -133,7 +138,7 @@ struct TimeTrialTracker {
   var isPersonalBest: Bool { highScore > personalBest }
   
   mutating func logClueGuess(timeRemaining: TimeInterval, outcome: GuessOutcome) {
-    timestamps.append(.init(timeRemaining: timeRemaining, outcome: outcome))
+    guessActions.append(.init(timeRemaining: timeRemaining, outcome: outcome))
   }
 }
 
@@ -147,13 +152,15 @@ struct GameStatistics {
   let averageTimePerCompletedClue: Double
   let averageTimePerSkippedClue: Double
   var averageTimePerClue: Double {
-    (averageTimePerCompletedClue * numCompletedClues + averageTimePerSkippedClue * numSkippedClues) / totalClues
+    guard totalClues > 0 else { return 0 }
+    return (averageTimePerCompletedClue * numCompletedClues + averageTimePerSkippedClue * numSkippedClues) / totalClues
   }
   
   let averageGuessesPerCompletedClue: Double
   let averageGuessesPerSkippedClue: Double
   var averageGuessesPerClue: Double {
-    (averageGuessesPerCompletedClue * numCompletedClues + averageGuessesPerSkippedClue * numSkippedClues) / totalClues
+    guard totalClues > 0 else { return 0 }
+    return (averageGuessesPerCompletedClue * numCompletedClues + averageGuessesPerSkippedClue * numSkippedClues) / totalClues
   }
   
   let lowestGuessesForCompletedClue: Int
@@ -164,7 +171,9 @@ struct GameStatistics {
   var totalClues: Int { numCompletedClues + numSkippedClues }
   
   var percentCompleted: Double {
-    round((numCompletedClues.asDouble / totalClues) * 100) }
+    guard totalClues > 0 else { return 0 }
+    return round((numCompletedClues.asDouble / totalClues) * 100)
+  }
   
   let totalGuesses: Int
   
@@ -179,7 +188,7 @@ enum GuessOutcome {
   case skipped
 }
 
-struct GuessTimestamp {
+struct GuessAction {
   let timeRemaining: TimeInterval
   let outcome: GuessOutcome
 }

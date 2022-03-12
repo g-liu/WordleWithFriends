@@ -52,13 +52,13 @@ final class ClueGuessViewController: UIViewController {
     textField.layer.borderWidth = 1
     textField.layer.borderColor = UIColor.darkText.cgColor
     textField.inputView = wordleKeyboard
-    textField.inputAccessoryView = timeTrialStatsBar
     
     return textField
   }()
   
   private lazy var timeTrialStatsBar: TimeTrialStatsBar = {
     let bar = TimeTrialStatsBar()
+    bar.delegate = self
     
     return bar
   }()
@@ -80,6 +80,8 @@ final class ClueGuessViewController: UIViewController {
   init(clue: String, gamemode: GameMode) {
     defer {
       if case let .timeTrial(seconds) = gamemode {
+        guessInputTextField.inputAccessoryView = timeTrialStatsBar
+        
         timeTrialStatsBar.secondsRemaining = seconds
         timeTrialStatsBar.startCountdown()
       }
@@ -175,14 +177,18 @@ final class ClueGuessViewController: UIViewController {
       case .win:
         guessTable.reloadData()
         wordleKeyboard.gameDidEnd()
-        if gameGuessesModel.gamemode == .infinite {
-          presentToast("Good job! \(gameGuessesModel.numberOfGuesses) guess(es)")
-          DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-            self?.restartWithNewClue()
-          }
-        } else {
-          shareButton.isEnabled = true
-          gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
+        switch gameGuessesModel.gamemode {
+          case .infinite:
+            presentToast("Good job! \(gameGuessesModel.numberOfGuesses) guess(es)")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2 /* TODO: MAKE DELAY CONFIGURABLE */) { [weak self] in
+              self?.restartWithNewClue()
+            }
+          case .timeTrial(_):
+            timeTrialStatsBar.trackCorrectGuess()
+            restartWithNewClue()
+          case .computer, .human:
+            shareButton.isEnabled = true
+            gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
         }
         guessInputTextField.text = ""
         
@@ -221,14 +227,18 @@ final class ClueGuessViewController: UIViewController {
   private func forceLoss() {
     gameGuessesModel.forceGameOver()
     wordleKeyboard.gameDidEnd()
-    if gameGuessesModel.gamemode == .infinite {
-      presentToast(gameGuessesModel.clue)
-      DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-        self?.restartWithNewClue()
-      }
-    } else {
-      shareButton.isEnabled = true
-      gameMessagingVC.showLose(clue: gameGuessesModel.clue)
+    
+    switch gameGuessesModel.gamemode {
+      case .infinite:
+        presentToast(gameGuessesModel.clue)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+          self?.restartWithNewClue()
+        }
+      case .timeTrial(_):
+        restartWithNewClue()
+      case .human, .computer:
+        shareButton.isEnabled = true
+        gameMessagingVC.showLose(clue: gameGuessesModel.clue)
     }
   }
   
@@ -267,6 +277,9 @@ extension ClueGuessViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     // TODO: inject via enum instead of reading from settings
+    if case .timeTrial(_) = gameGuessesModel.gamemode {
+      return gameGuessesModel.numberOfGuesses + 1
+    }
     return GameSettings.maxGuesses.readIntValue()
   }
 
@@ -368,9 +381,8 @@ extension ClueGuessViewController: GameEndDelegate {
     gameGuessesModel = GameGuessesModel(clue: newClue, gamemode: gameGuessesModel.gamemode)
     guessInputTextField.text = ""
     
-    wordleKeyboard.resetKeyboard()
-    
     DispatchQueue.main.async { [weak self] in
+      self?.wordleKeyboard.resetKeyboard()
       self?.guessTable.reloadData()
       // TODO: In the future might have to reset `cellHeightCache`
       self?.guessTable.scrollToRow(at: .zero, at: .bottom, animated: true)
@@ -411,5 +423,12 @@ extension ClueGuessViewController: KeyTapDelegate {
     alertController.addAction(.init(title: "Cancel", style: .cancel, handler: nil))
     
     present(alertController, animated: true)
+  }
+}
+
+extension ClueGuessViewController: TimeTrialGameProtocol {
+  func timerDidExpire() {
+    // TODO: Lock the game
+    // Sumbit the user's guess
   }
 }

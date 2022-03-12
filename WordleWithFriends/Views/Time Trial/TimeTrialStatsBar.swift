@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol TimeTrialGameProtocol {
+  func timerDidExpire()
+}
+
 final class TimeTrialStatsBar: UIView {
   private lazy var stackView: UIStackView = {
     let stackView = UIStackView()
@@ -35,7 +39,7 @@ final class TimeTrialStatsBar: UIView {
     label.numberOfLines = 1
     label.translatesAutoresizingMaskIntoConstraints = false
     label.font = .systemFont(ofSize: UIFont.systemFontSize)
-    label.text = "GUESSED: 0"
+    label.text = "GUESSED: \(completedGuesses)"
     
     return label
   }()
@@ -52,7 +56,17 @@ final class TimeTrialStatsBar: UIView {
     return label
   }()
   
+  private var completedGuesses: Int = 0 {
+    didSet {
+      // TODO: Standardize label
+      // TODO: Update highscore if exceeds
+      completedGuessesLabel.text = "GUESSED: \(completedGuesses)"
+    }
+  }
+  
   private var countdownTimer: Timer?
+  
+  var delegate: TimeTrialGameProtocol?
   
   // TODO: Move to model w/delegate to update?
   var secondsRemaining: TimeInterval = 0 {
@@ -102,6 +116,10 @@ final class TimeTrialStatsBar: UIView {
   
   func startCountdown() {
     countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(advanceTimer(_:)), userInfo: nil, repeats: true)
+  }
+  
+  func trackCorrectGuess() {
+    completedGuesses += 1
   }
   
   @objc private func advanceTimer(_ sender: Timer?) {

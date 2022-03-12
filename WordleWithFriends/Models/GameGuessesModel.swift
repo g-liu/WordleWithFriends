@@ -81,8 +81,13 @@ struct GameGuessesModel {
       isGameOver = true
       return .win
     } else if letterGuesses.count > GameSettings.maxGuesses.readIntValue() {
-      isGameOver = true
-      return .lose
+      if case .timeTrial(_) = gamemode {
+        isGameOver = false
+        return .keepGuessing
+      } else {
+        isGameOver = true
+        return .lose
+      }
     } else {
       isGameOver = false
       return .keepGuessing

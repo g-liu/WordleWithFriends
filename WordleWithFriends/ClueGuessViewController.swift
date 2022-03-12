@@ -52,6 +52,7 @@ final class ClueGuessViewController: UIViewController {
     textField.layer.borderWidth = 1
     textField.layer.borderColor = UIColor.darkText.cgColor
     textField.inputView = wordleKeyboard
+    textField.inputAccessoryView = countdownLabel
     
     return textField
   }()
@@ -126,15 +127,9 @@ final class ClueGuessViewController: UIViewController {
     
     view.addSubview(guessTable)
     view.addSubview(guessInputTextField)
-    view.addSubview(countdownLabel)
     view.addSubview(loadingView)
     guessTable.pin(to: view.safeAreaLayoutGuide, margins: .init(top: 12, left: 0, bottom: 0, right: 0))
     loadingView.pin(to: view.safeAreaLayoutGuide)
-    
-    NSLayoutConstraint.activate([
-      countdownLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -20),
-      countdownLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-      ])
     
     guessInputTextField.becomeFirstResponder()
     title = "Guess the clue"

@@ -11,6 +11,46 @@ protocol TimeTrialGameProtocol {
   func timerDidExpire()
 }
 
+struct TimeTrialTracker {
+  private var timestamps: [GuessTimestamp] = .init() {
+    didSet {
+      if numCompletedClues > highScore {
+        highScore = numCompletedClues
+      }
+    }
+  }
+  
+  var numCompletedClues: Int {
+    timestamps.filter { $0.outcome == .correct }.count
+  }
+  
+  var numSkippedClues: Int {
+    timestamps.filter { $0.outcome == .incorrect }.count
+  }
+  
+  var highScore: Int {
+    get { UserDefaults.standard.integer(forKey: "gameStats.highScore") }
+    set {
+      UserDefaults.standard.set(newValue, forKey: "gameStats.highScore")
+    }
+  }
+  
+  mutating func logClueGuess(timeRemaining: TimeInterval, outcome: GuessOutcome) {
+    timestamps.append(.init(timeRemaining: timeRemaining, outcome: outcome))
+  }
+}
+
+enum GuessOutcome {
+  case correct
+  case incorrect
+  case skipped
+}
+
+struct GuessTimestamp {
+  let timeRemaining: TimeInterval
+  let outcome: GuessOutcome
+}
+
 final class TimeTrialStatsBar: UIView {
   private lazy var stackView: UIStackView = {
     let stackView = UIStackView()
@@ -33,13 +73,13 @@ final class TimeTrialStatsBar: UIView {
     return label
   }()
   
-  private lazy var completedGuessesLabel: UILabel = {
+  private lazy var completedCluesLabel: UILabel = {
     let label = UILabel()
     label.textColor = .label
     label.numberOfLines = 1
     label.translatesAutoresizingMaskIntoConstraints = false
     label.font = .systemFont(ofSize: UIFont.systemFontSize)
-    label.text = "GUESSED: \(completedGuesses)"
+    label.text = "GUESSED: 0"
     
     return label
   }()
@@ -51,30 +91,12 @@ final class TimeTrialStatsBar: UIView {
     label.numberOfLines = 1
     label.translatesAutoresizingMaskIntoConstraints = false
     label.font = .systemFont(ofSize: UIFont.systemFontSize)
-    label.text = "HIGH SCORE: \(highScore)"
+    label.text = "HIGH SCORE:"
     
     return label
   }()
   
-  private var completedGuesses: Int = 0 {
-    didSet {
-      // TODO: Standardize label
-      // TODO: Update highscore if exceeds
-      completedGuessesLabel.text = "GUESSED: \(completedGuesses)"
-      if completedGuesses > highScore {
-        highScore = completedGuesses
-        
-      }
-    }
-  }
-  
-  private var highScore: Int {
-    get { UserDefaults.standard.integer(forKey: "gameStats.highScore") }
-    set {
-      UserDefaults.standard.set(newValue, forKey: "gameStats.highScore")
-      highScoreLabel.text = "HIGH SCORE: \(newValue)"
-    }
-  }
+  private var tracker: TimeTrialTracker = .init()
   
   private var countdownTimer: Timer?
   
@@ -111,20 +133,22 @@ final class TimeTrialStatsBar: UIView {
     autoresizingMask = .flexibleHeight
     backgroundColor = .systemBrown
     
-    stackView.addArrangedSubview(completedGuessesLabel)
+    stackView.addArrangedSubview(completedCluesLabel)
     stackView.addArrangedSubview(countdownLabel)
     stackView.addArrangedSubview(highScoreLabel)
 
-    completedGuessesLabel.textAlignment = .left
+    completedCluesLabel.textAlignment = .left
     countdownLabel.textAlignment = .center
     highScoreLabel.textAlignment = .right
     
-    completedGuessesLabel.setContentHuggingPriority(.required, for: .horizontal)
+    completedCluesLabel.setContentHuggingPriority(.required, for: .horizontal)
     countdownLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
     highScoreLabel.setContentHuggingPriority(.required, for: .horizontal)
     
     addSubview(stackView)
     stackView.pin(to: safeAreaLayoutGuide, margins: .init(top: 8, left: 8, bottom: 8, right: 8))
+    
+    updateBar()
   }
   
   func startCountdown() {
@@ -132,7 +156,26 @@ final class TimeTrialStatsBar: UIView {
   }
   
   func trackCorrectGuess() {
-    completedGuesses += 1
+    tracker.logClueGuess(timeRemaining: secondsRemaining, outcome: .correct)
+    
+    updateBar()
+  }
+  
+  func trackSkip() {
+    tracker.logClueGuess(timeRemaining: secondsRemaining, outcome: .skipped)
+    
+    updateBar()
+  }
+  
+  func trackIncorrectGuess() {
+    tracker.logClueGuess(timeRemaining: secondsRemaining, outcome: .incorrect)
+    
+    updateBar()
+  }
+  
+  private func updateBar() {
+    completedCluesLabel.text = "GUESSED: \(tracker.numCompletedClues)"
+    highScoreLabel.text = "HIGH SCORE: \(tracker.highScore)"
   }
   
   @objc private func advanceTimer(_ sender: Timer?) {

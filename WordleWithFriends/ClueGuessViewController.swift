@@ -200,6 +200,7 @@ final class ClueGuessViewController: UIViewController {
       case .keepGuessing:
         guessTable.reloadData()
         guessInputTextField.text = ""
+        timeTrialStatsBar.trackIncorrectGuess()
         
         guessTable.scrollToRow(at: IndexPath.Row(gameGuessesModel.numberOfGuesses), at: .bottom, animated: true)
       case .invalidGuess(let missingCharacters):
@@ -412,10 +413,12 @@ extension ClueGuessViewController: KeyTapDelegate {
   }
   
   func didTapDelete() {
+    guard !gameGuessesModel.isGameOver else { return }
     guessInputTextField.deleteBackward()
   }
   
   func didForfeit() {
+    timeTrialStatsBar.trackSkip()
     forceLoss()
   }
   

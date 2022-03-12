@@ -95,8 +95,8 @@ Total clues skipped: \(statistics.numSkippedClues)
 Total guesses: \(statistics.totalGuesses)
 % correct: \(statistics.percentCompleted)%
 
-Average time per clue: \(statistics.averageTimePerClue) seconds
-Average guesses per clue: \(statistics.averageGuessesPerClue)
+Average time per clue: \(String(format: "%.2f", statistics.averageTimePerClue)) seconds
+Average guesses per clue: \(String(format: "%.1f", statistics.averageGuessesPerClue))
 
 Best clue: \(statistics.lowestGuessesForCompletedClue) guess(es)
 Worst clue: \(statistics.highestGuessesForCompletedClue) guess(es)

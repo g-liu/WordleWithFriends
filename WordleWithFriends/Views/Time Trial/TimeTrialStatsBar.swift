@@ -57,6 +57,8 @@ final class TimeTrialStatsBar: UIView {
     return label
   }()
   
+  // TODO: Stats button at end of game to show stats
+  
   private var tracker: TimeTrialTracker = .init()
   
   var statistics: GameStatistics { tracker.statistics }

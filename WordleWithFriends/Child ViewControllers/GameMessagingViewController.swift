@@ -12,11 +12,13 @@ final class GameMessagingViewController: UIViewController {
   
   private lazy var alertController = DismissableAlertController(title: nil, message: nil, preferredStyle: .alert)
   
-  private lazy var shareButton: UIAlertAction = {
+  private lazy var shareGuessButton: UIAlertAction = {
     UIAlertAction(title: "Share", style: .default) { [weak self] _ in
       self?.delegate?.shareResult()
     }
   }()
+  
+  
   
   private lazy var mainMenuButton: UIAlertAction = {
     UIAlertAction(title: "", style: .default) { [weak self] _ in
@@ -43,21 +45,22 @@ final class GameMessagingViewController: UIViewController {
   }
   
   private func setupVC() {
-    alertController.addAction(shareButton)
-    alertController.addAction(mainMenuButton)
-    
-    mainMenuButton.setValue("Main menu", forKeyPath: "title")
-    
     switch gamemode {
       case .human:
+        alertController.addAction(shareGuessButton)
         break
       case .computer:
+        alertController.addAction(shareGuessButton)
         alertController.addAction(newClueButton)
       case .infinite:
+        alertController.addAction(shareGuessButton)
         break // Infinite game mode never touches this VC
       case .timeTrial(_):
         break // ????
     }
+    
+    alertController.addAction(mainMenuButton)
+    mainMenuButton.setValue("Main menu", forKeyPath: "title")
   }
   
   func showWin(numGuesses: Int) {
@@ -83,12 +86,32 @@ final class GameMessagingViewController: UIViewController {
     }
   }
   
-  func showEndOfTimeTrial() {
+  func showEndOfTimeTrial(statistics: GameStatistics) {
     alertController.title = "Time's up!"
-    alertController.message = "Good job."
+    // TODO: MAKE DEPENDENT ON IF USER GETS ANY CLUES RIGHT! LOL!
+    var message = """
+Total clues correct: \(statistics.numCompletedClues)
+Total clues skipped: \(statistics.numSkippedClues)
+Total guesses: \(statistics.totalGuesses)
+% correct: \(statistics.percentCompleted)%
+
+Average time per clue: \(statistics.averageTimePerClue) seconds
+Average guesses per clue: \(statistics.averageGuessesPerClue)
+
+Best clue: \(statistics.lowestGuessesForCompletedClue) guess(es)
+Worst clue: \(statistics.highestGuessesForCompletedClue) guess(es)
+"""
+    
+    if statistics.isNewPersonalBest {
+      message += """
+
+🎉 You set a personal best, beating your old score of \(statistics.personalBest) 🎉
+"""
+    }
+    
+    alertController.message = message
     
     // TODO: Show the correct buttons here.
-    // TODO: STATS
     
     if !alertController.isBeingPresented {
       (navigationController?.topViewController ?? parent)?.present(alertController, animated: true)

@@ -440,6 +440,6 @@ extension ClueGuessViewController: KeyTapDelegate {
 extension ClueGuessViewController: TimeTrialGameProtocol {
   func timerDidExpire() {
     disableGameInput()
-    gameMessagingVC.showEndOfTimeTrial()
+    gameMessagingVC.showEndOfTimeTrial(statistics: timeTrialStatsBar.statistics)
   }
 }

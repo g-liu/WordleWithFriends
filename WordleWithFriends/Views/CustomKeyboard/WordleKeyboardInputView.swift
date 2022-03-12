@@ -23,7 +23,8 @@ final class WordleKeyboardInputView: UIInputView {
     static let topPadding = 4.0
   }
   private var keyReferences: [WeakRef<WordleKeyboardKey>] = []
-  private weak var forfeitKey: WordleKeyboardKey?
+  // TODO: Lol I'm horrible
+  private var keysToDisableAtEndOfGame: [WeakRef<WordleKeyboardKey>] = []
   
   private var keyboardLayout: [[WordleKeyboardKey]] {
     let characterRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]
@@ -134,10 +135,12 @@ final class WordleKeyboardInputView: UIInputView {
       let nextClueKey = WordleKeyboardKey(keyType: .nextClue)
       let endGameKey = WordleKeyboardKey(keyType: .endGame)
       
+      keysToDisableAtEndOfGame.append(.init(value: nextClueKey), .init(value: endGameKey))
+      
       operationKeysRow.configure(keys: [nextClueKey, endGameKey], keyWidth: keyWidth)
     } else {
       let forfeitKey = WordleKeyboardKey(keyType: .forfeit(0.75))
-      self.forfeitKey = forfeitKey
+      keysToDisableAtEndOfGame.append(.init(value: forfeitKey))
       
       let mainMenuKey = WordleKeyboardKey(keyType: .mainMenu)
       operationKeysRow.configure(keys: [forfeitKey, mainMenuKey], keyWidth: keyWidth)
@@ -162,7 +165,7 @@ final class WordleKeyboardInputView: UIInputView {
   }
   
   func gameDidEnd() {
-    forfeitKey?.isEnabled = false
+    keysToDisableAtEndOfGame.forEach { $0.value?.isEnabled = false }
   }
   
   func updateState(with wordGuess: WordGuess) {

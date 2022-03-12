@@ -58,17 +58,6 @@ extension String {
   }
 }
 
-extension NSMutableAttributedString {
-  func appending(_ attributedString: NSAttributedString) -> NSMutableAttributedString {
-    append(attributedString)
-    return self
-  }
-  
-  func appending(_ string: String) -> NSMutableAttributedString {
-    appending(string.asAttributedString)
-  }
-}
-
 extension StringProtocol {
   subscript(offset: Int) -> Character {
     self[index(startIndex, offsetBy: offset)]

@@ -83,7 +83,6 @@ final class ClueGuessViewController: UIViewController {
         guessInputTextField.inputAccessoryView = timeTrialStatsBar
         
         timeTrialStatsBar.secondsRemaining = seconds
-        timeTrialStatsBar.startCountdown()
       }
     }
     gameGuessesModel = GameGuessesModel(clue: clue, gamemode: gamemode)
@@ -120,6 +119,8 @@ final class ClueGuessViewController: UIViewController {
     }
     
     navigationItem.setHidesBackButton(true, animated: true)
+    
+    timeTrialStatsBar.startCountdown()
   }
   
   override func viewWillDisappear(_ animated: Bool) {

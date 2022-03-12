@@ -56,6 +56,15 @@ final class ClueGuessViewController: UIViewController {
     return textField
   }()
   
+  private lazy var countdownLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .label
+    label.numberOfLines = 1
+    label.translatesAutoresizingMaskIntoConstraints = false
+    
+    return label
+  }()
+  
   private lazy var loadingView: UIActivityIndicatorView = {
     let view = UIActivityIndicatorView(style: .large)
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -66,11 +75,25 @@ final class ClueGuessViewController: UIViewController {
     return view
   }()
   
+  private var countdownTimer: Timer? = nil
+  
+  // TODO: Move to model w/delegate to update?
+  private var secondsRemaining: Int = 0 {
+    didSet {
+      countdownLabel.text = "\(secondsRemaining)"
+      
+      if secondsRemaining == 0 {
+        countdownTimer?.invalidate()
+      }
+    }
+  } // TODO: Configurable!
+  
   private var gameMessagingVC: GameMessagingViewController
   
   private var isBeingScrolled = false
   
   init(clue: String, gamemode: GameMode) {
+    defer { secondsRemaining = 300 }
     gameGuessesModel = GameGuessesModel(clue: clue, gamemode: gamemode)
     gameMessagingVC = GameMessagingViewController(gamemode: gamemode)
     super.init(nibName: nil, bundle: nil)
@@ -93,9 +116,15 @@ final class ClueGuessViewController: UIViewController {
     
     view.addSubview(guessTable)
     view.addSubview(guessInputTextField)
+    view.addSubview(countdownLabel)
     view.addSubview(loadingView)
     guessTable.pin(to: view.safeAreaLayoutGuide, margins: .init(top: 12, left: 0, bottom: 0, right: 0))
     loadingView.pin(to: view.safeAreaLayoutGuide)
+    
+    NSLayoutConstraint.activate([
+      countdownLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -20),
+      countdownLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+      ])
     
     guessInputTextField.becomeFirstResponder()
     title = "Guess the clue"
@@ -105,6 +134,8 @@ final class ClueGuessViewController: UIViewController {
     }
     
     navigationItem.setHidesBackButton(true, animated: true)
+    
+    countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(advanceTimer(_:)), userInfo: nil, repeats: true)
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -234,6 +265,10 @@ final class ClueGuessViewController: UIViewController {
     guessTable.scrollIndicatorInsets = guessTable.contentInset
   }
   
+  @objc private func advanceTimer(_ sender: Timer?) {
+    secondsRemaining -= 1
+  }
+  
   @objc private func shareAction(_ sender: Any?) {
     gameGuessesModel.copyResult()
     guard let gameResult = UIPasteboard.general.string else {
@@ -253,6 +288,7 @@ extension ClueGuessViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    // TODO: inject via enum instead of reading from settings
     return GameSettings.maxGuesses.readIntValue()
   }
 

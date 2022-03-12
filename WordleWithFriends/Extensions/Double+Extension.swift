@@ -64,11 +64,17 @@ extension Double {
 }
 
 extension Double {
-  static var dateComponentsFormatter = DateComponentsFormatter()
+  private static var dateComponentsFormatter: DateComponentsFormatter {
+    let fmt = DateComponentsFormatter()
+    fmt.allowedUnits = [.minute, .second]
+    fmt.zeroFormattingBehavior = .pad
+    
+    return fmt
+  }
  
   func asString(style: DateComponentsFormatter.UnitsStyle) -> String {
-    type(of: self).dateComponentsFormatter.allowedUnits = [.minute, .second]
     type(of: self).dateComponentsFormatter.unitsStyle = style
+
     return type(of: self).dateComponentsFormatter.string(from: self) ?? ""
   }
 }

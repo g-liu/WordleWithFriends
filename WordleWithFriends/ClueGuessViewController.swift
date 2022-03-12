@@ -52,19 +52,50 @@ final class ClueGuessViewController: UIViewController {
     textField.layer.borderWidth = 1
     textField.layer.borderColor = UIColor.darkText.cgColor
     textField.inputView = wordleKeyboard
-    textField.inputAccessoryView = countdownLabel
+//    textField.inputAccessoryView = timeTrialStatsBar
+//    textField.inputAccessoryView = {
+//      let fuck = UIView()
+////      fuck.translatesAutoresizingMaskIntoConstraints = false
+//      fuck.autoresizingMask = .flexibleHeight
+//      fuck.backgroundColor = .systemOrange
+//
+//      let fuckLabel = UILabel()
+//      fuckLabel.numberOfLines = 1
+//      fuckLabel.translatesAutoresizingMaskIntoConstraints = false
+//      fuckLabel.text = "FUCCCCCCC"
+//      fuckLabel.setContentCompressionResistancePriority(.required, for: .horizontal, .vertical)
+//
+////      fuckLabel.heightAnchor.constraint(equalToConstant: 55).with(priority: .required).isActive = true
+////      return fuckLabel
+//      fuck.addSubview(fuckLabel)
+//      fuckLabel.pin(to: fuck)
+//      fuck.heightAnchor.constraint(equalToConstant: 55).with(priority: .required).isActive = true
+//      fuck.sizeToFit() // Motherfucker
+//
+//      return fuck
+//    }() // FUCK YOU!!!!!!!!!!
     
+    // WHY THE FUCK DOES THIS WORK???????????????????????
+//    textField.inputAccessoryView = {
+//      let bar = UIToolbar()
+//      let reset = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(resetTapped))
+//      bar.items = [reset]
+//      bar.sizeToFit()
+//
+//      return bar
+//    }()
+//    textField.inputView?.autoresizingMask = .flexibleHeight
+//    textField.reloadInputViews()
     return textField
   }()
   
-  private lazy var countdownLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .label
-    label.numberOfLines = 1
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.isHidden = true
+  // TODO: FUCK OFF
+  @objc private func resetTapped() { print("FUCK!!!!!!!!") }
+  
+  private lazy var timeTrialStatsBar: TimeTrialStatsBar = {
+    let bar = TimeTrialStatsBar()
     
-    return label
+    return bar
   }()
   
   private lazy var loadingView: UIActivityIndicatorView = {
@@ -77,19 +108,6 @@ final class ClueGuessViewController: UIViewController {
     return view
   }()
   
-  private var countdownTimer: Timer? = nil
-  
-  // TODO: Move to model w/delegate to update?
-  private var secondsRemaining: TimeInterval = 0 {
-    didSet {
-      countdownLabel.text = "\(secondsRemaining.asString(style: .positional))"
-      
-      if secondsRemaining == 0 {
-        countdownTimer?.invalidate()
-      }
-    }
-  } // TODO: Configurable!
-  
   private var gameMessagingVC: GameMessagingViewController
   
   private var isBeingScrolled = false
@@ -97,7 +115,8 @@ final class ClueGuessViewController: UIViewController {
   init(clue: String, gamemode: GameMode) {
     defer {
       if case let .timeTrial(seconds) = gamemode {
-        secondsRemaining = seconds
+        timeTrialStatsBar.secondsRemaining = seconds
+        timeTrialStatsBar.startCountdown()
       }
     }
     gameGuessesModel = GameGuessesModel(clue: clue, gamemode: gamemode)
@@ -108,11 +127,6 @@ final class ClueGuessViewController: UIViewController {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-  
-  deinit {
-    countdownTimer?.invalidate()
-    countdownTimer = nil
   }
   
   override func viewDidLoad() {
@@ -127,9 +141,15 @@ final class ClueGuessViewController: UIViewController {
     
     view.addSubview(guessTable)
     view.addSubview(guessInputTextField)
+    view.addSubview(timeTrialStatsBar) // FUCK input accessory view
     view.addSubview(loadingView)
     guessTable.pin(to: view.safeAreaLayoutGuide, margins: .init(top: 12, left: 0, bottom: 0, right: 0))
     loadingView.pin(to: view.safeAreaLayoutGuide)
+    NSLayoutConstraint.activate([
+      timeTrialStatsBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      timeTrialStatsBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      timeTrialStatsBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+      ])
     
     guessInputTextField.becomeFirstResponder()
     title = "Guess the clue"
@@ -139,11 +159,6 @@ final class ClueGuessViewController: UIViewController {
     }
     
     navigationItem.setHidesBackButton(true, animated: true)
-    
-    if secondsRemaining > 0 {
-      countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(advanceTimer(_:)), userInfo: nil, repeats: true)
-      countdownLabel.isHidden = false
-    }
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -271,10 +286,6 @@ final class ClueGuessViewController: UIViewController {
     }
     
     guessTable.scrollIndicatorInsets = guessTable.contentInset
-  }
-  
-  @objc private func advanceTimer(_ sender: Timer?) {
-    secondsRemaining -= 1
   }
   
   @objc private func shareAction(_ sender: Any?) {

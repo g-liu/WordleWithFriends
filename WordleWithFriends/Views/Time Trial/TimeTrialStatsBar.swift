@@ -12,6 +12,9 @@ protocol TimeTrialGameProtocol {
 }
 
 final class TimeTrialStatsBar: UIView {
+  static let guessedCluesFormatString = "GUESSED: %d / %d"
+  static let highScoreFormatString = "HIGH SCORE: %d"
+  
   private lazy var stackView: UIStackView = {
     let stackView = UIStackView()
     stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +42,6 @@ final class TimeTrialStatsBar: UIView {
     label.numberOfLines = 1
     label.translatesAutoresizingMaskIntoConstraints = false
     label.font = .systemFont(ofSize: UIFont.systemFontSize)
-    label.text = "GUESSED: 0 / 0"
     
     return label
   }()
@@ -51,7 +53,6 @@ final class TimeTrialStatsBar: UIView {
     label.numberOfLines = 1
     label.translatesAutoresizingMaskIntoConstraints = false
     label.font = .systemFont(ofSize: UIFont.systemFontSize)
-    label.text = "HIGH SCORE:"
     
     return label
   }()
@@ -143,8 +144,8 @@ final class TimeTrialStatsBar: UIView {
   }
   
   private func updateBar() {
-    completedCluesLabel.text = "GUESSED: \(tracker.numCompletedClues) / \(tracker.numGivenClues)"
-    highScoreLabel.text = "HIGH SCORE: \(tracker.highScore)"
+    completedCluesLabel.text = String(format: type(of: self).guessedCluesFormatString, tracker.numCompletedClues, tracker.numGivenClues)
+    highScoreLabel.text = String(format: type(of: self).highScoreFormatString, tracker.highScore)
   }
   
   @objc private func advanceTimer(_ sender: Timer?) {

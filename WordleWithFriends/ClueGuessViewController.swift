@@ -52,7 +52,7 @@ final class ClueGuessViewController: UIViewController {
     textField.layer.borderWidth = 1
     textField.layer.borderColor = UIColor.darkText.cgColor
     textField.inputView = wordleKeyboard
-//    textField.inputAccessoryView = timeTrialStatsBar
+    textField.inputAccessoryView = timeTrialStatsBar
 //    textField.inputAccessoryView = {
 //      let fuck = UIView()
 ////      fuck.translatesAutoresizingMaskIntoConstraints = false
@@ -89,8 +89,8 @@ final class ClueGuessViewController: UIViewController {
     return textField
   }()
   
-  // TODO: FUCK OFF
-  @objc private func resetTapped() { print("FUCK!!!!!!!!") }
+//  // TODO: FUCK OFF
+//  @objc private func resetTapped() { print("FUCK!!!!!!!!") }
   
   private lazy var timeTrialStatsBar: TimeTrialStatsBar = {
     let bar = TimeTrialStatsBar()
@@ -141,15 +141,15 @@ final class ClueGuessViewController: UIViewController {
     
     view.addSubview(guessTable)
     view.addSubview(guessInputTextField)
-    view.addSubview(timeTrialStatsBar) // FUCK input accessory view
+//    view.addSubview(timeTrialStatsBar) // FUCK input accessory view
     view.addSubview(loadingView)
     guessTable.pin(to: view.safeAreaLayoutGuide, margins: .init(top: 12, left: 0, bottom: 0, right: 0))
     loadingView.pin(to: view.safeAreaLayoutGuide)
-    NSLayoutConstraint.activate([
-      timeTrialStatsBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      timeTrialStatsBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      timeTrialStatsBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-      ])
+//    NSLayoutConstraint.activate([
+//      timeTrialStatsBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+//      timeTrialStatsBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+//      timeTrialStatsBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+//      ])
     
     guessInputTextField.becomeFirstResponder()
     title = "Guess the clue"

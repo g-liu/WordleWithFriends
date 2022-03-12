@@ -9,8 +9,8 @@ import UIKit
 
 final class KeyboardRow: UIStackView {
   public struct Layout {
-    static let interKeySpacing = 4.0
-    static let specialKeySpacing = 8.0
+    static let interKeySpacing = 0.0
+    static let specialKeySpacing = 4.0
     static let specialKeyWidthMultiplier = 1.5
     static let heightToWidthRatio = 1.3333
   }

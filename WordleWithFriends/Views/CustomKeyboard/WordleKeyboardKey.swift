@@ -93,8 +93,11 @@ final class WordleKeyboardKey: UIButton {
     translatesAutoresizingMaskIntoConstraints = false
     
     layer.cornerRadius = 3.0
-    layer.masksToBounds = false
-    backgroundColor = guessState.associatedColor
+    layer.masksToBounds = true
+//    backgroundColor = guessState.associatedColor
+    
+    layer.frame = bounds.insetBy(dx: 2, dy: 2/*todo make this not 0 lmao */)
+    layer.backgroundColor = guessState.associatedColor.cgColor
     
     titleLabel?.font = titleLabel?.font.withSize(24.0)
     titleLabel?.numberOfLines = 1

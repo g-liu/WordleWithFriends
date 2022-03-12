@@ -62,3 +62,13 @@ extension Double {
     left / right.asDouble
   }
 }
+
+extension Double {
+  static var dateComponentsFormatter = DateComponentsFormatter()
+ 
+  func asString(style: DateComponentsFormatter.UnitsStyle) -> String {
+    type(of: self).dateComponentsFormatter.allowedUnits = [.minute, .second]
+    type(of: self).dateComponentsFormatter.unitsStyle = style
+    return type(of: self).dateComponentsFormatter.string(from: self) ?? ""
+  }
+}

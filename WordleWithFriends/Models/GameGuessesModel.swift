@@ -133,5 +133,5 @@ enum GameMode: Equatable {
   case human
   case computer
   case infinite
-  case timeTrial(Int)
+  case timeTrial(TimeInterval)
 }

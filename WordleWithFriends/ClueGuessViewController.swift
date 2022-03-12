@@ -79,9 +79,9 @@ final class ClueGuessViewController: UIViewController {
   private var countdownTimer: Timer? = nil
   
   // TODO: Move to model w/delegate to update?
-  private var secondsRemaining: Int = 0 {
+  private var secondsRemaining: TimeInterval = 0 {
     didSet {
-      countdownLabel.text = "\(secondsRemaining)"
+      countdownLabel.text = "\(secondsRemaining.asString(style: .positional))"
       
       if secondsRemaining == 0 {
         countdownTimer?.invalidate()

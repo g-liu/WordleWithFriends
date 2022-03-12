@@ -24,7 +24,9 @@ final class WordleKeyboardInputView: UIInputView {
   }
   private var keyReferences: [WeakRef<WordleKeyboardKey>] = []
   // TODO: Lol I'm horrible
-  private var keysToDisableAtEndOfGame: [WeakRef<WordleKeyboardKey>] = []
+  private var keysToDisableAtEndOfGame: [WeakRef<WordleKeyboardKey>] = .init()
+  private var keysToHideAtEndOfGame: [WeakRef<WordleKeyboardKey>] = .init()
+  private var keysToMakeVisibleAtEndOfGame: [WeakRef<WordleKeyboardKey>] = .init()
   
   private var keyboardLayout: [[WordleKeyboardKey]] {
     let characterRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]
@@ -134,10 +136,14 @@ final class WordleKeyboardInputView: UIInputView {
     if case .timeTrial(_) = gamemode {
       let nextClueKey = WordleKeyboardKey(keyType: .nextClue)
       let endGameKey = WordleKeyboardKey(keyType: .endGame)
+      let mainMenuKey = WordleKeyboardKey(keyType: .mainMenu)
+      mainMenuKey.isHidden = true
       
       keysToDisableAtEndOfGame.append(.init(value: nextClueKey), .init(value: endGameKey))
+      keysToHideAtEndOfGame.append(.init(value: endGameKey))
+      keysToMakeVisibleAtEndOfGame.append(.init(value: mainMenuKey))
       
-      operationKeysRow.configure(keys: [nextClueKey, endGameKey], keyWidth: keyWidth)
+      operationKeysRow.configure(keys: [nextClueKey, endGameKey, mainMenuKey], keyWidth: keyWidth)
     } else {
       let forfeitKey = WordleKeyboardKey(keyType: .forfeit(0.75))
       keysToDisableAtEndOfGame.append(.init(value: forfeitKey))
@@ -166,6 +172,8 @@ final class WordleKeyboardInputView: UIInputView {
   
   func gameDidEnd() {
     keysToDisableAtEndOfGame.forEach { $0.value?.isEnabled = false }
+    keysToHideAtEndOfGame.forEach { $0.value?.isHidden = true }
+    keysToMakeVisibleAtEndOfGame.forEach { $0.value?.isHidden = false }
   }
   
   func updateState(with wordGuess: WordGuess) {

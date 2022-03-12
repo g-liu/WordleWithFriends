@@ -23,6 +23,7 @@ final class GameSetupViewController: UIViewController {
           versusHumanButton.isHidden = true
           versusComputerButton.isHidden = true
           infiniteModeButton.isHidden = true
+          timeTrialButton.isHidden = true
           switchGamemodeButton.isHidden = false
         case .none,
             .some(.computer),
@@ -35,6 +36,7 @@ final class GameSetupViewController: UIViewController {
           versusHumanButton.isHidden = false
           versusComputerButton.isHidden = false
           infiniteModeButton.isHidden = false
+          timeTrialButton.isHidden = false
           switchGamemodeButton.isHidden = true
       }
     }
@@ -312,6 +314,8 @@ final class GameSetupViewController: UIViewController {
   }
   
   @objc private func checkAndInitiateGame() -> Bool {
+    selectedGamemode = .human
+    
     let wordValidity = isWordValid()
     let isValid = wordValidity == .valid
     if isValid {

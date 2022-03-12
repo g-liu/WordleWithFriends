@@ -120,7 +120,9 @@ final class ClueGuessViewController: UIViewController {
     
     navigationItem.setHidesBackButton(true, animated: true)
     
-    timeTrialStatsBar.startCountdown()
+    if case .timeTrial(_) = gameGuessesModel.gamemode {
+      timeTrialStatsBar.startCountdown()
+    }
   }
   
   override func viewWillDisappear(_ animated: Bool) {

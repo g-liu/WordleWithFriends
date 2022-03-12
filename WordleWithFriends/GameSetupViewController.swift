@@ -25,7 +25,8 @@ final class GameSetupViewController: UIViewController {
           switchGamemodeButton.isHidden = false
         case .none,
             .some(.computer),
-            .some(.infinite):
+            .some(.infinite),
+            .some(.timeTrial):
           humanInstructionsTextLabel.isHidden = true
           startGameButton.isHidden = true
           clueTextField.isHidden = true
@@ -89,7 +90,7 @@ final class GameSetupViewController: UIViewController {
     button.setTitle("Play vs. human", for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(promptForClue), for: .touchUpInside)
-    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
     
     return button
   }()
@@ -100,7 +101,7 @@ final class GameSetupViewController: UIViewController {
     button.setTitle("Play vs. computer", for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(initiateGameVersusComputer), for: .touchUpInside)
-    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
     
     return button
   }()
@@ -111,7 +112,18 @@ final class GameSetupViewController: UIViewController {
     button.setTitle("Infinite mode", for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(initiateGameOnInfiniteMode), for: .touchUpInside)
-    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
+    
+    return button
+  }()
+  
+  private lazy var timeTrialButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle("Time trial", for: .normal)
+    button.setTitleColor(.systemBlue, for: .normal)
+    button.addTarget(self, action: #selector(initiateGameOnTimeTrialMode), for: .touchUpInside)
+    button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
     
     return button
   }()
@@ -152,7 +164,7 @@ final class GameSetupViewController: UIViewController {
     button.setTitle("Switch gamemode", for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(resetGamemode), for: .touchUpInside)
-    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
     button.setTitleColor(.systemGray, for: .disabled)
     button.isHidden = true
     
@@ -190,6 +202,7 @@ final class GameSetupViewController: UIViewController {
     stackView.addArrangedSubview(versusHumanButton)
     stackView.addArrangedSubview(versusComputerButton)
     stackView.addArrangedSubview(infiniteModeButton)
+    stackView.addArrangedSubview(timeTrialButton)
     scrollView.addSubview(stackView)
     
     view.addSubview(scrollView)
@@ -324,6 +337,13 @@ final class GameSetupViewController: UIViewController {
   
   @objc private func initiateGameOnInfiniteMode() {
     selectedGamemode = .infinite
+    clueTextField.text = GameUtility.pickWord()
+    
+    initiateGame()
+  }
+  
+  @objc private func initiateGameOnTimeTrialMode() {
+    selectedGamemode = .timeTrial(300) // TODO: Customize
     clueTextField.text = GameUtility.pickWord()
     
     initiateGame()

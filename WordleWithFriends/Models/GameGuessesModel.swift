@@ -129,8 +129,9 @@ enum GameState {
   case invalidGuess(Set<Character>)
 }
 
-enum GameMode {
+enum GameMode: Equatable {
   case human
   case computer
   case infinite
+  case timeTrial(Int)
 }

@@ -61,6 +61,7 @@ final class ClueGuessViewController: UIViewController {
     label.textColor = .label
     label.numberOfLines = 1
     label.translatesAutoresizingMaskIntoConstraints = false
+    label.isHidden = true
     
     return label
   }()
@@ -93,7 +94,11 @@ final class ClueGuessViewController: UIViewController {
   private var isBeingScrolled = false
   
   init(clue: String, gamemode: GameMode) {
-    defer { secondsRemaining = 300 }
+    defer {
+      if case let .timeTrial(seconds) = gamemode {
+        secondsRemaining = seconds
+      }
+    }
     gameGuessesModel = GameGuessesModel(clue: clue, gamemode: gamemode)
     gameMessagingVC = GameMessagingViewController(gamemode: gamemode)
     super.init(nibName: nil, bundle: nil)
@@ -102,6 +107,11 @@ final class ClueGuessViewController: UIViewController {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  deinit {
+    countdownTimer?.invalidate()
+    countdownTimer = nil
   }
   
   override func viewDidLoad() {
@@ -135,7 +145,10 @@ final class ClueGuessViewController: UIViewController {
     
     navigationItem.setHidesBackButton(true, animated: true)
     
-    countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(advanceTimer(_:)), userInfo: nil, repeats: true)
+    if secondsRemaining > 0 {
+      countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(advanceTimer(_:)), userInfo: nil, repeats: true)
+      countdownLabel.isHidden = false
+    }
   }
   
   override func viewWillDisappear(_ animated: Bool) {

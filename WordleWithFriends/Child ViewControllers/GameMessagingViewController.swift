@@ -55,6 +55,8 @@ final class GameMessagingViewController: UIViewController {
         alertController.addAction(newClueButton)
       case .infinite:
         break // Infinite game mode never touches this VC
+      case .timeTrial(_):
+        break // ????
     }
   }
   

@@ -244,12 +244,14 @@ final class TimeTrialStatsBar: UIView {
   
   private var countdownTimer: Timer?
   
+  private let refreshRate: Int = 10
+  
   var delegate: TimeTrialGameProtocol?
   
   // TODO: Move to model w/delegate to update?
   var secondsRemaining: TimeInterval = 0 {
     didSet {
-      countdownLabel.text = "\(secondsRemaining.asString(style: .positional))"
+      countdownLabel.text = "\(ceil(secondsRemaining).asString(style: .positional))"
       
       if secondsRemaining == 0 {
         countdownTimer?.invalidate()
@@ -271,6 +273,10 @@ final class TimeTrialStatsBar: UIView {
   required init?(coder: NSCoder) {
     super.init(coder: coder)
     setupView()
+  }
+  
+  deinit {
+    countdownTimer?.invalidate()
   }
   
   private func setupView() {
@@ -296,8 +302,8 @@ final class TimeTrialStatsBar: UIView {
   }
   
   func startCountdown() {
-    // TODO: Timer to fire 10x / second
-    countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(advanceTimer(_:)), userInfo: nil, repeats: true)
+    countdownTimer?.invalidate()
+    countdownTimer = Timer.scheduledTimer(timeInterval: refreshRate.inverse, target: self, selector: #selector(advanceTimer(_:)), userInfo: nil, repeats: true)
   }
   
   func trackCorrectGuess() {
@@ -324,6 +330,6 @@ final class TimeTrialStatsBar: UIView {
   }
   
   @objc private func advanceTimer(_ sender: Timer?) {
-    secondsRemaining -= 1
+    secondsRemaining -= refreshRate.inverse
   }
 }

@@ -66,9 +66,8 @@ final class TimeTrialStatsBar: UIView {
   } // TODO: Configurable!
   
   override var intrinsicContentSize: CGSize {
-      // Calculate intrinsicContentSize that will fit all the text
-    let textSize = stackView.sizeThatFits(.init(width: UIScreen.main.bounds.width, height: CGFloat.greatestFiniteMagnitude))
-    return CGSize(width: self.bounds.width, height: textSize.height)
+    let sizeThatFits = sizeThatFits(.init(width: bounds.width, height: CGFloat.greatestFiniteMagnitude))
+    return CGSize(width: bounds.width, height: sizeThatFits.height)
   }
   
   init() {
@@ -82,7 +81,6 @@ final class TimeTrialStatsBar: UIView {
   }
   
   private func setupView() {
-//    translatesAutoresizingMaskIntoConstraints = false
     autoresizingMask = .flexibleHeight
     backgroundColor = .systemBrown
     

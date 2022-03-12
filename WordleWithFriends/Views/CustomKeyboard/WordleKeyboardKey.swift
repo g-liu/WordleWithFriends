@@ -28,6 +28,10 @@ final class WordleKeyboardKey: UIButton {
         case .del:
           setTitle("⌫", for: .normal)
         case .forfeit(let minDuration):
+          // NOTE: GIVE UP KEY SHOULD BE RENAMED IN TIME TRIAL MODE
+          // Maybe create a key to "end time trial immediately"
+          // and another key to next clue (reuse Give Up for this with much shorter delay??)
+          // no main menu...
           setTitle("Give up", for: .normal)
           setTitleColor(.systemFill, for: .disabled)
 

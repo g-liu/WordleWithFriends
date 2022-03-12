@@ -45,13 +45,13 @@ final class TimeTrialStatsBar: UIView {
   }()
   
   // TODO: Button in settings to clear this
-  private lazy var highScore: UILabel = {
+  private lazy var highScoreLabel: UILabel = {
     let label = UILabel()
     label.textColor = .label
     label.numberOfLines = 1
     label.translatesAutoresizingMaskIntoConstraints = false
     label.font = .systemFont(ofSize: UIFont.systemFontSize)
-    label.text = "HIGH SCORE: 0"
+    label.text = "HIGH SCORE: \(highScore)"
     
     return label
   }()
@@ -61,6 +61,18 @@ final class TimeTrialStatsBar: UIView {
       // TODO: Standardize label
       // TODO: Update highscore if exceeds
       completedGuessesLabel.text = "GUESSED: \(completedGuesses)"
+      if completedGuesses > highScore {
+        highScore = completedGuesses
+        
+      }
+    }
+  }
+  
+  private var highScore: Int {
+    get { UserDefaults.standard.integer(forKey: "gameStats.highScore") }
+    set {
+      UserDefaults.standard.set(newValue, forKey: "gameStats.highScore")
+      highScoreLabel.text = "HIGH SCORE: \(newValue)"
     }
   }
   
@@ -100,15 +112,15 @@ final class TimeTrialStatsBar: UIView {
     
     stackView.addArrangedSubview(completedGuessesLabel)
     stackView.addArrangedSubview(countdownLabel)
-    stackView.addArrangedSubview(highScore)
+    stackView.addArrangedSubview(highScoreLabel)
 
     completedGuessesLabel.textAlignment = .left
     countdownLabel.textAlignment = .center
-    highScore.textAlignment = .right
+    highScoreLabel.textAlignment = .right
     
     completedGuessesLabel.setContentHuggingPriority(.required, for: .horizontal)
     countdownLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
-    highScore.setContentHuggingPriority(.required, for: .horizontal)
+    highScoreLabel.setContentHuggingPriority(.required, for: .horizontal)
     
     addSubview(stackView)
     stackView.pin(to: safeAreaLayoutGuide, margins: .init(top: 8, left: 8, bottom: 8, right: 8))

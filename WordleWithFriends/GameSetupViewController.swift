@@ -13,6 +13,7 @@ final class GameSetupViewController: UIViewController {
   private var selectedGamemode: GameMode? {
     didSet {
       switch selectedGamemode {
+          // TODO: This is unacceptable, should create child or intermediate view controllers to set this stuff up.
         case .some(.human):
           // WHY THIS SO LAGGY???
           humanInstructionsTextLabel.isHidden = false

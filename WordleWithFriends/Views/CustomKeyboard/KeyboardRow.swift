@@ -47,7 +47,7 @@ final class KeyboardRow: UIStackView {
         case .submit, .del:
           keyView.widthAnchor.constraint(equalToConstant: keyWidth * Layout.specialKeyWidthMultiplier).isActive = true
           setCustomSpacing(Layout.specialKeySpacing, after: keyView)
-        case .forfeit(_), .mainMenu:
+        case .forfeit(_), .mainMenu, .nextClue, .endGame:
           break
       }
       

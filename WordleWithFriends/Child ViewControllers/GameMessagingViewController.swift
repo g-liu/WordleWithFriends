@@ -62,6 +62,7 @@ final class GameMessagingViewController: UIViewController {
   
   func showWin(numGuesses: Int) {
     alertController.title = "Congratulations!"
+    // TODO: Pluralization
     if numGuesses == 1 {
       alertController.message = "You guessed the word in \(numGuesses) try."
     } else {
@@ -76,6 +77,18 @@ final class GameMessagingViewController: UIViewController {
   func showLose(clue: String) {
     alertController.title = "Aww 😢"
     alertController.message = "The actual word was \(clue). Good try!"
+    
+    if !alertController.isBeingPresented {
+      (navigationController?.topViewController ?? parent)?.present(alertController, animated: true)
+    }
+  }
+  
+  func showEndOfTimeTrial() {
+    alertController.title = "Time's up!"
+    alertController.message = "Good job."
+    
+    // TODO: Show the correct buttons here.
+    // TODO: STATS
     
     if !alertController.isBeingPresented {
       (navigationController?.topViewController ?? parent)?.present(alertController, animated: true)

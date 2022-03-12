@@ -225,8 +225,7 @@ final class ClueGuessViewController: UIViewController {
   }
   
   private func forceLoss() {
-    gameGuessesModel.forceGameOver()
-    wordleKeyboard.gameDidEnd()
+    disableGameInput()
     
     switch gameGuessesModel.gamemode {
       case .infinite:
@@ -240,6 +239,11 @@ final class ClueGuessViewController: UIViewController {
         shareButton.isEnabled = true
         gameMessagingVC.showLose(clue: gameGuessesModel.clue)
     }
+  }
+  
+  private func disableGameInput() {
+    gameGuessesModel.forceGameOver()
+    wordleKeyboard.gameDidEnd()
   }
   
   @objc private func adjustForKeyboard(notification: Notification) {
@@ -415,6 +419,10 @@ extension ClueGuessViewController: KeyTapDelegate {
     forceLoss()
   }
   
+  func didEndGame() {
+    timeTrialStatsBar.secondsRemaining = 0
+  }
+  
   func didTapMainMenu() {
     let alertController = DismissableAlertController(title: nil, message: "Return to main menu?", preferredStyle: .alert)
     alertController.addAction(.init(title: "Yes", style: .default, handler: { [weak self] _ in
@@ -428,7 +436,7 @@ extension ClueGuessViewController: KeyTapDelegate {
 
 extension ClueGuessViewController: TimeTrialGameProtocol {
   func timerDidExpire() {
-    // TODO: Lock the game
-    // Sumbit the user's guess
+    disableGameInput()
+    gameMessagingVC.showEndOfTimeTrial()
   }
 }

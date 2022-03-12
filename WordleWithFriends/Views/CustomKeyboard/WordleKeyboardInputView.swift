@@ -13,6 +13,7 @@ protocol KeyTapDelegate {
   func didTapSubmit()
   func didTapDelete()
   func didForfeit()
+  func didEndGame()
   func didTapMainMenu()
 }
 
@@ -70,7 +71,7 @@ final class WordleKeyboardInputView: UIInputView {
     let keyboardRowKeyWidths = keyboardLayout.enumerated().map { index, row -> CGFloat in
       let totalSpace = row.reduce(0) { res, key in
         switch key.keyType {
-          case .char(_), .forfeit(_), .mainMenu:
+          case .char(_), .forfeit(_), .mainMenu, .nextClue, .endGame:
             return res + KeyboardRow.Layout.interKeySpacing
           case .del, .submit:
             return res + KeyboardRow.Layout.specialKeySpacing
@@ -81,7 +82,7 @@ final class WordleKeyboardInputView: UIInputView {
         switch key.keyType {
           case .del, .submit:
             return res + KeyboardRow.Layout.specialKeyWidthMultiplier
-          case .mainMenu, .forfeit(_):
+          case .mainMenu, .forfeit(_), .nextClue, .endGame:
             // TODO: This needs to be handled specially!!!
             return res + 1
           case .char(_):
@@ -126,15 +127,21 @@ final class WordleKeyboardInputView: UIInputView {
       mainStackView.setCustomSpacing(16.0, after: lastSubview)
     }
     
-    let forfeitKey = WordleKeyboardKey(keyType: .forfeit(0.75))
-    self.forfeitKey = forfeitKey
-    
-    let mainMenuKey = WordleKeyboardKey(keyType: .mainMenu)
-    
     let operationKeysRow = KeyboardRow()
     operationKeysRow.delegate = delegate
     
-    operationKeysRow.configure(keys: [forfeitKey, mainMenuKey], keyWidth: keyWidth)
+    if case .timeTrial(_) = gamemode {
+      let nextClueKey = WordleKeyboardKey(keyType: .nextClue)
+      let endGameKey = WordleKeyboardKey(keyType: .endGame)
+      
+      operationKeysRow.configure(keys: [nextClueKey, endGameKey], keyWidth: keyWidth)
+    } else {
+      let forfeitKey = WordleKeyboardKey(keyType: .forfeit(0.75))
+      self.forfeitKey = forfeitKey
+      
+      let mainMenuKey = WordleKeyboardKey(keyType: .mainMenu)
+      operationKeysRow.configure(keys: [forfeitKey, mainMenuKey], keyWidth: keyWidth)
+    }
     
     mainStackView.addArrangedSubview(operationKeysRow)
     

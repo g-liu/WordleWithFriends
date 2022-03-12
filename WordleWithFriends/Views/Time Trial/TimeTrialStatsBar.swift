@@ -87,6 +87,7 @@ final class TimeTrialStatsBar: UIView {
       
       if secondsRemaining == 0 {
         countdownTimer?.invalidate()
+        delegate?.timerDidExpire()
       }
     }
   } // TODO: Configurable!

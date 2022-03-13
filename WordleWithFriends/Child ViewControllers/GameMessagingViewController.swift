@@ -13,21 +13,20 @@ final class GameMessagingViewController: UIViewController {
   private lazy var alertController = DismissableAlertController(title: nil, message: nil, preferredStyle: .alert)
   
   private lazy var shareGuessButton: UIAlertAction = {
-    UIAlertAction(title: "Share", style: .default) { [weak self] _ in
+    .init(title: "Share", style: .default) { [weak self] _ in
       self?.delegate?.shareResult()
     }
   }()
   
   
-  
   private lazy var mainMenuButton: UIAlertAction = {
-    UIAlertAction(title: "", style: .default) { [weak self] _ in
+    .init(title: "", style: .default) { [weak self] _ in
       self?.delegate?.goToInitialScreen()
     }
   }()
   
   private lazy var newClueButton: UIAlertAction = {
-    UIAlertAction(title: "New clue", style: .default) { [weak self] _ in
+    .init(title: "New clue", style: .default) { [weak self] _ in
       self?.delegate?.restartWithNewClue()
     }
   }()
@@ -56,7 +55,9 @@ final class GameMessagingViewController: UIViewController {
         alertController.addAction(shareGuessButton)
         break // Infinite game mode never touches this VC
       case .timeTrial(_):
-        break // ????
+        alertController.addAction(newClueButton)
+        newClueButton.setValue("Play again", forKeyPath: "title")
+        break
     }
     
     alertController.addAction(mainMenuButton)

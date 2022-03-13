@@ -145,6 +145,11 @@ final class TimeTrialStatsBar: UIView {
     updateBar()
   }
   
+  func resetBar() {
+    tracker = .init()
+    updateBar()
+  }
+  
   private func updateBar() {
     completedCluesLabel.text = String(format: type(of: self).guessedCluesFormatString, tracker.numCompletedClues, tracker.numGivenClues)
     highScoreLabel.text = String(format: type(of: self).highScoreFormatString, tracker.highScore)

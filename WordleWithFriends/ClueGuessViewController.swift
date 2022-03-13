@@ -188,7 +188,7 @@ final class ClueGuessViewController: UIViewController {
             }
           case .timeTrial(_):
             timeTrialStatsBar.trackCorrectGuess()
-            restartWithNewClue()
+            generateNewClue()
           case .computer, .human:
             shareButton.isEnabled = true
             gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
@@ -238,7 +238,7 @@ final class ClueGuessViewController: UIViewController {
           self?.restartWithNewClue()
         }
       case .timeTrial(_):
-        restartWithNewClue()
+        break
       case .human, .computer:
         shareButton.isEnabled = true
         gameMessagingVC.showLose(clue: gameGuessesModel.clue)
@@ -274,6 +274,19 @@ final class ClueGuessViewController: UIViewController {
     let ac = UIActivityViewController(activityItems: [gameResult], applicationActivities: nil)
     navigationController?.present(ac, animated: true) { [weak self] in
       self?.loadingView.isHidden = true
+    }
+  }
+  
+  private func generateNewClue() {
+    let newClue = GameUtility.pickWord()
+    gameGuessesModel = GameGuessesModel(clue: newClue, gamemode: gameGuessesModel.gamemode)
+    guessInputTextField.text = ""
+    
+    DispatchQueue.main.async { [weak self] in
+      self?.wordleKeyboard.resetKeyboard()
+      self?.guessTable.reloadData()
+      // TODO: In the future might have to reset `cellHeightCache`
+      self?.guessTable.scrollToRow(at: .zero, at: .bottom, animated: true)
     }
   }
 }
@@ -385,15 +398,14 @@ extension ClueGuessViewController: GameEndDelegate {
   }
   
   func restartWithNewClue() {
-    let newClue = GameUtility.pickWord()
-    gameGuessesModel = GameGuessesModel(clue: newClue, gamemode: gameGuessesModel.gamemode)
-    guessInputTextField.text = ""
+    generateNewClue()
     
-    DispatchQueue.main.async { [weak self] in
-      self?.wordleKeyboard.resetKeyboard()
-      self?.guessTable.reloadData()
-      // TODO: In the future might have to reset `cellHeightCache`
-      self?.guessTable.scrollToRow(at: .zero, at: .bottom, animated: true)
+    if case let .timeTrial(seconds) = gameGuessesModel.gamemode {
+      DispatchQueue.main.async { [weak self] in
+        self?.timeTrialStatsBar.resetBar()
+        self?.timeTrialStatsBar.secondsRemaining = seconds
+        self?.timeTrialStatsBar.startCountdown()
+      }
     }
   }
 }

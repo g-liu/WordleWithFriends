@@ -16,7 +16,7 @@ struct TimeTrialTracker {
     }
   }
   
-  var personalBest = UserDefaults.standard.integer(forKey: "gameStats.highScore")
+  var personalBest = UserDefaults.standard.integer(forKey: "gameStats.highScore") // TODO: INJECT FOR TESTING???
   
   var statistics: GameStatistics {
     .init(averageTimePerCompletedClue: averageTimePerCorrectClue,

@@ -132,13 +132,17 @@ extension WordGuessTests {
     assert(clue.count == pattern.count, "Expected pattern must be same length as clue")
     
     var model = WordGuess(guess: guess)
-    let _ = model.checkGuess(against: clue)
+    var givenHints = Set<Character>()
+    let _ = model.checkGuess(against: clue, givenHints: &givenHints)
     
     (0..<clue.count).forEach { index in
       let letterGuess = model.guess(at: index)!
       let expectedState = pattern[index]
       XCTAssertEqual(letterGuess.state, expectedState,
                      "Mismatch: expected letter \"\(letterGuess.letter)\" at index \(index) to be \(expectedState), was instead \(letterGuess.state)")
+      if expectedState != .incorrect {
+        XCTAssert(givenHints.contains(letterGuess.letter), "Letter \(letterGuess.letter) was given as a hint but not present in the `givenHints` array")
+      }
     }
   }
 }

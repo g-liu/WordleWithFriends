@@ -156,7 +156,6 @@ final class TimeTrialStatsBar: UIView {
   }
   
   @objc private func advanceTimer(_ sender: Timer?) {
-    // TODO: This could possibly lead to floating point errors
     secondsRemaining -= refreshRate.inverse
   }
 }

@@ -89,7 +89,6 @@ final class GameMessagingViewController: UIViewController {
   
   func showEndOfTimeTrial(statistics: GameStatistics) {
     alertController.title = "Time's up!"
-    // TODO: MAKE DEPENDENT ON IF USER GETS ANY CLUES RIGHT! LOL!
     var message = """
 Total clues correct: \(statistics.numCompletedClues)
 Total clues skipped: \(statistics.numSkippedClues)

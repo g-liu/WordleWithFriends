@@ -183,7 +183,7 @@ final class ClueGuessViewController: UIViewController {
         switch gameGuessesModel.gamemode {
           case .infinite:
             presentToast("Good job! \(gameGuessesModel.numberOfGuesses) guess(es)")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2 /* TODO: MAKE DELAY CONFIGURABLE */) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
               self?.restartWithNewClue()
             }
           case .timeTrial(_):

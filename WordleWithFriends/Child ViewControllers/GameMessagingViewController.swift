@@ -117,8 +117,6 @@ Worst clue: \(statistics.highestGuessesForCompletedClue) guess(es)
     
     alertController.message = message
     
-    // TODO: Show the correct buttons here.
-    
     if !alertController.isBeingPresented {
       (navigationController?.topViewController ?? parent)?.present(alertController, animated: true)
     }

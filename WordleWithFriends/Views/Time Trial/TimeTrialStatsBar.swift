@@ -69,7 +69,6 @@ final class TimeTrialStatsBar: UIView {
   
   var delegate: TimeTrialGameProtocol?
   
-  // TODO: Move to model w/delegate to update?
   var secondsRemaining: TimeInterval = 0 {
     didSet {
       countdownLabel.text = "\(ceil(secondsRemaining).asString(style: .positional))"

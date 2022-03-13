@@ -184,6 +184,8 @@ final class GameSetupViewController: UIViewController {
     return textField
   }()
   
+  private var timeTrialChoices: [TimeInterval] = [300, 180, 120, 60]
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -351,23 +353,20 @@ final class GameSetupViewController: UIViewController {
     clueTextField.text = GameUtility.pickWord()
     
     let timeLimitChoice = DismissableAlertController(title: "Time trial", message: "Choose a time limit", preferredStyle: .actionSheet)
-    timeLimitChoice.addAction(.init(title: "5 minutes", style: .default, handler: { [weak self] _ in
-      self?.selectedGamemode = .timeTrial(300)
-      self?.initiateGame()
-    }))
-    timeLimitChoice.addAction(.init(title: "3 minutes", style: .default, handler: { [weak self] _ in
-      self?.selectedGamemode = .timeTrial(180)
-      self?.initiateGame()
-    }))
-    timeLimitChoice.addAction(.init(title: "2 minutes", style: .default, handler: { [weak self] _ in
-      self?.selectedGamemode = .timeTrial(120)
-      self?.initiateGame()
-    }))
-    timeLimitChoice.addAction(.init(title: "1 minute", style: .default, handler: { [weak self] _ in
-      self?.selectedGamemode = .timeTrial(60)
-      self?.initiateGame()
-    }))
-    timeLimitChoice.addAction(.init(title: "Select a different gamemode", style: .cancel, handler: nil))
+    let fmt = DateComponentsFormatter()
+    fmt.allowedUnits = [.minute]
+    fmt.unitsStyle = .full
+    timeTrialChoices.forEach { timeLimit in
+      guard let timeLimitString = fmt.string(from: timeLimit) else { return }
+      
+      timeLimitChoice.addAction(.init(title: timeLimitString, style: .default) { [weak self] _ in
+        self?.selectedGamemode = .timeTrial(timeLimit)
+        self?.initiateGame()
+      })
+    }
+    timeLimitChoice.addAction(.init(title: "Select a different gamemode", style: .cancel) { [weak self] _ in
+      self?.clueTextField.text = ""
+    })
     
     present(timeLimitChoice, animated: true)
   }

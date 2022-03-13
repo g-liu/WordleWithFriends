@@ -6,7 +6,6 @@
 //
 
 import XCTest
-import SwiftCSV
 @testable import WordleWithFriends
 
 class WordGuessTests: XCTestCase {

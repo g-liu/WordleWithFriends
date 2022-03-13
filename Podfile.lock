@@ -1,0 +1,16 @@
+PODS:
+  - SwiftCSV (0.6.1)
+
+DEPENDENCIES:
+  - SwiftCSV (= 0.6.1)
+
+SPEC REPOS:
+  trunk:
+    - SwiftCSV
+
+SPEC CHECKSUMS:
+  SwiftCSV: f0108ec3e85c69ca7d7707645a4d044a222dc10c
+
+PODFILE CHECKSUM: 79b1828fe59a6765677d24d6f77fbcd6ddabde13
+
+COCOAPODS: 1.11.2

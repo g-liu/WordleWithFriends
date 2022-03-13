@@ -9,6 +9,17 @@ import XCTest
 @testable import WordleWithFriends
 
 final class TimeTrialTrackerTests: XCTestCase {
+  override class func setUp() {
+    super.setUp()
+    
+//    let bundle = Bundle(for: type(of: self))
+//    let path = bundle.path(forResource: "TimeTrialTrackerTestsData", ofType: "csv")!
+//    
+//    do {
+//      
+//    }
+  }
+  
   func testTrackerWithEmptyActions() {
     let tracker = TimeTrialTracker(initialTimeRemaining: 300)
     

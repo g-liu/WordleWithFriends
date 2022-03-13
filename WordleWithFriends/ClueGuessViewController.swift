@@ -56,12 +56,7 @@ final class ClueGuessViewController: UIViewController {
     return textField
   }()
   
-  private lazy var timeTrialStatsBar: TimeTrialStatsBar = {
-    let bar = TimeTrialStatsBar()
-    bar.delegate = self
-    
-    return bar
-  }()
+  private var timeTrialStatsBar: TimeTrialStatsBar?
   
   private lazy var loadingView: UIActivityIndicatorView = {
     let view = UIActivityIndicatorView(style: .large)
@@ -80,9 +75,9 @@ final class ClueGuessViewController: UIViewController {
   init(clue: String, gamemode: GameMode) {
     defer {
       if case let .timeTrial(seconds) = gamemode {
+        timeTrialStatsBar = .init(initialTimeRemaining: seconds)
+        timeTrialStatsBar?.delegate = self
         guessInputTextField.inputAccessoryView = timeTrialStatsBar
-        
-        timeTrialStatsBar.secondsRemaining = seconds
       }
     }
     gameGuessesModel = GameGuessesModel(clue: clue, gamemode: gamemode)
@@ -121,7 +116,7 @@ final class ClueGuessViewController: UIViewController {
     navigationItem.setHidesBackButton(true, animated: true)
     
     if case .timeTrial(_) = gameGuessesModel.gamemode {
-      timeTrialStatsBar.startCountdown()
+      timeTrialStatsBar?.restartCountdown()
     }
   }
   
@@ -187,7 +182,7 @@ final class ClueGuessViewController: UIViewController {
               self?.restartWithNewClue()
             }
           case .timeTrial(_):
-            timeTrialStatsBar.trackCorrectGuess()
+            timeTrialStatsBar?.trackCorrectGuess()
             generateNewClue()
           case .computer, .human:
             shareButton.isEnabled = true
@@ -203,7 +198,7 @@ final class ClueGuessViewController: UIViewController {
       case .keepGuessing:
         guessTable.reloadData()
         guessInputTextField.text = ""
-        timeTrialStatsBar.trackIncorrectGuess()
+        timeTrialStatsBar?.trackIncorrectGuess()
         
         guessTable.scrollToRow(at: IndexPath.Row(gameGuessesModel.numberOfGuesses), at: .bottom, animated: true)
       case .invalidGuess(let missingCharacters):
@@ -400,11 +395,10 @@ extension ClueGuessViewController: GameEndDelegate {
   func restartWithNewClue() {
     generateNewClue()
     
-    if case let .timeTrial(seconds) = gameGuessesModel.gamemode {
+    if case let .timeTrial(_) = gameGuessesModel.gamemode {
       DispatchQueue.main.async { [weak self] in
-        self?.timeTrialStatsBar.resetBar()
-        self?.timeTrialStatsBar.secondsRemaining = seconds
-        self?.timeTrialStatsBar.startCountdown()
+        self?.timeTrialStatsBar?.resetBar()
+        self?.timeTrialStatsBar?.restartCountdown()
       }
     }
   }
@@ -433,7 +427,7 @@ extension ClueGuessViewController: KeyTapDelegate {
   }
   
   func didTapNextClue() {
-    timeTrialStatsBar.trackSkip()
+    timeTrialStatsBar?.trackSkip()
     generateNewClue()
   }
   
@@ -442,7 +436,7 @@ extension ClueGuessViewController: KeyTapDelegate {
   }
   
   func didEndGame() {
-    timeTrialStatsBar.secondsRemaining = 0
+    timeTrialStatsBar?.forceTimerEnd()
   }
   
   func didTapMainMenu() {
@@ -459,6 +453,8 @@ extension ClueGuessViewController: KeyTapDelegate {
 extension ClueGuessViewController: TimeTrialGameProtocol {
   func timerDidExpire() {
     disableGameInput()
-    gameMessagingVC.showEndOfTimeTrial(statistics: timeTrialStatsBar.statistics)
+    if let statistics = timeTrialStatsBar?.statistics {
+      gameMessagingVC.showEndOfTimeTrial(statistics: statistics)
+    }
   }
 }

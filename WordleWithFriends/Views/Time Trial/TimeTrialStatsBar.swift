@@ -59,7 +59,7 @@ final class TimeTrialStatsBar: UIView {
   
   // TODO: Stats button at end of game to show stats
   
-  private var tracker: TimeTrialTracker = .init()
+  private var tracker: TimeTrialTracker
   
   var statistics: GameStatistics { tracker.statistics }
   
@@ -69,7 +69,9 @@ final class TimeTrialStatsBar: UIView {
   
   var delegate: TimeTrialGameProtocol?
   
-  var secondsRemaining: TimeInterval = 0 {
+  private let initialTimeRemaining: TimeInterval
+  
+  private(set) var secondsRemaining: TimeInterval = 0 {
     didSet {
       countdownLabel.text = "\(ceil(secondsRemaining).asString(style: .positional))"
       
@@ -88,14 +90,15 @@ final class TimeTrialStatsBar: UIView {
     return CGSize(width: bounds.width, height: sizeThatFits.height)
   }
   
-  init() {
+  init(initialTimeRemaining: TimeInterval) {
+    self.initialTimeRemaining = initialTimeRemaining
+    tracker = .init(initialTimeRemaining: initialTimeRemaining)
     super.init(frame: .zero)
     setupView()
   }
   
   required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    setupView()
+    fatalError("init(coder:) has not been implemented")
   }
   
   deinit {
@@ -124,8 +127,9 @@ final class TimeTrialStatsBar: UIView {
     updateBar()
   }
   
-  func startCountdown() {
+  func restartCountdown() {
     countdownTimer?.invalidate()
+    secondsRemaining = initialTimeRemaining
     countdownTimer = Timer.scheduledTimer(timeInterval: refreshRate.inverse, target: self, selector: #selector(advanceTimer(_:)), userInfo: nil, repeats: true)
   }
   
@@ -148,8 +152,12 @@ final class TimeTrialStatsBar: UIView {
   }
   
   func resetBar() {
-    tracker = .init()
+    tracker = .init(initialTimeRemaining: initialTimeRemaining)
     updateBar()
+  }
+  
+  func forceTimerEnd() {
+    secondsRemaining = 0
   }
   
   private func updateBar() {

@@ -16,6 +16,12 @@ struct TimeTrialTracker {
     }
   }
   
+  private let initialTimeRemaining: TimeInterval
+  
+  init(initialTimeRemaining: TimeInterval) {
+    self.initialTimeRemaining = initialTimeRemaining
+  }
+  
   var personalBest = UserDefaults.standard.integer(forKey: "gameStats.highScore") // TODO: INJECT FOR TESTING???
   
   var statistics: GameStatistics {
@@ -110,12 +116,12 @@ struct TimeTrialTracker {
       action.outcome == .correct || action.outcome == .skipped
     }
     
-    let result2 = result1.compactMap { actionsPerClue -> ClueAttempt? in
+    let result2 = result1.enumerated().compactMap { index, actionsPerClue -> ClueAttempt? in
       guard let timeOfFirstGuess = actionsPerClue.first?.timeRemaining,
             let timeOfLastGuess = actionsPerClue.last?.timeRemaining,
             let outcome = actionsPerClue.last?.outcome else { return nil }
   
-      let totalTimeElapsed = timeOfFirstGuess - timeOfLastGuess
+      let totalTimeElapsed = index == 0 ? initialTimeRemaining - timeOfLastGuess : timeOfFirstGuess - timeOfLastGuess
       // A skip in and of itself does not count as a guess. The attempts before it will be counted in the number of guesses.
       let numGuesses = outcome == .skipped ? actionsPerClue.count - 1 : actionsPerClue.count
       

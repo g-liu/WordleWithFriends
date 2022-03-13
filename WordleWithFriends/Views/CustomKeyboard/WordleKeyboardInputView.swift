@@ -12,6 +12,7 @@ protocol KeyTapDelegate {
   func didTapKey(_ char: Character)
   func didTapSubmit()
   func didTapDelete()
+  func didTapNextClue()
   func didForfeit()
   func didEndGame()
   func didTapMainMenu()

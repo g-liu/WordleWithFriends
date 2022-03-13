@@ -92,11 +92,6 @@ struct TimeTrialTracker {
   }
   
   private var attemptsPerClue: [ClueAttempt] {
-    var guessActions = guessActions
-    if guessActions.last?.outcome == .incorrect {
-      // This condition is triggered if the user is still working on guessing a clue when the timer runs out
-      guessActions.append(.init(timeRemaining: 0, outcome: .skipped))
-    }
     let result1 = guessActions.splitIncludeDelimiter { action in
       action.outcome == .correct || action.outcome == .skipped
     }
@@ -121,7 +116,8 @@ struct TimeTrialTracker {
   }
   
   private var skippedClueAttempts: [ClueAttempt] {
-    attemptsPerClue.filter { $0.outcome == .skipped }
+    // Note: Incorrect attempts only occur when timer expires, and are counted as a skip.
+    attemptsPerClue.filter { $0.outcome == .skipped || $0.outcome == .incorrect }
   }
   
   private(set) var highScore: Int {

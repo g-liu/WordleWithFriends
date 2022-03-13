@@ -99,9 +99,15 @@ Total guesses: \(statistics.totalGuesses)
 Average time per clue: \(String(format: "%.2f", statistics.averageTimePerClue)) seconds
 Average guesses per clue: \(String(format: "%.1f", statistics.averageGuessesPerClue))
 
+"""
+    
+    if statistics.numCompletedClues > 0 {
+      message += """
+      
 Best clue: \(statistics.lowestGuessesForCompletedClue) guess(es)
 Worst clue: \(statistics.highestGuessesForCompletedClue) guess(es)
 """
+    }
     
     if statistics.isNewPersonalBest {
       message += """

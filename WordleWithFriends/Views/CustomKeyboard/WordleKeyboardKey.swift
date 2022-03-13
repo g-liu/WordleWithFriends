@@ -151,7 +151,7 @@ final class WordleKeyboardKey: UIButton {
         delegate?.didTapSubmit()
         AudioServicesPlaySystemSound(1156)
       case .nextClue:
-        delegate?.didForfeit()
+        delegate?.didTapNextClue()
       case .endGame:
         delegate?.didEndGame()
       case .del:

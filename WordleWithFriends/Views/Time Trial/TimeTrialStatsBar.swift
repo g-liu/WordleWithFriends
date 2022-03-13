@@ -79,7 +79,7 @@ final class TimeTrialStatsBar: UIView {
         delegate?.timerDidExpire()
       }
     }
-  } // TODO: Configurable!
+  }
   
   override var intrinsicContentSize: CGSize {
     let sizeThatFits = sizeThatFits(.init(width: bounds.width, height: CGFloat.greatestFiniteMagnitude))

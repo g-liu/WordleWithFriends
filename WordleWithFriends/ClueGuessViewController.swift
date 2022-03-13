@@ -432,8 +432,12 @@ extension ClueGuessViewController: KeyTapDelegate {
     guessInputTextField.deleteBackward()
   }
   
-  func didForfeit() {
+  func didTapNextClue() {
     timeTrialStatsBar.trackSkip()
+    generateNewClue()
+  }
+  
+  func didForfeit() {
     forceLoss()
   }
   

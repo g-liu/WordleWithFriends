@@ -76,6 +76,9 @@ final class TimeTrialStatsBar: UIView {
       if secondsRemaining <= 0 {
         countdownTimer?.invalidate()
         delegate?.timerDidExpire()
+        backgroundColor = .systemRed
+      } else {
+        backgroundColor = .systemBrown
       }
     }
   }

@@ -65,6 +65,7 @@
 		6C834C90279C897F0024CB13 /* IndexPath+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C834C8F279C897F0024CB13 /* IndexPath+Extension.swift */; };
 		6C889A1227D33CA2001AC677 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C889A1127D33CA2001AC677 /* UIViewController+Extension.swift */; };
 		6C889A1427D33CEB001AC677 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C889A1327D33CEB001AC677 /* ToastView.swift */; };
+		6C8A215227DE92220053DECF /* TimeTrialTrackerTestsData.csv in Resources */ = {isa = PBXBuildFile; fileRef = 6C8A215127DE92220053DECF /* TimeTrialTrackerTestsData.csv */; };
 		6C94887127D07FD4005252F1 /* WordleKeyboardInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887027D07FD4005252F1 /* WordleKeyboardInputView.swift */; };
 		6C94887327D08598005252F1 /* WordleKeyboardKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887227D08598005252F1 /* WordleKeyboardKey.swift */; };
 		6C94887627D098C7005252F1 /* WeakRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94887527D098C7005252F1 /* WeakRef.swift */; };
@@ -167,6 +168,7 @@
 		6C834C8F279C897F0024CB13 /* IndexPath+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IndexPath+Extension.swift"; sourceTree = "<group>"; };
 		6C889A1127D33CA2001AC677 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		6C889A1327D33CEB001AC677 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		6C8A215127DE92220053DECF /* TimeTrialTrackerTestsData.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = TimeTrialTrackerTestsData.csv; sourceTree = "<group>"; };
 		6C94887027D07FD4005252F1 /* WordleKeyboardInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleKeyboardInputView.swift; sourceTree = "<group>"; };
 		6C94887227D08598005252F1 /* WordleKeyboardKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleKeyboardKey.swift; sourceTree = "<group>"; };
 		6C94887527D098C7005252F1 /* WeakRef.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakRef.swift; sourceTree = "<group>"; };
@@ -310,6 +312,7 @@
 		6C1174FB27DDE099000B7C67 /* Time Trial */ = {
 			isa = PBXGroup;
 			children = (
+				6C8A215027DE92010053DECF /* Test Data */,
 				6C1174FC27DDE0AB000B7C67 /* TimeTrialTrackerTests.swift */,
 			);
 			path = "Time Trial";
@@ -462,6 +465,14 @@
 				6C78E0C02797902700C501CD /* XCUIElement+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6C8A215027DE92010053DECF /* Test Data */ = {
+			isa = PBXGroup;
+			children = (
+				6C8A215127DE92220053DECF /* TimeTrialTrackerTestsData.csv */,
+			);
+			path = "Test Data";
 			sourceTree = "<group>";
 		};
 		6C94887427D08C64005252F1 /* CustomKeyboard */ = {
@@ -632,6 +643,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C8A215227DE92220053DECF /* TimeTrialTrackerTestsData.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

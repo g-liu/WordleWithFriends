@@ -145,8 +145,8 @@ final class TimeTrialStatsBar: UIView {
     updateBar()
   }
   
-  func trackIncorrectGuess(guess: String) {
-    tracker.logClueGuess(timeRemaining: secondsRemaining, outcome: .incorrect(guess))
+  func trackIncorrectGuess(actualClue: String) {
+    tracker.logClueGuess(timeRemaining: secondsRemaining, outcome: .incorrect(actualClue))
     
     updateBar()
   }

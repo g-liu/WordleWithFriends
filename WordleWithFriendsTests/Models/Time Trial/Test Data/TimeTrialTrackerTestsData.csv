@@ -1,0 +1,4 @@
+"testName","initialTime","guessLog","avgTimePerCompleted","avgTimePerSkipped","avgTimePerClue","avgGuessesPerCompleted","avgGuessesPerSkipped","avgGuessesPerClue","lowestGuessCountClue","lowestGuessCountCount","highestGuessCountClue","highestGuessCountCount","fastestGuessClue","fastestGuessTimeElapsed","slowestGuessClue","slowestGuessTimeElapsed","numCompletedClues","numSkippedClues","totalClues","percentCompleted","totalGuesses"
+"trackerWithEmptyActions","300","","0","0","0","0","0","0","","0","","0","","0","","0","0","0","0","0","0"
+"trackerWithSingleSkipAction","300","297.5 sSKIPS","0","2.5","2.5","0","0","0","","0","","0","","0","","0","0","1","1","0","0"
+"trackerWithSingleIncorrectGuessAction","300","182 iWrong","0","118","118","0","1","1","","0","","0","","0","","0","0","1","1","0","1"

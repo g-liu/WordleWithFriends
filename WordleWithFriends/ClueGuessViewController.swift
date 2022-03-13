@@ -182,9 +182,7 @@ final class ClueGuessViewController: UIViewController {
               self?.restartWithNewClue()
             }
           case .timeTrial(_):
-            if let guess = gameGuessesModel.mostRecentGuess?.word {
-              timeTrialStatsBar?.trackCorrectGuess(guess: guess)
-            }
+            timeTrialStatsBar?.trackCorrectGuess(guess: gameGuessesModel.clue)
             generateNewClue()
           case .computer, .human:
             shareButton.isEnabled = true
@@ -200,9 +198,8 @@ final class ClueGuessViewController: UIViewController {
       case .keepGuessing:
         guessTable.reloadData()
         guessInputTextField.text = ""
-        if let guess = gameGuessesModel.mostRecentGuess?.word {
-          timeTrialStatsBar?.trackIncorrectGuess(guess: guess)
-        }
+        
+        timeTrialStatsBar?.trackIncorrectGuess(actualClue: gameGuessesModel.clue)
         
         guessTable.scrollToRow(at: IndexPath.Row(gameGuessesModel.numberOfGuesses), at: .bottom, animated: true)
       case .invalidGuess(let missingCharacters):

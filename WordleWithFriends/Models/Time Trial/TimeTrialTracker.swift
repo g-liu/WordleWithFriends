@@ -35,8 +35,6 @@ struct TimeTrialTracker {
           slowestGuessForCompletedClue: slowestGuessForCompletedClue,
           completedClues: completedClues,
           skippedClues: skippedClues,
-//          numCompletedClues: numCompletedClues,
-//          numSkippedClues: numSkippedClues,
           totalGuesses: totalGuesses,
           personalBest: personalBest)
   }
@@ -53,10 +51,12 @@ struct TimeTrialTracker {
   }
   
   var skippedClues: [String] {
-    // TODO: DOES NOT ACCOUNT FOR LAST CLUE WHEN TIME EXPIRES!!!!
     attemptsPerClue.compactMap {
-      guard case .skipped(let actualClue) = $0.outcome else { return nil }
-      return actualClue
+      switch $0.outcome {
+        case .skipped(let actualClue): return actualClue
+        case .incorrect(let actualClue): return actualClue
+        default: return nil
+      }
     }
   }
   
@@ -183,7 +183,7 @@ struct ClueAttempt {
 
 enum GuessOutcome {
   case correct(_ guess: String = "")
-  case incorrect(_ guess: String = "") /* TODO: SHOULD BE ACTUAL CLUE?? */
+  case incorrect(_ actualClue: String = "")
   case skipped(_ actualClue: String = "")
   
   func isComparable(to otherOutcome: GuessOutcome) -> Bool {

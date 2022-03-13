@@ -107,11 +107,11 @@ Average guesses per clue: \(String(format: "%.1f", statistics.averageGuessesPerC
       fmt.unitsStyle = .full
       message += """
       
-Best clue: \(statistics.lowestGuessCountForCompletedClue) guess(es)
-Worst clue: \(statistics.highestGuessCountForCompletedClue) guess(es)
+Best clue: \(statistics.lowestGuessCountForCompletedClue.clue), \(statistics.lowestGuessCountForCompletedClue.guessCount) guess(es)
+Worst clue: \(statistics.highestGuessCountForCompletedClue.clue), \(statistics.highestGuessCountForCompletedClue.guessCount) guess(es)
 
-Fastest guessed: \(fmt.string(from: statistics.fastestGuessForCompletedClue) ?? "")
-Slowest guessed: \(fmt.string(from: statistics.slowestGuessForCompletedClue) ?? "")
+Fastest guessed: \(statistics.fastestGuessForCompletedClue.clue), \(fmt.string(from: statistics.fastestGuessForCompletedClue.timeElapsed) ?? "")
+Slowest guessed: \(statistics.slowestGuessForCompletedClue.clue), \(fmt.string(from: statistics.slowestGuessForCompletedClue.timeElapsed) ?? "")
 """
     }
     

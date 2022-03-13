@@ -34,7 +34,7 @@ final class TimeTrialTrackerTests: XCTestCase {
   
   func testTrackerWithSingleSkipAction() {
     var tracker = TimeTrialTracker(initialTimeRemaining: 300)
-    tracker.logClueGuess(timeRemaining: 297.5, outcome: .skipped)
+    tracker.logClueGuess(timeRemaining: 297.5, outcome: .skipped("SKIPS"))
     
     let stats = tracker.statistics
     XCTAssertEqual(stats.averageTimePerCompletedClue, 0)
@@ -56,7 +56,7 @@ final class TimeTrialTrackerTests: XCTestCase {
   
   func testTrackerWithSingleIncorrectGuessAction() {
     var tracker = TimeTrialTracker(initialTimeRemaining: 300)
-    tracker.logClueGuess(timeRemaining: 182, outcome: .incorrect)
+    tracker.logClueGuess(timeRemaining: 182, outcome: .incorrect("WRONG"))
     
     let stats = tracker.statistics
     XCTAssertEqual(stats.averageTimePerCompletedClue, 0)
@@ -74,7 +74,7 @@ final class TimeTrialTrackerTests: XCTestCase {
   
   func testTrackerWithSingleCorrectGuessAction() {
     var tracker = TimeTrialTracker(initialTimeRemaining: 300)
-    tracker.logClueGuess(timeRemaining: 274.3, outcome: .correct)
+    tracker.logClueGuess(timeRemaining: 274.3, outcome: .correct("RIGHT"))
     
     let stats = tracker.statistics
     XCTAssertEqual(stats.averageTimePerCompletedClue, 25.7, accuracy: 1E-7)

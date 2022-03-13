@@ -133,20 +133,20 @@ final class TimeTrialStatsBar: UIView {
     countdownTimer = Timer.scheduledTimer(timeInterval: refreshRate.inverse, target: self, selector: #selector(advanceTimer(_:)), userInfo: nil, repeats: true)
   }
   
-  func trackCorrectGuess() {
-    tracker.logClueGuess(timeRemaining: secondsRemaining, outcome: .correct)
+  func trackCorrectGuess(guess: String) {
+    tracker.logClueGuess(timeRemaining: secondsRemaining, outcome: .correct(guess))
     
     updateBar()
   }
   
-  func trackSkip() {
-    tracker.logClueGuess(timeRemaining: secondsRemaining, outcome: .skipped)
+  func trackSkip(actualClue: String) {
+    tracker.logClueGuess(timeRemaining: secondsRemaining, outcome: .skipped(actualClue))
     
     updateBar()
   }
   
-  func trackIncorrectGuess() {
-    tracker.logClueGuess(timeRemaining: secondsRemaining, outcome: .incorrect)
+  func trackIncorrectGuess(guess: String) {
+    tracker.logClueGuess(timeRemaining: secondsRemaining, outcome: .incorrect(guess))
     
     updateBar()
   }

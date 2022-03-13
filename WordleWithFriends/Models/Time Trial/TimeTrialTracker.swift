@@ -33,14 +33,31 @@ struct TimeTrialTracker {
           highestGuessCountForCompletedClue: highestGuessCountForCorrectClue,
           fastestGuessForCompletedClue: fastestGuessForCompletedClue,
           slowestGuessForCompletedClue: slowestGuessForCompletedClue,
-          numCompletedClues: numCompletedClues,
-          numSkippedClues: numSkippedClues,
+          completedClues: completedClues,
+          skippedClues: skippedClues,
+//          numCompletedClues: numCompletedClues,
+//          numSkippedClues: numSkippedClues,
           totalGuesses: totalGuesses,
           personalBest: personalBest)
   }
   
   var numCompletedClues: Int {
     correctClueAttempts.count
+  }
+  
+  var completedClues: [String] {
+    attemptsPerClue.compactMap {
+      guard case .correct(let guess) = $0.outcome else { return nil }
+      return guess
+    }
+  }
+  
+  var skippedClues: [String] {
+    // TODO: DOES NOT ACCOUNT FOR LAST CLUE WHEN TIME EXPIRES!!!!
+    attemptsPerClue.compactMap {
+      guard case .skipped(let actualClue) = $0.outcome else { return nil }
+      return actualClue
+    }
   }
   
   private var numSkippedClues: Int {
@@ -52,7 +69,7 @@ struct TimeTrialTracker {
   }
   
   private var totalGuesses: Int {
-    guessActions.filter { $0.outcome != .skipped }.count
+    guessActions.filter { !$0.outcome.isComparable(to: .skipped()) }.count
   }
   
   private var averageTimePerCorrectClue: Double {
@@ -87,33 +104,37 @@ struct TimeTrialTracker {
     return totalGuessesTaken / numSkippedClues
   }
   
-  private var lowestGuessCountForCorrectClue: Int {
-    guard let min = correctClueAttempts.min(by: { $0.numGuesses < $1.numGuesses }) else { return 0 }
+  private var lowestGuessCountForCorrectClue: (String, Int) {
+    guard let min = correctClueAttempts.min(by: { $0.numGuesses < $1.numGuesses }),
+          case .correct(let guess) = min.outcome else { return ("", 0) }
     
-    return min.numGuesses
+    return (guess, min.numGuesses)
   }
   
-  private var highestGuessCountForCorrectClue: Int {
-    guard let max = correctClueAttempts.max(by: { $0.numGuesses < $1.numGuesses }) else { return 0 }
+  private var highestGuessCountForCorrectClue: (String, Int) {
+    guard let max = correctClueAttempts.max(by: { $0.numGuesses < $1.numGuesses }),
+          case .correct(let guess) = max.outcome else { return ("", 0) }
     
-    return max.numGuesses
+    return (guess, max.numGuesses)
   }
   
-  private var fastestGuessForCompletedClue: TimeInterval {
-    guard let min = correctClueAttempts.min(by: { $0.totalTimeElapsed < $1.totalTimeElapsed }) else { return 0 }
+  private var fastestGuessForCompletedClue: (String, TimeInterval) {
+    guard let min = correctClueAttempts.min(by: { $0.totalTimeElapsed < $1.totalTimeElapsed }),
+          case .correct(let guess) = min.outcome else { return ("", 0) }
     
-    return min.totalTimeElapsed
+    return (guess, min.totalTimeElapsed)
   }
   
-  private var slowestGuessForCompletedClue: TimeInterval {
-    guard let max = correctClueAttempts.max(by: { $0.totalTimeElapsed < $1.totalTimeElapsed }) else { return 0 }
+  private var slowestGuessForCompletedClue: (String, TimeInterval) {
+    guard let max = correctClueAttempts.max(by: { $0.totalTimeElapsed < $1.totalTimeElapsed }),
+          case .correct(let guess) = max.outcome else { return ("", 0) }
     
-    return max.totalTimeElapsed
+    return (guess, max.totalTimeElapsed)
   }
   
   private var attemptsPerClue: [ClueAttempt] {
     let result1 = guessActions.splitIncludeDelimiter { action in
-      action.outcome == .correct || action.outcome == .skipped
+      action.outcome.isComparable(to: .correct()) || action.outcome.isComparable(to: .skipped())
     }
     
     let result2 = result1.enumerated().compactMap { index, actionsPerClue -> ClueAttempt? in
@@ -123,7 +144,7 @@ struct TimeTrialTracker {
   
       let totalTimeElapsed = index == 0 ? initialTimeRemaining - timeOfLastGuess : timeOfFirstGuess - timeOfLastGuess
       // A skip in and of itself does not count as a guess. The attempts before it will be counted in the number of guesses.
-      let numGuesses = outcome == .skipped ? actionsPerClue.count - 1 : actionsPerClue.count
+      let numGuesses = outcome.isComparable(to: .skipped()) ? actionsPerClue.count - 1 : actionsPerClue.count
       
       return .init(numGuesses: numGuesses, outcome: outcome, totalTimeElapsed: totalTimeElapsed)
     }
@@ -132,12 +153,12 @@ struct TimeTrialTracker {
   }
   
   private var correctClueAttempts: [ClueAttempt] {
-    attemptsPerClue.filter { $0.outcome == .correct }
+    attemptsPerClue.filter { $0.outcome.isComparable(to: .correct()) }
   }
   
   private var skippedClueAttempts: [ClueAttempt] {
     // Note: Incorrect attempts only occur when timer expires, and are counted as a skip.
-    attemptsPerClue.filter { $0.outcome == .skipped || $0.outcome == .incorrect }
+    attemptsPerClue.filter { $0.outcome.isComparable(to: .skipped()) || $0.outcome.isComparable(to: .incorrect()) }
   }
   
   private(set) var highScore: Int {
@@ -161,9 +182,20 @@ struct ClueAttempt {
 }
 
 enum GuessOutcome {
-  case correct
-  case incorrect
-  case skipped
+  case correct(_ guess: String = "")
+  case incorrect(_ guess: String = "") /* TODO: SHOULD BE ACTUAL CLUE?? */
+  case skipped(_ actualClue: String = "")
+  
+  func isComparable(to otherOutcome: GuessOutcome) -> Bool {
+    switch (self, otherOutcome) {
+      case (.correct(_), .correct(_)),
+        (.incorrect(_), .incorrect(_)),
+        (.skipped(_), .skipped(_)):
+        return true
+      default:
+        return false
+    }
+  }
 }
 
 struct GuessAction {

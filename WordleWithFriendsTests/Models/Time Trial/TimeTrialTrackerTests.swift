@@ -8,7 +8,6 @@
 import XCTest
 @testable import WordleWithFriends
 
-// TODO: TEST DERIVED VARIABLES TOO
 final class TimeTrialTrackerTests: XCTestCase {
   func testTrackerWithEmptyActions() {
     let tracker = TimeTrialTracker(initialTimeRemaining: 300)
@@ -16,15 +15,21 @@ final class TimeTrialTrackerTests: XCTestCase {
     let stats = tracker.statistics
     XCTAssertEqual(stats.averageTimePerCompletedClue, 0)
     XCTAssertEqual(stats.averageTimePerSkippedClue, 0)
+    XCTAssertEqual(stats.averageTimePerClue, 0)
     XCTAssertEqual(stats.averageGuessesPerCompletedClue, 0)
     XCTAssertEqual(stats.averageGuessesPerSkippedClue, 0)
+    XCTAssertEqual(stats.averageGuessesPerClue, 0)
     XCTAssertEqual(stats.lowestGuessCountForCompletedClue, 0)
     XCTAssertEqual(stats.highestGuessCountForCompletedClue, 0)
     XCTAssertEqual(stats.fastestGuessForCompletedClue, 0)
     XCTAssertEqual(stats.slowestGuessForCompletedClue, 0)
     XCTAssertEqual(stats.numCompletedClues, 0)
     XCTAssertEqual(stats.numSkippedClues, 0)
+    XCTAssertEqual(stats.totalClues, 0)
+    XCTAssertEqual(stats.percentCompleted, 0)
     XCTAssertEqual(stats.totalGuesses, 0)
+    
+    // TODO: TEST PERSONAL BEST AFTER INJECTION
   }
   
   func testTrackerWithSingleSkipAction() {
@@ -34,14 +39,18 @@ final class TimeTrialTrackerTests: XCTestCase {
     let stats = tracker.statistics
     XCTAssertEqual(stats.averageTimePerCompletedClue, 0)
     XCTAssertEqual(stats.averageTimePerSkippedClue, 2.5)
+    XCTAssertEqual(stats.averageTimePerClue, 2.5)
     XCTAssertEqual(stats.averageGuessesPerCompletedClue, 0)
     XCTAssertEqual(stats.averageGuessesPerSkippedClue, 0)
+    XCTAssertEqual(stats.averageGuessesPerClue, 0)
     XCTAssertEqual(stats.lowestGuessCountForCompletedClue, 0)
     XCTAssertEqual(stats.highestGuessCountForCompletedClue, 0)
     XCTAssertEqual(stats.fastestGuessForCompletedClue, 0)
     XCTAssertEqual(stats.slowestGuessForCompletedClue, 0)
     XCTAssertEqual(stats.numCompletedClues, 0)
     XCTAssertEqual(stats.numSkippedClues, 1)
+    XCTAssertEqual(stats.totalClues, 1)
+    XCTAssertEqual(stats.percentCompleted, 0)
     XCTAssertEqual(stats.totalGuesses, 0)
   }
   
@@ -80,4 +89,6 @@ final class TimeTrialTrackerTests: XCTestCase {
     XCTAssertEqual(stats.numSkippedClues, 0)
     XCTAssertEqual(stats.totalGuesses, 1)
   }
+  
+  
 }

@@ -348,10 +348,28 @@ final class GameSetupViewController: UIViewController {
   }
   
   @objc private func initiateGameOnTimeTrialMode() {
-    selectedGamemode = .timeTrial(300) // TODO: Customize
     clueTextField.text = GameUtility.pickWord()
     
-    initiateGame()
+    let timeLimitChoice = DismissableAlertController(title: "Time trial", message: "Choose a time limit", preferredStyle: .actionSheet)
+    timeLimitChoice.addAction(.init(title: "5 minutes", style: .default, handler: { [weak self] _ in
+      self?.selectedGamemode = .timeTrial(300)
+      self?.initiateGame()
+    }))
+    timeLimitChoice.addAction(.init(title: "3 minutes", style: .default, handler: { [weak self] _ in
+      self?.selectedGamemode = .timeTrial(180)
+      self?.initiateGame()
+    }))
+    timeLimitChoice.addAction(.init(title: "2 minutes", style: .default, handler: { [weak self] _ in
+      self?.selectedGamemode = .timeTrial(120)
+      self?.initiateGame()
+    }))
+    timeLimitChoice.addAction(.init(title: "1 minute", style: .default, handler: { [weak self] _ in
+      self?.selectedGamemode = .timeTrial(60)
+      self?.initiateGame()
+    }))
+    timeLimitChoice.addAction(.init(title: "Select a different gamemode", style: .cancel, handler: nil))
+    
+    present(timeLimitChoice, animated: true)
   }
 
   private func initiateGame() {

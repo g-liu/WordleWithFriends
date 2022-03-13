@@ -23,8 +23,10 @@ struct TimeTrialTracker {
           averageTimePerSkippedClue: averageTimePerSkippedClue,
           averageGuessesPerCompletedClue: averageGuessesPerCorrectClue,
           averageGuessesPerSkippedClue: averageGuessesPerSkippedClue,
-          lowestGuessesForCompletedClue: lowestGuessesForCorrectClue,
-          highestGuessesForCompletedClue: highestGuessesForCorrectClue,
+          lowestGuessCountForCompletedClue: lowestGuessCountForCorrectClue,
+          highestGuessCountForCompletedClue: highestGuessCountForCorrectClue,
+          fastestGuessForCompletedClue: fastestGuessForCompletedClue,
+          slowestGuessForCompletedClue: slowestGuessForCompletedClue,
           numCompletedClues: numCompletedClues,
           numSkippedClues: numSkippedClues,
           totalGuesses: totalGuesses,
@@ -79,16 +81,28 @@ struct TimeTrialTracker {
     return totalGuessesTaken / numSkippedClues
   }
   
-  private var lowestGuessesForCorrectClue: Int {
+  private var lowestGuessCountForCorrectClue: Int {
     guard let min = correctClueAttempts.min(by: { $0.numGuesses < $1.numGuesses }) else { return 0 }
     
     return min.numGuesses
   }
   
-  private var highestGuessesForCorrectClue: Int {
+  private var highestGuessCountForCorrectClue: Int {
     guard let max = correctClueAttempts.max(by: { $0.numGuesses < $1.numGuesses }) else { return 0 }
     
     return max.numGuesses
+  }
+  
+  private var fastestGuessForCompletedClue: TimeInterval {
+    guard let min = correctClueAttempts.min(by: { $0.totalTimeElapsed < $1.totalTimeElapsed }) else { return 0 }
+    
+    return min.totalTimeElapsed
+  }
+  
+  private var slowestGuessForCompletedClue: TimeInterval {
+    guard let max = correctClueAttempts.max(by: { $0.totalTimeElapsed < $1.totalTimeElapsed }) else { return 0 }
+    
+    return max.totalTimeElapsed
   }
   
   private var attemptsPerClue: [ClueAttempt] {

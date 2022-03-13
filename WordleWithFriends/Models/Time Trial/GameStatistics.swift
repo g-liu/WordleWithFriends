@@ -22,8 +22,11 @@ struct GameStatistics {
     return (averageGuessesPerCompletedClue * numCompletedClues + averageGuessesPerSkippedClue * numSkippedClues) / totalClues
   }
   
-  let lowestGuessesForCompletedClue: Int
-  let highestGuessesForCompletedClue: Int
+  let lowestGuessCountForCompletedClue: Int
+  let highestGuessCountForCompletedClue: Int
+  
+  let fastestGuessForCompletedClue: TimeInterval
+  let slowestGuessForCompletedClue: TimeInterval
   
   let numCompletedClues: Int
   let numSkippedClues: Int

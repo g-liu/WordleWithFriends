@@ -101,10 +101,17 @@ Average guesses per clue: \(String(format: "%.1f", statistics.averageGuessesPerC
 """
     
     if statistics.numCompletedClues > 0 {
+      let fmt = DateComponentsFormatter()
+      fmt.allowedUnits = [.minute, .second]
+      fmt.allowsFractionalUnits = true
+      fmt.unitsStyle = .full
       message += """
       
-Best clue: \(statistics.lowestGuessesForCompletedClue) guess(es)
-Worst clue: \(statistics.highestGuessesForCompletedClue) guess(es)
+Best clue: \(statistics.lowestGuessCountForCompletedClue) guess(es)
+Worst clue: \(statistics.highestGuessCountForCompletedClue) guess(es)
+
+Fastest guessed: \(fmt.string(from: statistics.fastestGuessForCompletedClue) ?? "")
+Slowest guessed: \(fmt.string(from: statistics.slowestGuessForCompletedClue) ?? "")
 """
     }
     

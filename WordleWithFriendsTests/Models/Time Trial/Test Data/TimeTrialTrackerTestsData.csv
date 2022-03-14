@@ -3,5 +3,6 @@
 "trackerWithSingleSkipAction","300","297.5 sSKIPS","0","2.5","2.5","0","0","0","","0","","0","","0","","0","0","1","1","0","0"
 "trackerWithSingleIncorrectGuessAction","300","182 iWRONG","0","118","118","0","1","1","","0","","0","","0","","0","0","1","1","0","1"
 "trackerWithSingleCorrectGuessAction","300","274.3 cRIGHT","25.7","0","25.7","1","0","1","RIGHT","1","RIGHT","1","RIGHT","25.7","RIGHT","25.7","1","0","1","100","1"
-"trackerWithMultipleIncorrectGuesses","300","294 iWRONG, 290 iWRONG, 287.5 iWRONG, 277.6 iWRONG, 223.9 iWRONG","0","76.1","76.1","0","5","5","","0","","0","","0","","0","0","1","1","0","5"
+"trackerWithMultipleAndOnlyIncorrectGuesses","300","294 iWRONG, 290 iWRONG, 287.5 iWRONG, 277.6 iWRONG, 223.9 iWRONG","0","76.1","76.1","0","5","5","","0","","0","","0","","0","0","1","1","0","5"
 "trackerWithMultipleAndOnlySkips","300","270 sSKIPS, 240 sDONTS, 239.9 sGUESS, 223.3 sTHESE, 204.8 sCLUES","0","19.04","19.04","0","0","0","","0","","0","","0","","0","0","5","5","0","0"
+"trackerWithMultipleAndOnlyCorrectGuesses","300","294 cRIGHT, 271.5 cGREEN, 218.7 cCHECK, 216.4 cSCORE, 184.4 cTRUTH","23.12","0","23.12","1","0","1","RIGHT","1","RIGHT","1","SCORE","2.3","CHECK","52.8","5","0","5","100","5"

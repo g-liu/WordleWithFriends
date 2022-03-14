@@ -25,7 +25,7 @@ final class TimeTrialTrackerTests: XCTestCase {
   func testRunTestFromData() {
     csvData.namedRows.enumerated().forEach { index, row in
       let testName = row["testName"]!
-      XCTContext.runActivity(named: testName) { activity in
+      XCTContext.runActivity(named: "test\(testName)") { activity in
         let initialTime = row["initialTime"]!.asTimeInterval!
         var tracker = TimeTrialTracker(initialTimeRemaining: initialTime)
         tracker.insertGuesses(from: row["guessLog"]!)

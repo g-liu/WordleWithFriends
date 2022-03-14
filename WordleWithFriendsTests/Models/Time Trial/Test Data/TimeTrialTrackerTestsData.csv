@@ -4,4 +4,4 @@
 "trackerWithSingleIncorrectGuessAction","300","182 iWRONG","0","118","118","0","1","1","","0","","0","","0","","0","0","1","1","0","1"
 "trackerWithSingleCorrectGuessAction","300","274.3 cRIGHT","25.7","0","25.7","1","0","1","RIGHT","1","RIGHT","1","RIGHT","25.7","RIGHT","25.7","1","0","1","100","1"
 "trackerWithMultipleIncorrectGuesses","300","294 iWRONG, 290 iWRONG, 287.5 iWRONG, 277.6 iWRONG, 223.9 iWRONG","0","76.1","76.1","0","5","5","","0","","0","","0","","0","0","1","1","0","5"
-"trackerWithMultipleAndOnlySkips","300","270 sSKIPS, 240 sDONTS, 239.9 sGUESS, 223.3 sTHESE, 204.8 sCLUES","0","0","76.7","0","5","5","","0","","0","","0","","0","0","5","5","0","0"
+"trackerWithMultipleAndOnlySkips","300","270 sSKIPS, 240 sDONTS, 239.9 sGUESS, 223.3 sTHESE, 204.8 sCLUES","0","19.04","19.04","0","0","0","","0","","0","","0","","0","0","5","5","0","0"

@@ -138,11 +138,11 @@ struct TimeTrialTracker {
     }
     
     let result2 = result1.enumerated().compactMap { index, actionsPerClue -> ClueAttempt? in
-      guard let timeOfFirstGuess = actionsPerClue.first?.timeRemaining,
-            let timeOfLastGuess = actionsPerClue.last?.timeRemaining,
+      guard let timeOfClueInitiation = index == 0 ? initialTimeRemaining : result1[index-1].last?.timeRemaining,
+            let timeOfLastAction = actionsPerClue.last?.timeRemaining,
             let outcome = actionsPerClue.last?.outcome else { return nil }
   
-      let totalTimeElapsed = index == 0 ? initialTimeRemaining - timeOfLastGuess : timeOfFirstGuess - timeOfLastGuess
+      let totalTimeElapsed = timeOfClueInitiation - timeOfLastAction
       // A skip in and of itself does not count as a guess. The attempts before it will be counted in the number of guesses.
       let numGuesses = outcome.isComparable(to: .skipped()) ? actionsPerClue.count - 1 : actionsPerClue.count
       

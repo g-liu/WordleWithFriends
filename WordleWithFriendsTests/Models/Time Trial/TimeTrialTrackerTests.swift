@@ -6,173 +6,92 @@
 //
 
 import XCTest
+import SwiftCSV
 @testable import WordleWithFriends
 
 final class TimeTrialTrackerTests: XCTestCase {
-  override class func setUp() {
+  var csvData: CSV!
+  
+  override func setUpWithError() throws { /* TODO: I would make this static but we need to access the instance property */
     super.setUp()
     
-//    let bundle = Bundle(for: type(of: self))
-//    let path = bundle.path(forResource: "TimeTrialTrackerTestsData", ofType: "csv")!
-//    
-//    do {
-//      
-//    }
+    
+    let bundle = Bundle(for: type(of: self))
+    let path = bundle.path(forResource: "TimeTrialTrackerTestsData", ofType: "csv")!
+    let csv = try CSV(url: .init(fileURLWithPath: path))
+    csvData = csv
   }
   
-  func testTrackerWithEmptyActions() {
-    let tracker = TimeTrialTracker(initialTimeRemaining: 300)
+  func testRunTestFromData() {
+    csvData.namedRows.enumerated().forEach { index, row in
+      let testName = row["testName"]!
+      XCTContext.runActivity(named: testName) { activity in
+        let initialTime = row["initialTime"]!.asTimeInterval!
+        var tracker = TimeTrialTracker(initialTimeRemaining: initialTime)
+        tracker.insertGuesses(from: row["guessLog"]!)
+        
+        let stats = tracker.statistics
+        
+        XCTAssertEqual(stats.averageTimePerCompletedClue, row["avgTimePerCompleted"]!.asTimeInterval!, accuracy: 1E-10)
+        XCTAssertEqual(stats.averageTimePerSkippedClue, row["avgTimePerSkipped"]!.asTimeInterval!, accuracy: 1E-10)
+        XCTAssertEqual(stats.averageTimePerClue, row["avgTimePerClue"]!.asTimeInterval!, accuracy: 1E-10)
     
-    let stats = tracker.statistics
-    XCTAssertEqual(stats.averageTimePerCompletedClue, 0)
-    XCTAssertEqual(stats.averageTimePerSkippedClue, 0)
-    XCTAssertEqual(stats.averageTimePerClue, 0)
+        XCTAssertEqual(stats.averageGuessesPerCompletedClue, row["avgGuessesPerCompleted"]!.asDouble!, accuracy: 1E-10)
+        XCTAssertEqual(stats.averageGuessesPerSkippedClue, row["avgGuessesPerSkipped"]!.asDouble!, accuracy: 1E-10)
+        XCTAssertEqual(stats.averageGuessesPerClue, row["avgGuessesPerClue"]!.asDouble!, accuracy: 1E-10)
     
-    XCTAssertEqual(stats.averageGuessesPerCompletedClue, 0)
-    XCTAssertEqual(stats.averageGuessesPerSkippedClue, 0)
-    XCTAssertEqual(stats.averageGuessesPerClue, 0)
+        XCTAssertEqual(stats.lowestGuessCountForCompletedClue.clue, row["lowestGuessCountClue"])
+        XCTAssertEqual(stats.lowestGuessCountForCompletedClue.guessCount, row["lowestGuessCountCount"]!.asInt)
+        XCTAssertEqual(stats.highestGuessCountForCompletedClue.clue, row["highestGuessCountClue"])
+        XCTAssertEqual(stats.highestGuessCountForCompletedClue.guessCount, row["highestGuessCountCount"]!.asInt)
     
-    XCTAssertEqual(stats.lowestGuessCountForCompletedClue.clue, "")
-    XCTAssertEqual(stats.lowestGuessCountForCompletedClue.guessCount, 0)
-    XCTAssertEqual(stats.highestGuessCountForCompletedClue.clue, "")
-    XCTAssertEqual(stats.highestGuessCountForCompletedClue.guessCount, 0)
+        XCTAssertEqual(stats.fastestGuessForCompletedClue.clue, row["fastestGuessClue"])
+        XCTAssertEqual(stats.fastestGuessForCompletedClue.timeElapsed, row["fastestGuessTimeElapsed"]!.asTimeInterval!, accuracy: 1E-10)
+        XCTAssertEqual(stats.slowestGuessForCompletedClue.clue, row["slowestGuessClue"])
+        XCTAssertEqual(stats.slowestGuessForCompletedClue.timeElapsed, row["slowestGuessTimeElapsed"]!.asTimeInterval!, accuracy: 1E-10)
     
-    XCTAssertEqual(stats.fastestGuessForCompletedClue.clue, "")
-    XCTAssertEqual(stats.fastestGuessForCompletedClue.timeElapsed, 0)
-    XCTAssertEqual(stats.slowestGuessForCompletedClue.clue, "")
-    XCTAssertEqual(stats.slowestGuessForCompletedClue.timeElapsed, 0)
-    
-    XCTAssertEqual(stats.numCompletedClues, 0)
-    XCTAssertEqual(stats.numSkippedClues, 0)
-    XCTAssertEqual(stats.totalClues, 0)
-    XCTAssertEqual(stats.percentCompleted, 0)
-    XCTAssertEqual(stats.totalGuesses, 0)
-    
-    // TODO: TEST PERSONAL BEST AFTER INJECTION
+        XCTAssertEqual(stats.numCompletedClues, row["numCompletedClues"]!.asInt)
+        XCTAssertEqual(stats.numSkippedClues, row["numSkippedClues"]!.asInt)
+        XCTAssertEqual(stats.totalClues, row["totalClues"]!.asInt)
+        XCTAssertEqual(stats.percentCompleted, row["percentCompleted"]!.asDouble!, accuracy: 1E-10)
+        XCTAssertEqual(stats.totalGuesses, row["totalGuesses"]!.asInt)
+      }
+    }
   }
+}
+
+
+
+private extension TimeTrialTracker {
   
-  func testTrackerWithSingleSkipAction() {
-    var tracker = TimeTrialTracker(initialTimeRemaining: 300)
-    tracker.logClueGuess(timeRemaining: 297.5, outcome: .skipped("SKIPS"))
-    
-    let stats = tracker.statistics
-    XCTAssertEqual(stats.averageTimePerCompletedClue, 0)
-    XCTAssertEqual(stats.averageTimePerSkippedClue, 2.5)
-    XCTAssertEqual(stats.averageTimePerClue, 2.5)
-    
-    XCTAssertEqual(stats.averageGuessesPerCompletedClue, 0)
-    XCTAssertEqual(stats.averageGuessesPerSkippedClue, 0)
-    XCTAssertEqual(stats.averageGuessesPerClue, 0)
-    
-    XCTAssertEqual(stats.lowestGuessCountForCompletedClue.clue, "")
-    XCTAssertEqual(stats.lowestGuessCountForCompletedClue.guessCount, 0)
-    XCTAssertEqual(stats.highestGuessCountForCompletedClue.clue, "")
-    XCTAssertEqual(stats.highestGuessCountForCompletedClue.guessCount, 0)
-    
-    XCTAssertEqual(stats.fastestGuessForCompletedClue.clue, "")
-    XCTAssertEqual(stats.fastestGuessForCompletedClue.timeElapsed, 0)
-    XCTAssertEqual(stats.slowestGuessForCompletedClue.clue, "")
-    XCTAssertEqual(stats.slowestGuessForCompletedClue.timeElapsed, 0)
-    
-    XCTAssertEqual(stats.numCompletedClues, 0)
-    XCTAssertEqual(stats.numSkippedClues, 1)
-    XCTAssertEqual(stats.totalClues, 1)
-    XCTAssertEqual(stats.percentCompleted, 0)
-    XCTAssertEqual(stats.totalGuesses, 0)
+  /// Insert multiple logs using a formatted `guessLog` string
+  ///
+  /// - Parameter guessLog: A formatted guess log string containing zero or more entries to log.
+  /// An individual entry is formatted as "[Timestamp] [OutcomeCode][ActualClue]", where
+  /// OutcomeCode is a single character representing a guess outcome as follows:
+  ///   i = incorrect
+  ///   s = skipped
+  ///   c = correct
+  /// Entries are separated by a comma
+  mutating func insertGuesses(from guessLog: String) {
+    let guesses = guessLog.split(separator: ",")
+    guesses.forEach { guess in
+      let entry = guess.split(separator: " ", maxSplits: 1)
+      let timeRemaining = entry[0].asString.asTimeInterval!
+      let actualClue = entry[1].dropFirst().asString.uppercased()
+      let outcome: GuessOutcome? = {
+        let outcomeCode = entry[1].first
+        switch outcomeCode {
+          case "i": return .incorrect(actualClue)
+          case "s": return .skipped(actualClue)
+          case "c": return .correct(actualClue)
+          default:
+            XCTFail("Used an invalid code in the guess log: \(outcomeCode)")
+            return nil
+        }
+      }()
+      
+      logClueGuess(timeRemaining: timeRemaining, outcome: outcome!)
+    }
   }
-  
-  func testTrackerWithSingleIncorrectGuessAction() {
-    var tracker = TimeTrialTracker(initialTimeRemaining: 300)
-    tracker.logClueGuess(timeRemaining: 182, outcome: .incorrect("WRONG"))
-    
-    let stats = tracker.statistics
-    XCTAssertEqual(stats.averageTimePerCompletedClue, 0)
-    XCTAssertEqual(stats.averageTimePerSkippedClue, 118)
-    XCTAssertEqual(stats.averageTimePerClue, 118)
-    
-    XCTAssertEqual(stats.averageGuessesPerCompletedClue, 0)
-    XCTAssertEqual(stats.averageGuessesPerSkippedClue, 1)
-    XCTAssertEqual(stats.averageGuessesPerClue, 1)
-    
-    XCTAssertEqual(stats.lowestGuessCountForCompletedClue.clue, "")
-    XCTAssertEqual(stats.lowestGuessCountForCompletedClue.guessCount, 0)
-    XCTAssertEqual(stats.highestGuessCountForCompletedClue.clue, "")
-    XCTAssertEqual(stats.highestGuessCountForCompletedClue.guessCount, 0)
-    
-    XCTAssertEqual(stats.fastestGuessForCompletedClue.clue, "")
-    XCTAssertEqual(stats.fastestGuessForCompletedClue.timeElapsed, 0)
-    XCTAssertEqual(stats.slowestGuessForCompletedClue.clue, "")
-    XCTAssertEqual(stats.slowestGuessForCompletedClue.timeElapsed, 0)
-    
-    XCTAssertEqual(stats.numCompletedClues, 0)
-    XCTAssertEqual(stats.numSkippedClues, 1)
-    XCTAssertEqual(stats.totalClues, 1)
-    XCTAssertEqual(stats.percentCompleted, 0)
-    XCTAssertEqual(stats.totalGuesses, 1)
-  }
-  
-  func testTrackerWithSingleCorrectGuessAction() {
-    var tracker = TimeTrialTracker(initialTimeRemaining: 300)
-    tracker.logClueGuess(timeRemaining: 274.3, outcome: .correct("RIGHT"))
-    
-    let stats = tracker.statistics
-    XCTAssertEqual(stats.averageTimePerCompletedClue, 25.7, accuracy: 1E-7)
-    XCTAssertEqual(stats.averageTimePerSkippedClue, 0)
-    XCTAssertEqual(stats.averageTimePerClue, 25.7, accuracy: 1E-7)
-    
-    XCTAssertEqual(stats.averageGuessesPerCompletedClue, 1)
-    XCTAssertEqual(stats.averageGuessesPerSkippedClue, 0)
-    XCTAssertEqual(stats.averageGuessesPerClue, 1)
-    
-    XCTAssertEqual(stats.lowestGuessCountForCompletedClue.clue, "RIGHT")
-    XCTAssertEqual(stats.lowestGuessCountForCompletedClue.guessCount, 1)
-    XCTAssertEqual(stats.highestGuessCountForCompletedClue.clue, "RIGHT")
-    XCTAssertEqual(stats.highestGuessCountForCompletedClue.guessCount, 1)
-    
-    XCTAssertEqual(stats.fastestGuessForCompletedClue.clue, "RIGHT")
-    XCTAssertEqual(stats.fastestGuessForCompletedClue.timeElapsed, 25.7, accuracy: 1E-10)
-    XCTAssertEqual(stats.slowestGuessForCompletedClue.clue, "RIGHT")
-    XCTAssertEqual(stats.slowestGuessForCompletedClue.timeElapsed, 25.7, accuracy: 1E-10)
-    
-    XCTAssertEqual(stats.numCompletedClues, 1)
-    XCTAssertEqual(stats.numSkippedClues, 0)
-    XCTAssertEqual(stats.totalClues, 1)
-    XCTAssertEqual(stats.percentCompleted, 100)
-    XCTAssertEqual(stats.totalGuesses, 1)
-  }
-  
-  func testTrackerWithMultipleIncorrectGuesses() {
-    var tracker = TimeTrialTracker(initialTimeRemaining: 300)
-    tracker.logClueGuess(timeRemaining: 294, outcome: .incorrect("WRONG"))
-    tracker.logClueGuess(timeRemaining: 290, outcome: .incorrect("WRONG"))
-    tracker.logClueGuess(timeRemaining: 287.5, outcome: .incorrect("WRONG"))
-    tracker.logClueGuess(timeRemaining: 277.6, outcome: .incorrect("WRONG"))
-    tracker.logClueGuess(timeRemaining: 223.9, outcome: .incorrect("WRONG"))
-    
-    let stats = tracker.statistics
-    XCTAssertEqual(stats.averageTimePerCompletedClue, 0)
-    XCTAssertEqual(stats.averageTimePerSkippedClue, 76.1)
-    XCTAssertEqual(stats.averageTimePerClue, 76.1)
-    
-    XCTAssertEqual(stats.averageGuessesPerCompletedClue, 0)
-    XCTAssertEqual(stats.averageGuessesPerSkippedClue, 5)
-    XCTAssertEqual(stats.averageGuessesPerClue, 5)
-    
-    XCTAssertEqual(stats.lowestGuessCountForCompletedClue.clue, "")
-    XCTAssertEqual(stats.lowestGuessCountForCompletedClue.guessCount, 0)
-    XCTAssertEqual(stats.highestGuessCountForCompletedClue.clue, "")
-    XCTAssertEqual(stats.highestGuessCountForCompletedClue.guessCount, 0)
-    
-    XCTAssertEqual(stats.fastestGuessForCompletedClue.clue, "")
-    XCTAssertEqual(stats.fastestGuessForCompletedClue.timeElapsed, 0)
-    XCTAssertEqual(stats.slowestGuessForCompletedClue.clue, "")
-    XCTAssertEqual(stats.slowestGuessForCompletedClue.timeElapsed, 0)
-    
-    XCTAssertEqual(stats.numCompletedClues, 0)
-    XCTAssertEqual(stats.numSkippedClues, 1)
-    XCTAssertEqual(stats.totalClues, 1)
-    XCTAssertEqual(stats.percentCompleted, 0)
-    XCTAssertEqual(stats.totalGuesses, 5)
-  }
-  
 }

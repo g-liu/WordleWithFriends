@@ -1,4 +1,6 @@
 "testName","initialTime","guessLog","avgTimePerCompleted","avgTimePerSkipped","avgTimePerClue","avgGuessesPerCompleted","avgGuessesPerSkipped","avgGuessesPerClue","lowestGuessCountClue","lowestGuessCountCount","highestGuessCountClue","highestGuessCountCount","fastestGuessClue","fastestGuessTimeElapsed","slowestGuessClue","slowestGuessTimeElapsed","numCompletedClues","numSkippedClues","totalClues","percentCompleted","totalGuesses"
 "trackerWithEmptyActions","300","","0","0","0","0","0","0","","0","","0","","0","","0","0","0","0","0","0"
 "trackerWithSingleSkipAction","300","297.5 sSKIPS","0","2.5","2.5","0","0","0","","0","","0","","0","","0","0","1","1","0","0"
-"trackerWithSingleIncorrectGuessAction","300","182 iWrong","0","118","118","0","1","1","","0","","0","","0","","0","0","1","1","0","1"
+"trackerWithSingleIncorrectGuessAction","300","182 iWRONG","0","118","118","0","1","1","","0","","0","","0","","0","0","1","1","0","1"
+"trackerWithSingleCorrectGuessAction","300","274.3 cRIGHT","25.7","0","25.7","1","0","1","RIGHT","1","RIGHT","1","RIGHT","25.7","RIGHT","25.7","1","0","1","100","1"
+"trackerWithMultipleIncorrectGuesses","300","294 iWRONG, 290 iWRONG, 287.5 iWRONG, 277.6 iWRONG, 223.9 iWRONG","0","76.1","76.1","0","5","5","","0","","0","","0","","0","0","1","1","0","5"

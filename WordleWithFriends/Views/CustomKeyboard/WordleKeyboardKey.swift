@@ -92,12 +92,34 @@ final class WordleKeyboardKey: UIButton {
   private func setupView() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    layer.cornerRadius = 3.0
-    layer.masksToBounds = true
+//    layer.cornerRadius = 3.0
+//    layer.masksToBounds = false
+//    layer.backgroundColor = guessState.associatedColor.cgColor
 //    backgroundColor = guessState.associatedColor
     
-    layer.frame = bounds.insetBy(dx: 2, dy: 2/*todo make this not 0 lmao */)
-    layer.backgroundColor = guessState.associatedColor.cgColor
+//    layer.frame = bounds.insetBy(dx: -2, dy: -2/*todo make this not 0 lmao */)
+//    layer.backgroundColor = guessState.associatedColor.cgColor
+    
+//    bounds = frame.insetBy(dx: 2, dy: 2)
+    
+    
+//    let backgroundLayer = CALayer()
+//    backgroundLayer.frame = bounds.insetBy(dx: 2, dy: 2)
+//    backgroundLayer.backgroundColor = guessState.associatedColor.cgColor
+//    layer.addSublayer(backgroundLayer)
+    
+    // OK FUCK IT WE'LL DO IT WITH SUBVIEWS!!! FUCKING PIECE OF SHIT!!!!!!!!!
+    
+    let backgroundSubview = UIView()
+    backgroundSubview.translatesAutoresizingMaskIntoConstraints = false
+    backgroundSubview.layer.cornerRadius = 3.0
+    backgroundSubview.isOpaque = true
+    backgroundSubview.backgroundColor = guessState.associatedColor
+    
+    addSubview(backgroundSubview)
+    backgroundSubview.pin(to: self, margins: .init(top: 1, left: 1.5, bottom: 1, right: 1.5))
+    sendSubviewToBack(backgroundSubview)
+    backgroundSubview.isUserInteractionEnabled = false
     
     titleLabel?.font = titleLabel?.font.withSize(24.0)
     titleLabel?.numberOfLines = 1

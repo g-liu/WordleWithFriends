@@ -59,9 +59,11 @@ final class WordleKeyboardKey: UIButton {
   
   private var guessState: LetterState = .unchecked {
     didSet {
-      backgroundColor = guessState.associatedColor
+      backgroundView?.backgroundColor = guessState.associatedColor
     }
   }
+  
+  private var backgroundView: UIView?
   
   private var progressBarTimer: Timer?
   private var timerFireCount: Int = 0
@@ -102,22 +104,18 @@ final class WordleKeyboardKey: UIButton {
     
 //    bounds = frame.insetBy(dx: 2, dy: 2)
     
-    
-//    let backgroundLayer = CALayer()
-//    backgroundLayer.frame = bounds.insetBy(dx: 2, dy: 2)
-//    backgroundLayer.backgroundColor = guessState.associatedColor.cgColor
-//    layer.addSublayer(backgroundLayer)
-    
     // OK FUCK IT WE'LL DO IT WITH SUBVIEWS!!! FUCKING PIECE OF SHIT!!!!!!!!!
     
     let backgroundSubview = UIView()
     backgroundSubview.translatesAutoresizingMaskIntoConstraints = false
-    backgroundSubview.layer.cornerRadius = 3.0
+    backgroundSubview.layer.cornerRadius = 4.0
     backgroundSubview.isOpaque = true
     backgroundSubview.backgroundColor = guessState.associatedColor
-    
+    self.backgroundView = backgroundSubview
+
     addSubview(backgroundSubview)
-    backgroundSubview.pin(to: self, margins: .init(top: 1, left: 1.5, bottom: 1, right: 1.5))
+    backgroundSubview.pin(to: self, margins: .init(top: 1, left: 2, bottom: 1, right: 1))
+    
     sendSubviewToBack(backgroundSubview)
     backgroundSubview.isUserInteractionEnabled = false
     
@@ -126,6 +124,21 @@ final class WordleKeyboardKey: UIButton {
     setTitleColor(.label, for: .normal)
     addTarget(self, action: #selector(didTapKey), for: .touchUpInside)
   }
+  
+//  override func didMoveToSuperview() {
+//    super.didMoveToSuperview()
+//
+//    layer.frame = bounds.insetBy(dx: -2, dy: -2/*todo make this not 0 lmao */)
+//    layer.backgroundColor = guessState.associatedColor.cgColor
+//  }
+//
+//  override func willMove(toSuperview newSuperview: UIView?) {
+//    super.willMove(toSuperview: newSuperview)
+//
+//    layer.frame = bounds.insetBy(dx: -2, dy: -2/*todo make this not 0 lmao */)
+//    layer.backgroundColor = guessState.associatedColor.cgColor
+//
+//  }
   
   func updateGuessState(_ state: LetterState) {
     guard state.priority > guessState.priority else { return }

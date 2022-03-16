@@ -10,7 +10,7 @@ import SwiftCSV
 @testable import WordleWithFriends
 
 final class TimeTrialTrackerTests: XCTestCase {
-  var csvData: CSV! // TODO: ALL TEST DATA TO ACCOUNT FOR END OF GAME!!!!
+  var csvData: CSV!
   
   override func setUpWithError() throws { /* I would make this static but we need to access the instance property */
     super.setUp()

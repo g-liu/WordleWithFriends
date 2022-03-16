@@ -39,8 +39,6 @@ struct TimeTrialTracker {
           personalBest: personalBest)
   }
   
-  // TODO: BELOW! ACCOUNT FOR END OF GAME. IS THAT A SKIP OR NOT??????????
-  
   var numCompletedClues: Int {
     correctClueAttempts.count
   }
@@ -134,7 +132,7 @@ struct TimeTrialTracker {
       guard let timeOfClueInitiation = index == 0 ? initialTimeRemaining : result1[index-1].last?.timeRemaining,
             let lastAction = actionsPerClue.last,
             // Don't include the end of game event by itself
-            !(lastAction.outcome == .endGame && actionsPerClue.count == 1 /* TODO: TEST THIS CLAUSE */) else { return nil }
+            !(lastAction.outcome == .endGame && actionsPerClue.count == 1) else { return nil }
       
       let timeOfLastAction = lastAction.timeRemaining
       let lastOutcome = lastAction.outcome
@@ -181,7 +179,7 @@ struct ClueAttempt {
   let numGuesses: Int
   let outcome: GuessOutcome
   let totalTimeElapsed: TimeInterval
-  let actualClue: String /* TODO: FILL IN */
+  let actualClue: String
 }
 
 enum GuessOutcome: Equatable {

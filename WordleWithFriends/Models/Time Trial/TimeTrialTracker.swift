@@ -187,17 +187,6 @@ enum GuessOutcome: Equatable {
   case incorrect(guess: String)
   case skipped
   case endGame
-  
-//  func isComparable(to outcome: GuessOutcome) -> Bool {
-//    switch (self, outcome) {
-//      case (.correct, .correct),
-//        (.incorrect(_), .incorrect(_)),
-//        (.skipped, .skipped),
-//        (.endGame, .endGame): return true
-//      default:
-//        return false
-//    }
-//  }
 }
 
 struct GuessAction {

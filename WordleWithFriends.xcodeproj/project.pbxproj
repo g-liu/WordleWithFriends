@@ -78,6 +78,7 @@
 		6C94F50627D9D88F00C19D43 /* Set+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94F50527D9D88F00C19D43 /* Set+Extension.swift */; };
 		6CA52C9D27E1A82B000564C5 /* String+Extension_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA52C9C27E1A82B000564C5 /* String+Extension_Tests.swift */; };
 		6CA52CA127E1A86C000564C5 /* Array+Extension_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA52CA027E1A86C000564C5 /* Array+Extension_Tests.swift */; };
+		6CA52CA327E1AE54000564C5 /* Double+Extension_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA52CA227E1AE54000564C5 /* Double+Extension_Tests.swift */; };
 		6CBBCECF279BDC7D00875C30 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */; };
 		6CBCC3CD2797565D005EB254 /* DismissableAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCC3CC2797565D005EB254 /* DismissableAlertController.swift */; };
 		6CBCC3D1279764FF005EB254 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */; };
@@ -183,6 +184,7 @@
 		6C94F50527D9D88F00C19D43 /* Set+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Extension.swift"; sourceTree = "<group>"; };
 		6CA52C9C27E1A82B000564C5 /* String+Extension_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension_Tests.swift"; sourceTree = "<group>"; };
 		6CA52CA027E1A86C000564C5 /* Array+Extension_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension_Tests.swift"; sourceTree = "<group>"; };
+		6CA52CA227E1AE54000564C5 /* Double+Extension_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension_Tests.swift"; sourceTree = "<group>"; };
 		6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		6CBCC3CC2797565D005EB254 /* DismissableAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissableAlertController.swift; sourceTree = "<group>"; };
 		6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
@@ -511,6 +513,7 @@
 			children = (
 				6CA52C9C27E1A82B000564C5 /* String+Extension_Tests.swift */,
 				6CA52CA027E1A86C000564C5 /* Array+Extension_Tests.swift */,
+				6CA52CA227E1AE54000564C5 /* Double+Extension_Tests.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -818,6 +821,7 @@
 				6C3955A32792890F00B0EF29 /* WordGuessTests.swift in Sources */,
 				6C1174FD27DDE0AB000B7C67 /* TimeTrialTrackerTests.swift in Sources */,
 				6C94887C27D0AB15005252F1 /* LetterStateTests.swift in Sources */,
+				6CA52CA327E1AE54000564C5 /* Double+Extension_Tests.swift in Sources */,
 				6CA52CA127E1A86C000564C5 /* Array+Extension_Tests.swift in Sources */,
 				60D947FA27938A6900086C51 /* LetterGuessTests.swift in Sources */,
 				60D947FC27938AD200086C51 /* GameGuessesModelTests.swift in Sources */,

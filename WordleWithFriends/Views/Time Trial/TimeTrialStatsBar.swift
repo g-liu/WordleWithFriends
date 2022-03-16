@@ -73,7 +73,7 @@ final class TimeTrialStatsBar: UIView {
   
   private var secondsRemaining: TimeInterval = 0 {
     didSet {
-      countdownLabel.text = "\(ceil(secondsRemaining).asString(style: .positional))"
+      countdownLabel.text = "\(ceil(secondsRemaining).asMinutesSeconds)"
       
       if secondsRemaining <= 0 {
         countdownTimer?.invalidate()

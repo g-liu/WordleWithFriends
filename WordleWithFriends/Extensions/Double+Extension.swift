@@ -68,13 +68,12 @@ extension Double {
     let fmt = DateComponentsFormatter()
     fmt.allowedUnits = [.minute, .second]
     fmt.zeroFormattingBehavior = .pad
+    fmt.unitsStyle = .positional
     
     return fmt
   }
  
-  func asString(style: DateComponentsFormatter.UnitsStyle) -> String {
-    type(of: self).dateComponentsFormatter.unitsStyle = style
-
-    return type(of: self).dateComponentsFormatter.string(from: self) ?? ""
+  var asMinutesSeconds: String {
+    type(of: self).dateComponentsFormatter.string(from: self) ?? ""
   }
 }

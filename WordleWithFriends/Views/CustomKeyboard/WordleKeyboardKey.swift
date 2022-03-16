@@ -94,18 +94,6 @@ final class WordleKeyboardKey: UIButton {
   private func setupView() {
     translatesAutoresizingMaskIntoConstraints = false
     
-//    layer.cornerRadius = 3.0
-//    layer.masksToBounds = false
-//    layer.backgroundColor = guessState.associatedColor.cgColor
-//    backgroundColor = guessState.associatedColor
-    
-//    layer.frame = bounds.insetBy(dx: -2, dy: -2/*todo make this not 0 lmao */)
-//    layer.backgroundColor = guessState.associatedColor.cgColor
-    
-//    bounds = frame.insetBy(dx: 2, dy: 2)
-    
-    // OK FUCK IT WE'LL DO IT WITH SUBVIEWS!!! FUCKING PIECE OF SHIT!!!!!!!!!
-    
     let backgroundSubview = UIView()
     backgroundSubview.translatesAutoresizingMaskIntoConstraints = false
     backgroundSubview.layer.cornerRadius = 4.0
@@ -124,22 +112,7 @@ final class WordleKeyboardKey: UIButton {
     setTitleColor(.label, for: .normal)
     addTarget(self, action: #selector(didTapKey), for: .touchUpInside)
   }
-  
-//  override func didMoveToSuperview() {
-//    super.didMoveToSuperview()
-//
-//    layer.frame = bounds.insetBy(dx: -2, dy: -2/*todo make this not 0 lmao */)
-//    layer.backgroundColor = guessState.associatedColor.cgColor
-//  }
-//
-//  override func willMove(toSuperview newSuperview: UIView?) {
-//    super.willMove(toSuperview: newSuperview)
-//
-//    layer.frame = bounds.insetBy(dx: -2, dy: -2/*todo make this not 0 lmao */)
-//    layer.backgroundColor = guessState.associatedColor.cgColor
-//
-//  }
-  
+
   func updateGuessState(_ state: LetterState) {
     guard state.priority > guessState.priority else { return }
     guessState = state

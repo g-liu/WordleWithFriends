@@ -13,17 +13,20 @@ extension Array {
   mutating func append(_ newElements: Element...) {
     append(contentsOf: newElements)
   }
-}
-
-extension Sequence {
+  
+  var rest: Array {
+    Array(dropFirst())
+  }
+  
   func splitIncludeDelimiter(whereSeparator shouldDelimit: (Element) throws -> Bool) rethrows -> [[Element]] {
-    try self.reduce([[]]) { group, next in
+    try enumerated().reduce([[]]) { group, next in
       var group = group
-      if try shouldDelimit(next) {
-        group[group.count - 1].append(next)
-        group.append([])
+      let nextElement = next.element; let nextOffset = next.offset
+      if try shouldDelimit(nextElement) {
+        group[group.count - 1].append(nextElement)
+        if nextOffset < count - 1 { group.append([]) }
       } else {
-        group[group.count - 1].append(next)
+        group[group.count - 1].append(nextElement)
       }
       return group
     }

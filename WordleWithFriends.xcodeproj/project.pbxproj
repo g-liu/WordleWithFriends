@@ -76,6 +76,8 @@
 		6C94F4FA27D44A8100C19D43 /* HorizontalSeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94F4F927D44A8100C19D43 /* HorizontalSeparatorView.swift */; };
 		6C94F50227D5C23D00C19D43 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94F50127D5C23D00C19D43 /* Array+Extension.swift */; };
 		6C94F50627D9D88F00C19D43 /* Set+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C94F50527D9D88F00C19D43 /* Set+Extension.swift */; };
+		6CA52C9D27E1A82B000564C5 /* String+Extension_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA52C9C27E1A82B000564C5 /* String+Extension_Tests.swift */; };
+		6CA52CA127E1A86C000564C5 /* Array+Extension_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA52CA027E1A86C000564C5 /* Array+Extension_Tests.swift */; };
 		6CBBCECF279BDC7D00875C30 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */; };
 		6CBCC3CD2797565D005EB254 /* DismissableAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCC3CC2797565D005EB254 /* DismissableAlertController.swift */; };
 		6CBCC3D1279764FF005EB254 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */; };
@@ -179,6 +181,8 @@
 		6C94F4F927D44A8100C19D43 /* HorizontalSeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalSeparatorView.swift; sourceTree = "<group>"; };
 		6C94F50127D5C23D00C19D43 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		6C94F50527D9D88F00C19D43 /* Set+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Extension.swift"; sourceTree = "<group>"; };
+		6CA52C9C27E1A82B000564C5 /* String+Extension_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension_Tests.swift"; sourceTree = "<group>"; };
+		6CA52CA027E1A86C000564C5 /* Array+Extension_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension_Tests.swift"; sourceTree = "<group>"; };
 		6CBBCECE279BDC7D00875C30 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		6CBCC3CC2797565D005EB254 /* DismissableAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissableAlertController.swift; sourceTree = "<group>"; };
 		6CBCC3D0279764FF005EB254 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
@@ -364,6 +368,7 @@
 		6C19F5B227921EFC00062083 /* WordleWithFriendsTests */ = {
 			isa = PBXGroup;
 			children = (
+				6CA52C9B27E1A81F000564C5 /* Extensions */,
 				6C39559D2792885200B0EF29 /* Models */,
 				6C19F5B527921EFC00062083 /* Info.plist */,
 			);
@@ -499,6 +504,15 @@
 				6C94F4F927D44A8100C19D43 /* HorizontalSeparatorView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		6CA52C9B27E1A81F000564C5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				6CA52C9C27E1A82B000564C5 /* String+Extension_Tests.swift */,
+				6CA52CA027E1A86C000564C5 /* Array+Extension_Tests.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		D6C4DBFFD5270F500059C310 /* Frameworks */ = {
@@ -800,9 +814,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CA52C9D27E1A82B000564C5 /* String+Extension_Tests.swift in Sources */,
 				6C3955A32792890F00B0EF29 /* WordGuessTests.swift in Sources */,
 				6C1174FD27DDE0AB000B7C67 /* TimeTrialTrackerTests.swift in Sources */,
 				6C94887C27D0AB15005252F1 /* LetterStateTests.swift in Sources */,
+				6CA52CA127E1A86C000564C5 /* Array+Extension_Tests.swift in Sources */,
 				60D947FA27938A6900086C51 /* LetterGuessTests.swift in Sources */,
 				60D947FC27938AD200086C51 /* GameGuessesModelTests.swift in Sources */,
 			);

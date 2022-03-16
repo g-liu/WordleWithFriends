@@ -40,9 +40,14 @@ final class WordleKeyboardKey: UIButton {
           longPressGestureRecognizer.minimumPressDuration = minDuration
           addGestureRecognizer(longPressGestureRecognizer)
           
-          addSubview(progressBar)
+          if let backgroundView = backgroundView {
+            insertSubview(progressBar, aboveSubview: backgroundView)
+          } else {
+            addSubview(progressBar)
+            sendSubviewToBack(progressBar)
+          }
           progressBar.pin(to: self)
-          sendSubviewToBack(progressBar)
+          
           progressBar.isHidden = true
           
           titleLabel?.font = titleLabel?.font.withSize(22.0)
@@ -101,7 +106,7 @@ final class WordleKeyboardKey: UIButton {
     backgroundSubview.backgroundColor = guessState.associatedColor
     self.backgroundView = backgroundSubview
 
-    addSubview(backgroundSubview)
+    insertSubview(backgroundSubview, belowSubview: progressBar)
     backgroundSubview.pin(to: self, margins: .init(top: 1, left: 2, bottom: 1, right: 1))
     
     sendSubviewToBack(backgroundSubview)

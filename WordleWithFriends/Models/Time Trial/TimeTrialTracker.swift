@@ -62,7 +62,7 @@ struct TimeTrialTracker {
   }
   
   private var totalGuesses: Int {
-    guessActions.filter { $0.outcome != .skipped }.count
+    guessActions.filter { $0.outcome != .skipped && $0.outcome != .endGame }.count
   }
   
   private var averageTimePerCorrectClue: Double {
@@ -133,7 +133,8 @@ struct TimeTrialTracker {
     let result2 = result1.enumerated().compactMap { index, actionsPerClue -> ClueAttempt? in
       guard let timeOfClueInitiation = index == 0 ? initialTimeRemaining : result1[index-1].last?.timeRemaining,
             let lastAction = actionsPerClue.last,
-            !(lastAction.outcome == .endGame && actionsPerClue.isEmpty /* TODO: TEST THIS CLAUSE */) else { return nil }
+            // Don't include the end of game event by itself
+            !(lastAction.outcome == .endGame && actionsPerClue.count == 1 /* TODO: TEST THIS CLAUSE */) else { return nil }
       
       let timeOfLastAction = lastAction.timeRemaining
       let lastOutcome = lastAction.outcome

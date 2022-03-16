@@ -87,6 +87,7 @@ private extension TimeTrialTracker {
           case "i": return .incorrect(guess: "XXXXX") // TODO: Assoc. value not tested yet
           case "s": return .skipped
           case "c": return .correct
+          case "e": return .endGame
           default:
             XCTFail("Used an invalid code in the guess log: \(outcomeCode)")
             return nil

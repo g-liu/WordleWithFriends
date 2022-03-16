@@ -10,7 +10,7 @@ import SwiftCSV
 @testable import WordleWithFriends
 
 final class TimeTrialTrackerTests: XCTestCase {
-  var csvData: CSV!
+  var csvData: CSV! // TODO: ALL TEST DATA TO ACCOUNT FOR END OF GAME!!!!
   
   override func setUpWithError() throws { /* I would make this static but we need to access the instance property */
     super.setUp()
@@ -84,16 +84,16 @@ private extension TimeTrialTracker {
       let outcome: GuessOutcome? = {
         let outcomeCode = entry[1].first
         switch outcomeCode {
-          case "i": return .incorrect(actualClue)
-          case "s": return .skipped(actualClue)
-          case "c": return .correct(actualClue)
+          case "i": return .incorrect(guess: "XXXXX") // TODO: Assoc. value not tested yet
+          case "s": return .skipped
+          case "c": return .correct
           default:
             XCTFail("Used an invalid code in the guess log: \(outcomeCode)")
             return nil
         }
       }()
       
-      logClueGuess(timeRemaining: timeRemaining, outcome: outcome!)
+      logAction(timeRemaining: timeRemaining, outcome: outcome!, actualClue: actualClue)
     }
   }
 }

@@ -12,9 +12,8 @@ import SwiftCSV
 final class TimeTrialTrackerTests: XCTestCase {
   var csvData: CSV!
   
-  override func setUpWithError() throws { /* TODO: I would make this static but we need to access the instance property */
+  override func setUpWithError() throws { /* I would make this static but we need to access the instance property */
     super.setUp()
-    
     
     let bundle = Bundle(for: type(of: self))
     let path = bundle.path(forResource: "TimeTrialTrackerTestsData", ofType: "csv")!
@@ -26,35 +25,38 @@ final class TimeTrialTrackerTests: XCTestCase {
     csvData.namedRows.enumerated().forEach { index, row in
       let testName = row["testName"]!
       XCTContext.runActivity(named: "test\(testName)") { activity in
-        let initialTime = row["initialTime"]!.asTimeInterval!
+        guard let initialTimeString = row["initialTime"],
+              !initialTimeString.isEmpty,
+              let initialTime = initialTimeString.asTimeInterval else { return }
+        
         var tracker = TimeTrialTracker(initialTimeRemaining: initialTime)
         tracker.insertGuesses(from: row["guessLog"]!)
         
         let stats = tracker.statistics
         
-        XCTAssertEqual(stats.averageTimePerCompletedClue, row["avgTimePerCompleted"]!.asTimeInterval!, accuracy: 1E-10, "Discrepancy in average time per completed clue")
-        XCTAssertEqual(stats.averageTimePerSkippedClue, row["avgTimePerSkipped"]!.asTimeInterval!, accuracy: 1E-10, "Discrepancy in average time per skipped clue")
-        XCTAssertEqual(stats.averageTimePerClue, row["avgTimePerClue"]!.asTimeInterval!, accuracy: 1E-10, "Discrepancy in average time per clue")
+        XCTAssertEqual(row["avgTimePerCompleted"]!.asTimeInterval!, stats.averageTimePerCompletedClue, accuracy: 1E-10, "Discrepancy in average time per completed clue")
+        XCTAssertEqual(row["avgTimePerSkipped"]!.asTimeInterval!, stats.averageTimePerSkippedClue, accuracy: 1E-10, "Discrepancy in average time per skipped clue")
+        XCTAssertEqual(row["avgTimePerClue"]!.asTimeInterval!, stats.averageTimePerClue, accuracy: 1E-10, "Discrepancy in average time per clue")
     
-        XCTAssertEqual(stats.averageGuessesPerCompletedClue, row["avgGuessesPerCompleted"]!.asDouble!, accuracy: 1E-10, "Discrepancy in average guesses per completed clue")
-        XCTAssertEqual(stats.averageGuessesPerSkippedClue, row["avgGuessesPerSkipped"]!.asDouble!, accuracy: 1E-10, "Discrepancy in average guesses per skipped clue")
-        XCTAssertEqual(stats.averageGuessesPerClue, row["avgGuessesPerClue"]!.asDouble!, accuracy: 1E-10, "Discrepancy in average guesses per clue")
+        XCTAssertEqual(row["avgGuessesPerCompleted"]!.asDouble!, stats.averageGuessesPerCompletedClue, accuracy: 1E-10, "Discrepancy in average guesses per completed clue")
+        XCTAssertEqual(row["avgGuessesPerSkipped"]!.asDouble!, stats.averageGuessesPerSkippedClue, accuracy: 1E-10, "Discrepancy in average guesses per skipped clue")
+        XCTAssertEqual(row["avgGuessesPerClue"]!.asDouble!, stats.averageGuessesPerClue, accuracy: 1E-10, "Discrepancy in average guesses per clue")
     
-        XCTAssertEqual(stats.lowestGuessCountForCompletedClue.clue, row["lowestGuessCountClue"], "Discrepancy in the clue that had the lowest guess count")
-        XCTAssertEqual(stats.lowestGuessCountForCompletedClue.guessCount, row["lowestGuessCountCount"]!.asInt, "Discrepancy in number of guesses taken for the clue with the lowest guess count")
-        XCTAssertEqual(stats.highestGuessCountForCompletedClue.clue, row["highestGuessCountClue"], "Discrepancy in the clue that had the lowest guess count")
-        XCTAssertEqual(stats.highestGuessCountForCompletedClue.guessCount, row["highestGuessCountCount"]!.asInt,  "Discrepancy in number of guesses taken for the clue with the highest guess count")
+        XCTAssertEqual(row["lowestGuessCountClue"], stats.lowestGuessCountForCompletedClue.clue, "Discrepancy in the clue that had the lowest guess count")
+        XCTAssertEqual(row["lowestGuessCountCount"]!.asInt!, stats.lowestGuessCountForCompletedClue.guessCount, "Discrepancy in number of guesses taken for the clue with the lowest guess count")
+        XCTAssertEqual(row["highestGuessCountClue"], stats.highestGuessCountForCompletedClue.clue, "Discrepancy in the clue that had the lowest guess count")
+        XCTAssertEqual(row["highestGuessCountCount"]!.asInt!, stats.highestGuessCountForCompletedClue.guessCount,  "Discrepancy in number of guesses taken for the clue with the highest guess count")
     
-        XCTAssertEqual(stats.fastestGuessForCompletedClue.clue, row["fastestGuessClue"], "Discrepancy in the clue that was guessed the fastest")
-        XCTAssertEqual(stats.fastestGuessForCompletedClue.timeElapsed, row["fastestGuessTimeElapsed"]!.asTimeInterval!, accuracy: 1E-10, "Discrepancy in the time elapsed for the clue guessed the fastest")
-        XCTAssertEqual(stats.slowestGuessForCompletedClue.clue, row["slowestGuessClue"], "Discrepancy in the clue that was guessed the fastest")
-        XCTAssertEqual(stats.slowestGuessForCompletedClue.timeElapsed, row["slowestGuessTimeElapsed"]!.asTimeInterval!, accuracy: 1E-10, "Discrepancy in the time elapsed for the clue guessed the fastest")
+        XCTAssertEqual(row["fastestGuessClue"], stats.fastestGuessForCompletedClue.clue, "Discrepancy in the clue that was guessed the fastest")
+        XCTAssertEqual(row["fastestGuessTimeElapsed"]!.asTimeInterval!, stats.fastestGuessForCompletedClue.timeElapsed, accuracy: 1E-10, "Discrepancy in the time elapsed for the clue guessed the fastest")
+        XCTAssertEqual(row["slowestGuessClue"], stats.slowestGuessForCompletedClue.clue, "Discrepancy in the clue that was guessed the fastest")
+        XCTAssertEqual(row["slowestGuessTimeElapsed"]!.asTimeInterval!, stats.slowestGuessForCompletedClue.timeElapsed, accuracy: 1E-10, "Discrepancy in the time elapsed for the clue guessed the fastest")
     
-        XCTAssertEqual(stats.numCompletedClues, row["numCompletedClues"]!.asInt, "Discrepancy in the number of completed clues")
-        XCTAssertEqual(stats.numSkippedClues, row["numSkippedClues"]!.asInt, "Discrepancy in the number of skipped clues")
-        XCTAssertEqual(stats.totalClues, row["totalClues"]!.asInt, "Discrepancy in the total number of clues given")
-        XCTAssertEqual(stats.percentCompleted, row["percentCompleted"]!.asDouble!, accuracy: 1E-10, "Discrepancy in the percentage of given clues completed")
-        XCTAssertEqual(stats.totalGuesses, row["totalGuesses"]!.asInt, "Discrepancy in the total number of guesses taken")
+        XCTAssertEqual(row["numCompletedClues"]!.asInt!, stats.numCompletedClues, "Discrepancy in the number of completed clues")
+        XCTAssertEqual(row["numSkippedClues"]!.asInt!, stats.numSkippedClues, "Discrepancy in the number of skipped clues")
+        XCTAssertEqual(row["totalClues"]!.asInt!, stats.totalClues, "Discrepancy in the total number of clues given")
+        XCTAssertEqual(row["percentCompleted"]!.asDouble!, stats.percentCompleted, accuracy: 1E-10, "Discrepancy in the percentage of given clues completed")
+        XCTAssertEqual(row["totalGuesses"]!.asInt!, stats.totalGuesses, "Discrepancy in the total number of guesses taken")
       }
     }
   }

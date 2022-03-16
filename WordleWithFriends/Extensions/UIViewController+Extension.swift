@@ -15,6 +15,10 @@ extension UIViewController {
     view.addSubview(toastView)
     view.bringSubviewToFront(toastView)
     
+    let swipeToDismissGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeToDismissToast))
+    swipeToDismissGesture.direction = .up
+    toastView.addGestureRecognizer(swipeToDismissGesture)
+    
     NSLayoutConstraint.activate([
       toastView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
       toastView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -29,11 +33,21 @@ extension UIViewController {
         toastView.removeFromSuperview()
         return
       }
-      UIView.animate(withDuration: self.toastAnimationSpeed, delay: totalDisplayedTime, options: [.curveEaseOut]) {
-        toastView.transform = CGAffineTransform(translationX: 0, y: 0)
-      } completion: { finished2 in
-        toastView.removeFromSuperview()
-      }
+      self.animateDismissToast(toastView, delay: totalDisplayedTime)
+    }
+  }
+  
+  @objc private func swipeToDismissToast(_ sender: UISwipeGestureRecognizer) {
+    guard let toastView = sender.view as? ToastView else { return }
+    
+    animateDismissToast(toastView)
+  }
+  
+  private func animateDismissToast(_ toastView: ToastView, delay: TimeInterval = 0) {
+    UIView.animate(withDuration: self.toastAnimationSpeed, delay: delay, options: [.curveEaseOut]) {
+      toastView.transform = CGAffineTransform(translationX: 0, y: 0)
+    } completion: { finished2 in
+      toastView.removeFromSuperview()
     }
   }
   

@@ -38,5 +38,8 @@ final class ToastView: UIView {
     
     addSubview(label)
     label.pin(to: self, margins: UIEdgeInsets(top: 12, left: 18, bottom: 12, right: 18))
+    
+    isUserInteractionEnabled = true
+    label.isUserInteractionEnabled = true
   }
 }

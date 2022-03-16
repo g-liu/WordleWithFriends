@@ -18,8 +18,8 @@ protocol KeyTapDelegate {
 
 final class WordleKeyboardInputView: UIInputView {
   private struct Layout {
-    static let rowSpacing = 8.0
-    static let topPadding = 8.0
+    static let rowSpacing = 0.0
+    static let topPadding = 4.0
   }
   private var keyReferences: [WeakRef<WordleKeyboardKey>] = []
   private weak var forfeitKey: WordleKeyboardKey?

@@ -40,9 +40,14 @@ final class WordleKeyboardKey: UIButton {
           longPressGestureRecognizer.minimumPressDuration = minDuration
           addGestureRecognizer(longPressGestureRecognizer)
           
-          addSubview(progressBar)
-          progressBar.pin(to: self)
-          sendSubviewToBack(progressBar)
+          if let backgroundView = backgroundView {
+            insertSubview(progressBar, aboveSubview: backgroundView)
+          } else {
+            addSubview(progressBar)
+            sendSubviewToBack(progressBar)
+          }
+          progressBar.pin(to: self, margins: .init(top: 4, left: 1.5, bottom: 4, right: 1.5))
+          
           progressBar.isHidden = true
           
           titleLabel?.font = titleLabel?.font.withSize(22.0)
@@ -59,9 +64,11 @@ final class WordleKeyboardKey: UIButton {
   
   private var guessState: LetterState = .unchecked {
     didSet {
-      backgroundColor = guessState.associatedColor
+      backgroundView?.backgroundColor = guessState.associatedColor
     }
   }
+  
+  private var backgroundView: UIView?
   
   private var progressBarTimer: Timer?
   private var timerFireCount: Int = 0
@@ -92,9 +99,18 @@ final class WordleKeyboardKey: UIButton {
   private func setupView() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    layer.cornerRadius = 3.0
-    layer.masksToBounds = false
-    backgroundColor = guessState.associatedColor
+    let backgroundSubview = UIView()
+    backgroundSubview.translatesAutoresizingMaskIntoConstraints = false
+    backgroundSubview.layer.cornerRadius = 4.0
+    backgroundSubview.isOpaque = true
+    backgroundSubview.backgroundColor = guessState.associatedColor
+    self.backgroundView = backgroundSubview
+
+    insertSubview(backgroundSubview, belowSubview: progressBar)
+    backgroundSubview.pin(to: self, margins: .init(top: 4, left: 1.5, bottom: 4, right: 1.5))
+    
+    sendSubviewToBack(backgroundSubview)
+    backgroundSubview.isUserInteractionEnabled = false
     
     titleLabel?.font = titleLabel?.font.withSize(24.0)
     titleLabel?.numberOfLines = 1

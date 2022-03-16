@@ -46,7 +46,7 @@ final class WordleKeyboardKey: UIButton {
             addSubview(progressBar)
             sendSubviewToBack(progressBar)
           }
-          progressBar.pin(to: self)
+          progressBar.pin(to: self, margins: .init(top: 4, left: 1.5, bottom: 4, right: 1.5))
           
           progressBar.isHidden = true
           
@@ -107,7 +107,7 @@ final class WordleKeyboardKey: UIButton {
     self.backgroundView = backgroundSubview
 
     insertSubview(backgroundSubview, belowSubview: progressBar)
-    backgroundSubview.pin(to: self, margins: .init(top: 1, left: 2, bottom: 1, right: 1))
+    backgroundSubview.pin(to: self, margins: .init(top: 4, left: 1.5, bottom: 4, right: 1.5))
     
     sendSubviewToBack(backgroundSubview)
     backgroundSubview.isUserInteractionEnabled = false
@@ -117,7 +117,7 @@ final class WordleKeyboardKey: UIButton {
     setTitleColor(.label, for: .normal)
     addTarget(self, action: #selector(didTapKey), for: .touchUpInside)
   }
-
+  
   func updateGuessState(_ state: LetterState) {
     guard state.priority > guessState.priority else { return }
     guessState = state

@@ -8,6 +8,12 @@
 import UIKit
 
 extension String {
+  var asInt: Int? { .init(self) }
+  var asFloat: Float? { .init(self) }
+  var asDouble: Double? { .init(self) }
+  var asTimeInterval: TimeInterval? { .init(self) }
+  var asBool: Bool? { .init(self) }
+  
   private static let checker = UITextChecker()
   
   func isLettersOnly() -> Bool {
@@ -62,4 +68,7 @@ extension StringProtocol {
   subscript(offset: Int) -> Character {
     self[index(startIndex, offsetBy: offset)]
   }
+}
+extension Substring {
+  var asString: String { .init(self) }
 }

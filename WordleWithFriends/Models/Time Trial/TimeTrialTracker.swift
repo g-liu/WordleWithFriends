@@ -18,7 +18,7 @@ struct TimeTrialTracker {
   
   var didLogEndGame: Bool { guessActions.last?.outcome == .endGame }
   
-  private let initialTimeRemaining: TimeInterval
+  let initialTimeRemaining: TimeInterval
   
   init(initialTimeRemaining: TimeInterval) {
     self.initialTimeRemaining = initialTimeRemaining

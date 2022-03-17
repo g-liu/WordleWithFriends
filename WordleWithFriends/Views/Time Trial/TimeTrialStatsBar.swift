@@ -69,8 +69,6 @@ final class TimeTrialStatsBar: UIView {
   
   var delegate: TimeTrialGameProtocol?
   
-  private let initialTimeRemaining: TimeInterval
-  
   private var secondsRemaining: TimeInterval = 0 {
     didSet {
       countdownLabel.text = "\(ceil(secondsRemaining).asMinutesSeconds)"
@@ -91,7 +89,6 @@ final class TimeTrialStatsBar: UIView {
   }
   
   init(initialTimeRemaining: TimeInterval) {
-    self.initialTimeRemaining = initialTimeRemaining
     tracker = .init(initialTimeRemaining: initialTimeRemaining)
     super.init(frame: .zero)
     setupView()
@@ -129,23 +126,26 @@ final class TimeTrialStatsBar: UIView {
   
   func restartCountdown() {
     countdownTimer?.invalidate()
-    secondsRemaining = initialTimeRemaining
+    secondsRemaining = tracker.initialTimeRemaining
     countdownTimer = Timer.scheduledTimer(timeInterval: refreshRate.inverse, target: self, selector: #selector(advanceTimer(_:)), userInfo: nil, repeats: true)
   }
   
   func trackCorrectGuess(guess: String) {
+    guard !tracker.didLogEndGame else { return }
     tracker.logAction(timeRemaining: secondsRemaining, outcome: .correct, actualClue: guess)
     
     updateBar()
   }
   
   func trackSkip(actualClue: String) {
+    guard !tracker.didLogEndGame else { return }
     tracker.logAction(timeRemaining: secondsRemaining, outcome: .skipped, actualClue: actualClue)
     
     updateBar()
   }
   
   func trackIncorrectGuess(guess: String, actualClue: String) {
+    guard !tracker.didLogEndGame else { return }
     tracker.logAction(timeRemaining: secondsRemaining, outcome: .incorrect(guess: guess), actualClue: actualClue)
     
     updateBar()
@@ -157,7 +157,7 @@ final class TimeTrialStatsBar: UIView {
   }
   
   func resetBar() {
-    tracker = .init(initialTimeRemaining: initialTimeRemaining)
+    tracker = .init(initialTimeRemaining: tracker.initialTimeRemaining)
     updateBar()
   }
   

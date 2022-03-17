@@ -22,9 +22,10 @@ struct TimeTrialTracker {
   
   init(initialTimeRemaining: TimeInterval) {
     self.initialTimeRemaining = initialTimeRemaining
+    personalBest = UserDefaults.standard.integer(forKey: "gameStats.highScore_\(initialTimeRemaining)")
   }
   
-  var personalBest = UserDefaults.standard.integer(forKey: "gameStats.highScore") // TODO: INJECT FOR TESTING???
+  var personalBest: Int // TODO: INJECT FOR TESTING???
   
   var statistics: GameStatistics {
     .init(averageTimePerCompletedClue: averageTimePerCorrectClue,
@@ -164,9 +165,11 @@ struct TimeTrialTracker {
   }
   
   private(set) var highScore: Int {
-    get { UserDefaults.standard.integer(forKey: "gameStats.highScore") }
+    // TODO: This will also have to be made dependent on length of words, hard mode, and other settings... ugh.
+    // TODO: Viewer for all highscores?
+    get { UserDefaults.standard.integer(forKey: "gameStats.highScore_\(initialTimeRemaining)") }
     set {
-      UserDefaults.standard.set(newValue, forKey: "gameStats.highScore")
+      UserDefaults.standard.set(newValue, forKey: "gameStats.highScore_\(initialTimeRemaining)")
     }
   }
   

@@ -18,7 +18,6 @@ final class GameMessagingViewController: UIViewController {
     }
   }()
   
-  
   private lazy var mainMenuButton: UIAlertAction = {
     .init(title: "", style: .default) { [weak self] _ in
       self?.delegate?.goToInitialScreen()
@@ -89,11 +88,15 @@ final class GameMessagingViewController: UIViewController {
   
   func showEndOfTimeTrial(statistics: GameStatistics) {
     alertController.title = "Time's up!"
+    // TODO: PLURALIZE EVERYTHING
     var message = """
-Total clues correct: \(statistics.numCompletedClues)
-Total clues skipped: \(statistics.numSkippedClues)
-Total guesses: \(statistics.totalGuesses)
-% correct: \(statistics.percentCompleted)%
+You got \(statistics.numCompletedClues) clue(s) right:
+\(statistics.completedClues.joined(separator: ", "))
+
+You skipped \(statistics.numSkippedClues) clue(s):
+\(statistics.skippedClues.joined(separator: ", "))
+
+Overall, you made \(statistics.totalGuesses) guess(es).
 
 Average time per clue: \(String(format: "%.2f", statistics.averageTimePerClue)) seconds
 Average guesses per clue: \(String(format: "%.1f", statistics.averageGuessesPerClue))

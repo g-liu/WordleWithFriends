@@ -56,6 +56,8 @@ final class ClueGuessViewController: UIViewController {
     return textField
   }()
   
+  private var timeTrialStatsBar: TimeTrialStatsBar?
+  
   private lazy var loadingView: UIActivityIndicatorView = {
     let view = UIActivityIndicatorView(style: .large)
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -71,6 +73,13 @@ final class ClueGuessViewController: UIViewController {
   private var isBeingScrolled = false
   
   init(clue: String, gamemode: GameMode) {
+    defer {
+      if case let .timeTrial(seconds) = gamemode {
+        timeTrialStatsBar = .init(initialTimeRemaining: seconds)
+        timeTrialStatsBar?.delegate = self
+        guessInputTextField.inputAccessoryView = timeTrialStatsBar
+      }
+    }
     gameGuessesModel = GameGuessesModel(clue: clue, gamemode: gamemode)
     gameMessagingVC = GameMessagingViewController(gamemode: gamemode)
     super.init(nibName: nil, bundle: nil)
@@ -105,6 +114,10 @@ final class ClueGuessViewController: UIViewController {
     }
     
     navigationItem.setHidesBackButton(true, animated: true)
+    
+    if case .timeTrial(_) = gameGuessesModel.gamemode {
+      timeTrialStatsBar?.restartCountdown()
+    }
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -162,14 +175,18 @@ final class ClueGuessViewController: UIViewController {
       case .win:
         guessTable.reloadData()
         wordleKeyboard.gameDidEnd()
-        if gameGuessesModel.gamemode == .infinite {
-          presentToast("Good job! \(gameGuessesModel.numberOfGuesses) guess(es)")
-          DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-            self?.restartWithNewClue()
-          }
-        } else {
-          shareButton.isEnabled = true
-          gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
+        switch gameGuessesModel.gamemode {
+          case .infinite:
+            presentToast("Good job! \(gameGuessesModel.numberOfGuesses) guess(es)")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+              self?.restartWithNewClue()
+            }
+          case .timeTrial(_):
+            timeTrialStatsBar?.trackCorrectGuess(guess: gameGuessesModel.clue)
+            generateNewClue()
+          case .computer, .human:
+            shareButton.isEnabled = true
+            gameMessagingVC.showWin(numGuesses: gameGuessesModel.numberOfGuesses)
         }
         guessInputTextField.text = ""
         
@@ -181,6 +198,8 @@ final class ClueGuessViewController: UIViewController {
       case .keepGuessing:
         guessTable.reloadData()
         guessInputTextField.text = ""
+        
+        timeTrialStatsBar?.trackIncorrectGuess(guess: gameGuessesModel.mostRecentGuess?.word ?? "", actualClue: gameGuessesModel.clue)
         
         guessTable.scrollToRow(at: IndexPath.Row(gameGuessesModel.numberOfGuesses), at: .bottom, animated: true)
       case .invalidGuess(let missingCharacters):
@@ -206,17 +225,25 @@ final class ClueGuessViewController: UIViewController {
   }
   
   private func forceLoss() {
+    disableGameInput()
+    
+    switch gameGuessesModel.gamemode {
+      case .infinite:
+        presentToast(gameGuessesModel.clue)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+          self?.restartWithNewClue()
+        }
+      case .timeTrial(_):
+        break
+      case .human, .computer:
+        shareButton.isEnabled = true
+        gameMessagingVC.showLose(clue: gameGuessesModel.clue)
+    }
+  }
+  
+  private func disableGameInput() {
     gameGuessesModel.forceGameOver()
     wordleKeyboard.gameDidEnd()
-    if gameGuessesModel.gamemode == .infinite {
-      presentToast(gameGuessesModel.clue)
-      DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-        self?.restartWithNewClue()
-      }
-    } else {
-      shareButton.isEnabled = true
-      gameMessagingVC.showLose(clue: gameGuessesModel.clue)
-    }
   }
   
   @objc private func adjustForKeyboard(notification: Notification) {
@@ -245,6 +272,19 @@ final class ClueGuessViewController: UIViewController {
       self?.loadingView.isHidden = true
     }
   }
+  
+  private func generateNewClue() {
+    let newClue = GameUtility.pickWord()
+    gameGuessesModel = GameGuessesModel(clue: newClue, gamemode: gameGuessesModel.gamemode)
+    guessInputTextField.text = ""
+    
+    DispatchQueue.main.async { [weak self] in
+      self?.wordleKeyboard.resetKeyboard()
+      self?.guessTable.reloadData()
+      // TODO: In the future might have to reset `cellHeightCache`
+      self?.guessTable.scrollToRow(at: .zero, at: .bottom, animated: true)
+    }
+  }
 }
 
 extension ClueGuessViewController: UITableViewDelegate, UITableViewDataSource {
@@ -253,6 +293,10 @@ extension ClueGuessViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    // TODO: inject via enum instead of reading from settings
+    if case .timeTrial(_) = gameGuessesModel.gamemode {
+      return gameGuessesModel.numberOfGuesses + 1
+    }
     return GameSettings.maxGuesses.readIntValue()
   }
 
@@ -328,7 +372,7 @@ extension ClueGuessViewController: UITextFieldDelegate {
   // Note: We still need this function as users can use bluetooth keyboard etc. to bypass the onscreen input
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     guard !gameGuessesModel.isGameOver else { return false }
-    guard string.isLettersOnly(),
+    guard string.isLettersOnly,
           (textField.text?.count ?? 0) + string.count <= GameSettings.clueLength.readIntValue() else {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             return false
@@ -350,16 +394,13 @@ extension ClueGuessViewController: GameEndDelegate {
   }
   
   func restartWithNewClue() {
-    let newClue = GameUtility.pickWord()
-    gameGuessesModel = GameGuessesModel(clue: newClue, gamemode: gameGuessesModel.gamemode)
-    guessInputTextField.text = ""
+    generateNewClue()
     
-    wordleKeyboard.resetKeyboard()
-    
-    DispatchQueue.main.async { [weak self] in
-      self?.guessTable.reloadData()
-      // TODO: In the future might have to reset `cellHeightCache`
-      self?.guessTable.scrollToRow(at: .zero, at: .bottom, animated: true)
+    if case .timeTrial(_) = gameGuessesModel.gamemode {
+      DispatchQueue.main.async { [weak self] in
+        self?.timeTrialStatsBar?.resetBar()
+        self?.timeTrialStatsBar?.restartCountdown()
+      }
     }
   }
 }
@@ -367,7 +408,7 @@ extension ClueGuessViewController: GameEndDelegate {
 extension ClueGuessViewController: KeyTapDelegate {
   func didTapKey(_ char: Character) {
     guard !gameGuessesModel.isGameOver else { return }
-    guard guessInputTextField.text?.isLettersOnly() ?? false,
+    guard guessInputTextField.text?.isLettersOnly ?? false,
           (guessInputTextField.text?.count ?? 0) < GameSettings.clueLength.readIntValue() else {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             return
@@ -382,11 +423,22 @@ extension ClueGuessViewController: KeyTapDelegate {
   }
   
   func didTapDelete() {
+    guard !gameGuessesModel.isGameOver else { return }
     guessInputTextField.deleteBackward()
+  }
+  
+  func didTapNextClue() {
+    timeTrialStatsBar?.trackSkip(actualClue: gameGuessesModel.clue)
+    generateNewClue()
   }
   
   func didForfeit() {
     forceLoss()
+  }
+  
+  func didEndGame() {
+    timeTrialStatsBar?.trackEndGame(actualClue: gameGuessesModel.clue)
+    timeTrialStatsBar?.forceTimerEnd()
   }
   
   func didTapMainMenu() {
@@ -397,5 +449,15 @@ extension ClueGuessViewController: KeyTapDelegate {
     alertController.addAction(.init(title: "Cancel", style: .cancel, handler: nil))
     
     present(alertController, animated: true)
+  }
+}
+
+extension ClueGuessViewController: TimeTrialGameProtocol {
+  func timerDidExpire() {
+    timeTrialStatsBar?.trackEndGame(actualClue: gameGuessesModel.clue)
+    disableGameInput()
+    if let statistics = timeTrialStatsBar?.statistics {
+      gameMessagingVC.showEndOfTimeTrial(statistics: statistics)
+    }
   }
 }

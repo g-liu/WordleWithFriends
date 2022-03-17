@@ -13,6 +13,7 @@ final class GameSetupViewController: UIViewController {
   private var selectedGamemode: GameMode? {
     didSet {
       switch selectedGamemode {
+          // TODO: This is unacceptable, should create child or intermediate view controllers to set this stuff up.
         case .some(.human):
           // WHY THIS SO LAGGY???
           humanInstructionsTextLabel.isHidden = false
@@ -22,10 +23,12 @@ final class GameSetupViewController: UIViewController {
           versusHumanButton.isHidden = true
           versusComputerButton.isHidden = true
           infiniteModeButton.isHidden = true
+          timeTrialButton.isHidden = true
           switchGamemodeButton.isHidden = false
         case .none,
             .some(.computer),
-            .some(.infinite):
+            .some(.infinite),
+            .some(.timeTrial):
           humanInstructionsTextLabel.isHidden = true
           startGameButton.isHidden = true
           clueTextField.isHidden = true
@@ -33,6 +36,7 @@ final class GameSetupViewController: UIViewController {
           versusHumanButton.isHidden = false
           versusComputerButton.isHidden = false
           infiniteModeButton.isHidden = false
+          timeTrialButton.isHidden = false
           switchGamemodeButton.isHidden = true
       }
     }
@@ -89,7 +93,7 @@ final class GameSetupViewController: UIViewController {
     button.setTitle("Play vs. human", for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(promptForClue), for: .touchUpInside)
-    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
     
     return button
   }()
@@ -100,7 +104,7 @@ final class GameSetupViewController: UIViewController {
     button.setTitle("Play vs. computer", for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(initiateGameVersusComputer), for: .touchUpInside)
-    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
     
     return button
   }()
@@ -111,7 +115,18 @@ final class GameSetupViewController: UIViewController {
     button.setTitle("Infinite mode", for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(initiateGameOnInfiniteMode), for: .touchUpInside)
-    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
+    
+    return button
+  }()
+  
+  private lazy var timeTrialButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle("Time trial", for: .normal)
+    button.setTitleColor(.systemBlue, for: .normal)
+    button.addTarget(self, action: #selector(initiateGameOnTimeTrialMode), for: .touchUpInside)
+    button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
     
     return button
   }()
@@ -152,7 +167,7 @@ final class GameSetupViewController: UIViewController {
     button.setTitle("Switch gamemode", for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(resetGamemode), for: .touchUpInside)
-    button.titleLabel?.font = .boldSystemFont(ofSize: 16.0)
+    button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
     button.setTitleColor(.systemGray, for: .disabled)
     button.isHidden = true
     
@@ -168,6 +183,8 @@ final class GameSetupViewController: UIViewController {
     
     return textField
   }()
+  
+  private var timeTrialChoices: [TimeInterval] = [300, 180, 120, 60]
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -190,6 +207,7 @@ final class GameSetupViewController: UIViewController {
     stackView.addArrangedSubview(versusHumanButton)
     stackView.addArrangedSubview(versusComputerButton)
     stackView.addArrangedSubview(infiniteModeButton)
+    stackView.addArrangedSubview(timeTrialButton)
     scrollView.addSubview(stackView)
     
     view.addSubview(scrollView)
@@ -298,6 +316,8 @@ final class GameSetupViewController: UIViewController {
   }
   
   @objc private func checkAndInitiateGame() -> Bool {
+    selectedGamemode = .human
+    
     let wordValidity = isWordValid()
     let isValid = wordValidity == .valid
     if isValid {
@@ -328,6 +348,28 @@ final class GameSetupViewController: UIViewController {
     
     initiateGame()
   }
+  
+  @objc private func initiateGameOnTimeTrialMode() {
+    clueTextField.text = GameUtility.pickWord()
+    
+    let timeLimitChoice = DismissableAlertController(title: "Time trial", message: "Choose a time limit", preferredStyle: .actionSheet)
+    let fmt = DateComponentsFormatter()
+    fmt.allowedUnits = [.minute]
+    fmt.unitsStyle = .full
+    timeTrialChoices.forEach { timeLimit in
+      guard let timeLimitString = fmt.string(from: timeLimit) else { return }
+      
+      timeLimitChoice.addAction(.init(title: timeLimitString, style: .default) { [weak self] _ in
+        self?.selectedGamemode = .timeTrial(timeLimit)
+        self?.initiateGame()
+      })
+    }
+    timeLimitChoice.addAction(.init(title: "Select a different gamemode", style: .cancel) { [weak self] _ in
+      self?.clueTextField.text = ""
+    })
+    
+    present(timeLimitChoice, animated: true)
+  }
 
   private func initiateGame() {
     guard let gamemode = selectedGamemode else { return }
@@ -346,7 +388,7 @@ extension GameSetupViewController: UITextFieldDelegate {
   }
   
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    guard string.isLettersOnly(),
+    guard string.isLettersOnly,
           (textField.text?.count ?? 0) + string.count <= GameSettings.clueLength.readIntValue() else {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             return false

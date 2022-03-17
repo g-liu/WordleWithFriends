@@ -10,7 +10,7 @@ import XCTest
 
 final class GameGuessesModelTests: XCTestCase {
   func testInitialConditions() {
-    let model = GameGuessesModel(clue: "GOOSE")
+    let model = GameGuessesModel(clue: "GOOSE", gamemode: .human)
     let maxGuesses = GameSettings.maxGuesses.readIntValue()
     XCTAssertEqual(model.clue, "GOOSE")
     XCTAssertEqual(model.isGameOver, false)
@@ -26,20 +26,36 @@ final class GameGuessesModelTests: XCTestCase {
   // MARK: - mostRecentGuess
   
   func testMostRecentGuessWhenNoneExist() {
-    XCTAssertNil(GameGuessesModel(clue: "COOKS").mostRecentGuess)
+    XCTAssertNil(GameGuessesModel(clue: "COOKS", gamemode: .human).mostRecentGuess)
   }
   
   func testMostRecentGuessWhenIncompleteGuessExists() {
-    var model = GameGuessesModel(clue: "COOKS")
+    var model = GameGuessesModel(clue: "COOKS", gamemode: .human)
     model.updateGuess("CORKS")
     XCTAssertNil(model.mostRecentGuess)
   }
   
   func testMostRecentGuessWhenOneCompleteGuessExists() {
-    var model = GameGuessesModel(clue: "COOKS")
+    var model = GameGuessesModel(clue: "COOKS", gamemode: .human)
     model.updateGuess("CORKS")
     model.submitGuess()
     
     XCTAssertEqual(model.mostRecentGuess?.word, "CORKS")
+  }
+  
+  func testSubmitGuessNotLongEnoughGuess() {
+    var model = GameGuessesModel(clue: "COOKS", gamemode: .human)
+    model.updateGuess("COOK")
+    let result = model.submitGuess()
+    
+    XCTAssertEqual(result, .invalidLength)
+  }
+  
+  func testSubmitGuessTooLongGuess() {
+    var model = GameGuessesModel(clue: "COOKS", gamemode: .human)
+    model.updateGuess("COOKER")
+    let result = model.submitGuess()
+    
+    XCTAssertEqual(result, .invalidLength)
   }
 }

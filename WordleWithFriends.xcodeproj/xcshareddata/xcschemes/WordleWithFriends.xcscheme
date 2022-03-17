@@ -20,6 +20,34 @@
                ReferencedContainer = "container:WordleWithFriends.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6C19F5AE27921EFC00062083"
+               BuildableName = "WordleWithFriendsTests.xctest"
+               BlueprintName = "WordleWithFriendsTests"
+               ReferencedContainer = "container:WordleWithFriends.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6C19F5B927921EFC00062083"
+               BuildableName = "WordleWithFriendsUITests.xctest"
+               BlueprintName = "WordleWithFriendsUITests"
+               ReferencedContainer = "container:WordleWithFriends.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

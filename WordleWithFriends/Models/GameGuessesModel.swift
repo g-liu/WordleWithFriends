@@ -60,7 +60,7 @@ struct GameGuessesModel {
       return .invalidLength
     }
     
-    guard wordGuess.count == GameSettings.clueLength.readIntValue() else {
+    guard wordGuess.count == clue.count else {
       return .invalidLength
     }
     
@@ -81,8 +81,13 @@ struct GameGuessesModel {
       isGameOver = true
       return .win
     } else if letterGuesses.count > GameSettings.maxGuesses.readIntValue() {
-      isGameOver = true
-      return .lose
+      if case .timeTrial(_) = gamemode {
+        isGameOver = false
+        return .keepGuessing
+      } else {
+        isGameOver = true
+        return .lose
+      }
     } else {
       isGameOver = false
       return .keepGuessing
@@ -113,7 +118,7 @@ struct GameGuessesModel {
   }
 }
 
-enum GameState {
+enum GameState: Equatable {
   // Guess is correct
   case win
   // Guess is incorrect and player is out of guesses
@@ -129,8 +134,9 @@ enum GameState {
   case invalidGuess(Set<Character>)
 }
 
-enum GameMode {
+enum GameMode: Equatable {
   case human
   case computer
   case infinite
+  case timeTrial(TimeInterval)
 }

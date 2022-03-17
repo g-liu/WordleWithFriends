@@ -27,6 +27,10 @@ final class WordleWithFriendsUITests: XCTestCase {
   
   func testClueInputValidation() {
     app.launch()
+    let playHumanButton = app.buttons["Play vs. human"]
+    let _ = playHumanButton.waitForExistence(timeout: 3)
+    playHumanButton.tap()
+    
     let clueTextField = app.textFields["GameSetupViewController.clueTextField"]
     let _ = clueTextField.waitForExistence(timeout: 3)
     clueTextField.typeText("FLAN\n")

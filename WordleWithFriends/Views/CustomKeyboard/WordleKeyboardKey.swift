@@ -13,12 +13,15 @@ enum KeyType {
   case char(Character)
   case submit
   case del
+  case nextClue
+  case endGame
   case forfeit(Double)
   case mainMenu
 }
 
 final class WordleKeyboardKey: UIButton {
   var keyType: KeyType = .char(" ") /* NB: The initial value is only a placeholder */ {
+    // TODO: This is unacceptable, split it up into subclasses
     didSet {
       switch keyType {
         case .char(let character):
@@ -27,6 +30,16 @@ final class WordleKeyboardKey: UIButton {
           setTitle("⏎", for: .normal)
         case .del:
           setTitle("⌫", for: .normal)
+        case .nextClue:
+          setTitle("Next clue", for: .normal)
+          setTitleColor(.systemFill, for: .disabled)
+          contentEdgeInsets.left = 8
+          contentEdgeInsets.right = 8
+        case .endGame:
+          setTitle("End game", for: .normal)
+          setTitleColor(.systemFill, for: .disabled)
+          contentEdgeInsets.left = 8
+          contentEdgeInsets.right = 8
         case .forfeit(let minDuration):
           setTitle("Give up", for: .normal)
           setTitleColor(.systemFill, for: .disabled)
@@ -133,6 +146,10 @@ final class WordleKeyboardKey: UIButton {
       case .submit:
         delegate?.didTapSubmit()
         AudioServicesPlaySystemSound(1156)
+      case .nextClue:
+        delegate?.didTapNextClue()
+      case .endGame:
+        delegate?.didEndGame()
       case .del:
         delegate?.didTapDelete()
         AudioServicesPlaySystemSound(1155)

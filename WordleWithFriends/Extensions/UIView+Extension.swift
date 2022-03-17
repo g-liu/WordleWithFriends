@@ -29,4 +29,16 @@ extension UIView {
   func removeAllGestureRecognizers() {
     gestureRecognizers?.forEach { removeGestureRecognizer($0) }
   }
+  
+  func setContentCompressionResistancePriority(_ priority: UILayoutPriority, for axes: NSLayoutConstraint.Axis...) {
+    axes.forEach { axis in
+      setContentCompressionResistancePriority(priority, for: axis)
+    }
+  }
+  
+  func setContentHuggingPriority(_ priority: UILayoutPriority, for axes: NSLayoutConstraint.Axis...) {
+    axes.forEach { axis in
+      setContentHuggingPriority(priority, for: axis)
+    }
+  }
 }

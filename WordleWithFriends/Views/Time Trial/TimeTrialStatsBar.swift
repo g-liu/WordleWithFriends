@@ -12,8 +12,8 @@ protocol TimeTrialGameProtocol {
 }
 
 final class TimeTrialStatsBar: UIView {
-  static let guessedCluesFormatString = "GUESSED: %d / %d"
-  static let highScoreFormatString = "HIGH SCORE: %d"
+  private static let guessedCluesFormatString = "GUESSED: %d / %d"
+  private static let highScoreFormatString = "HIGH SCORE: %d"
   
   private lazy var stackView: UIStackView = {
     let stackView = UIStackView()

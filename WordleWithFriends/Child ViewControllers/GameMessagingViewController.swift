@@ -89,13 +89,28 @@ final class GameMessagingViewController: UIViewController {
   func showEndOfTimeTrial(statistics: GameStatistics) {
     alertController.title = "Time's up!"
     // TODO: PLURALIZE EVERYTHING
-    var message = """
+    var message = ""
+
+    if statistics.numCompletedClues > 0 {
+      message +=
+"""
 You got \(statistics.numCompletedClues) clue(s) right:
 \(statistics.completedClues.joined(separator: ", "))
 
+"""
+    }
+    
+    if statistics.numSkippedClues > 0 {
+      message +=
+"""
 You skipped \(statistics.numSkippedClues) clue(s):
 \(statistics.skippedClues.joined(separator: ", "))
 
+"""
+    }
+    
+    message +=
+"""
 Overall, you made \(statistics.totalGuesses) guess(es).
 
 Average time per clue: \(String(format: "%.2f", statistics.averageTimePerClue)) seconds

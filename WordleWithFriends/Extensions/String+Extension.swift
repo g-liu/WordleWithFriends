@@ -16,7 +16,7 @@ extension String {
   
   private static let checker = UITextChecker()
   
-  func isLettersOnly() -> Bool {
+  var isLettersOnly: Bool {
     if isEmpty { return true }
     return self.rangeOfCharacter(from: CharacterSet.letters.inverted) == nil && self != ""
   }
@@ -46,6 +46,36 @@ extension String {
   
   mutating func replaceAt(_ index: Index, with character: Character) {
     replaceSubrange(range(index, index), with: String(character))
+  }
+}
+
+extension String {
+  subscript(value: CountableClosedRange<Int>) -> Substring {
+    self[index(value.lowerBound)...index(value.upperBound)]
+  }
+
+  subscript(value: CountableRange<Int>) -> Substring {
+    self[index(value.lowerBound)..<index(value.upperBound)]
+  }
+
+  subscript(value: PartialRangeUpTo<Int>) -> Substring {
+    self[..<index(value.upperBound)]
+  }
+
+  subscript(value: PartialRangeThrough<Int>) -> Substring {
+    self[...index(value.upperBound)]
+  }
+
+  subscript(value: PartialRangeFrom<Int>) -> Substring {
+    self[index(value.lowerBound)...]
+  }
+  
+  subscript(value: NSRange) -> Substring {
+    self[value.lowerBound..<value.upperBound]
+  }
+  
+  subscript(value: Int) -> Character {
+    self[index(value)]
   }
 }
 

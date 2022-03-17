@@ -388,7 +388,7 @@ extension GameSetupViewController: UITextFieldDelegate {
   }
   
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    guard string.isLettersOnly(),
+    guard string.isLettersOnly,
           (textField.text?.count ?? 0) + string.count <= GameSettings.clueLength.readIntValue() else {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             return false

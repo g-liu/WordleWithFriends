@@ -60,7 +60,7 @@ struct GameGuessesModel {
       return .invalidLength
     }
     
-    guard wordGuess.count == GameSettings.clueLength.readIntValue() else {
+    guard wordGuess.count == clue.count else {
       return .invalidLength
     }
     
@@ -118,7 +118,7 @@ struct GameGuessesModel {
   }
 }
 
-enum GameState {
+enum GameState: Equatable {
   // Guess is correct
   case win
   // Guess is incorrect and player is out of guesses

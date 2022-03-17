@@ -42,4 +42,20 @@ final class GameGuessesModelTests: XCTestCase {
     
     XCTAssertEqual(model.mostRecentGuess?.word, "CORKS")
   }
+  
+  func testSubmitGuessNotLongEnoughGuess() {
+    var model = GameGuessesModel(clue: "COOKS", gamemode: .human)
+    model.updateGuess("COOK")
+    let result = model.submitGuess()
+    
+    XCTAssertEqual(result, .invalidLength)
+  }
+  
+  func testSubmitGuessTooLongGuess() {
+    var model = GameGuessesModel(clue: "COOKS", gamemode: .human)
+    model.updateGuess("COOKER")
+    let result = model.submitGuess()
+    
+    XCTAssertEqual(result, .invalidLength)
+  }
 }

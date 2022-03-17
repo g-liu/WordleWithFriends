@@ -152,6 +152,7 @@ final class TimeTrialStatsBar: UIView {
   }
   
   func trackEndGame(actualClue: String) {
+    guard !tracker.didLogEndGame else { return }
     tracker.logAction(timeRemaining: secondsRemaining, outcome: .endGame, actualClue: actualClue)
   }
   

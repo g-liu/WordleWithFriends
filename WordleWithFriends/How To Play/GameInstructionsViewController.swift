@@ -9,8 +9,7 @@ import UIKit
 
 final class GameInstructionsViewController: UIViewController {
   private lazy var stackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.translatesAutoresizingMaskIntoConstraints = false
+    let stackView = UIStackView().autolayoutEnabled
     stackView.axis = .vertical
     stackView.alignment = .top
     stackView.spacing = 16.0
@@ -19,10 +18,7 @@ final class GameInstructionsViewController: UIViewController {
   }()
   
   private lazy var scrollView: UIScrollView = {
-    let scrollView = UIScrollView()
-    scrollView.translatesAutoresizingMaskIntoConstraints = false
-    
-    return scrollView
+    .init().autolayoutEnabled
   }()
   
   private lazy var instructionsHeader: UILabel = {
@@ -30,8 +26,7 @@ final class GameInstructionsViewController: UIViewController {
     let numberOfAttemptsText = "\(GameSettings.maxGuesses.readIntValue().spelledOut ?? " ") tries".bolded
     let clueLengthText = "\(GameSettings.clueLength.readIntValue().spelledOut ?? " ")-letter".bolded
     
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
+    let label = UILabel().autolayoutEnabled
     label.attributedText = "Guess the clue in "
       .appending(numberOfAttemptsText)
       .appending(" or less. The clue will be a ")
@@ -44,8 +39,7 @@ final class GameInstructionsViewController: UIViewController {
   }()
   
   private lazy var headerLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
+    let label = UILabel().autolayoutEnabled
     label.text = "Examples"
     label.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
     
@@ -62,8 +56,7 @@ final class GameInstructionsViewController: UIViewController {
   }()
   
   private lazy var correctGuessExplanation: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
+    let label = UILabel().autolayoutEnabled
     label.numberOfLines = 0
     label.attributedText = "The letter ".appending("O".bolded).appending(" is in the correct place.".asAttributedString)
     
@@ -80,8 +73,7 @@ final class GameInstructionsViewController: UIViewController {
   }()
   
   private lazy var misplacedGuessExplanation: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
+    let label = UILabel().autolayoutEnabled
     label.numberOfLines = 0
     label.attributedText = "The letter ".appending("L".bolded).appending(" is in the clue but in the wrong place.".asAttributedString)
     
@@ -98,8 +90,7 @@ final class GameInstructionsViewController: UIViewController {
   }()
   
   private lazy var incorrectGuessExplanation: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
+    let label = UILabel().autolayoutEnabled
     label.numberOfLines = 0
     label.attributedText = "The letter ".appending("P".bolded).appending(" is not in the clue.".asAttributedString)
     
@@ -107,8 +98,7 @@ final class GameInstructionsViewController: UIViewController {
   }()
   
   private lazy var settingsTeaser: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
+    let label = UILabel().autolayoutEnabled
     label.numberOfLines = 0
     label.attributedText = "✨ Pro tip! ".bolded.appending("You can change stuff like the number of guesses in the Settings.\n\n") // TODO: deeplink to settings
     

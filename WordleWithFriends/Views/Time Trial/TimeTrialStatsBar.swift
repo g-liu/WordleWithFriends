@@ -16,8 +16,7 @@ final class TimeTrialStatsBar: UIView {
   private static let highScoreFormatString = "HIGH SCORE: %d"
   
   private lazy var stackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.translatesAutoresizingMaskIntoConstraints = false
+    let stackView = UIStackView().autolayoutEnabled
     stackView.axis = .horizontal
     stackView.distribution = .fillProportionally
     stackView.alignment = .fill
@@ -27,20 +26,18 @@ final class TimeTrialStatsBar: UIView {
   }()
   
   private lazy var countdownLabel: UILabel = {
-    let label = UILabel()
+    let label = UILabel().autolayoutEnabled
     label.textColor = .label
     label.numberOfLines = 1
     label.font = .boldSystemFont(ofSize: UIFont.systemFontSize)
-    label.translatesAutoresizingMaskIntoConstraints = false
     
     return label
   }()
   
   private lazy var completedCluesLabel: UILabel = {
-    let label = UILabel()
+    let label = UILabel().autolayoutEnabled
     label.textColor = .label
     label.numberOfLines = 1
-    label.translatesAutoresizingMaskIntoConstraints = false
     label.font = .systemFont(ofSize: UIFont.systemFontSize)
     
     return label
@@ -48,10 +45,9 @@ final class TimeTrialStatsBar: UIView {
   
   // TODO: Button in settings to clear this
   private lazy var highScoreLabel: UILabel = {
-    let label = UILabel()
+    let label = UILabel().autolayoutEnabled
     label.textColor = .label
     label.numberOfLines = 1
-    label.translatesAutoresizingMaskIntoConstraints = false
     label.font = .systemFont(ofSize: UIFont.systemFontSize)
     
     return label

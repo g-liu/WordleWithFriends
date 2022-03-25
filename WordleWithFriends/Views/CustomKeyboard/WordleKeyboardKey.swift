@@ -87,8 +87,7 @@ final class WordleKeyboardKey: UIButton {
   private var timerFireCount: Int = 0
   
   private lazy var progressBar: UIProgressView = {
-    let bar = UIProgressView()
-    bar.translatesAutoresizingMaskIntoConstraints = false
+    let bar = UIProgressView().autolayoutEnabled
     bar.trackTintColor = .clear
     
     return bar
@@ -112,8 +111,7 @@ final class WordleKeyboardKey: UIButton {
   private func setupView() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    let backgroundSubview = UIView()
-    backgroundSubview.translatesAutoresizingMaskIntoConstraints = false
+    let backgroundSubview = UIView().autolayoutEnabled
     backgroundSubview.layer.cornerRadius = 4.0
     backgroundSubview.isOpaque = true
     backgroundSubview.backgroundColor = guessState.associatedColor

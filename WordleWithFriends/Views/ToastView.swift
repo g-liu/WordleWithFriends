@@ -30,8 +30,7 @@ final class ToastView: UIView {
     layer.rasterizationScale = UIScreen.main.scale
     isOpaque = true
     
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
+    let label = UILabel().autolayoutEnabled
     label.textAlignment = .center
     label.text = text
     label.numberOfLines = 2

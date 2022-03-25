@@ -10,8 +10,7 @@ import UIKit
 
 final class LetterTileView: UIView {
   private lazy var letterLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
+    let label = UILabel().autolayoutEnabled
     label.textAlignment = .center
     
     label.font = .monospacedSystemFont(ofSize: 28.0, weight: .bold)

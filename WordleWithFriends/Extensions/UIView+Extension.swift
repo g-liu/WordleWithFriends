@@ -8,6 +8,11 @@
 import UIKit
 
 extension UIView {
+  var autolayoutEnabled: Self {
+    translatesAutoresizingMaskIntoConstraints = false
+    return self
+  }
+  
   func pin(to otherView: UIView, margins: UIEdgeInsets = .zero) {
     NSLayoutConstraint.activate([
       topAnchor.constraint(equalTo: otherView.topAnchor, constant: margins.top),

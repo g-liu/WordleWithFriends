@@ -49,8 +49,7 @@ final class WordleKeyboardInputView: UIInputView {
   }
   
   private lazy var mainStackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.translatesAutoresizingMaskIntoConstraints = false
+    let stackView = UIStackView().autolayoutEnabled
     stackView.alignment = .center
     stackView.axis = .vertical
     stackView.distribution = .fill

@@ -37,8 +37,7 @@ final class GameSettingsViewController: UIViewController {
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapClose))
     view.backgroundColor = .systemBackground
     
-    let table = UITableView(frame: .zero, style: .insetGrouped)
-    table.translatesAutoresizingMaskIntoConstraints = false
+    let table = UITableView(frame: .zero, style: .insetGrouped).autolayoutEnabled
     table.delegate = self
     table.dataSource = self
     table.register(NumberRangeGameSettingCell.self, forCellReuseIdentifier: NumberRangeGameSettingCell.identifier)

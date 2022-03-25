@@ -23,8 +23,7 @@ final class ClueGuessViewController: UIViewController {
   }()
   
   private lazy var guessTable: UITableView = {
-    let tableView = UITableView(frame: .zero, style: .plain)
-    tableView.translatesAutoresizingMaskIntoConstraints = false
+    let tableView = UITableView(frame: .zero, style: .plain).autolayoutEnabled
     tableView.separatorStyle = .none
     tableView.delegate = self
     tableView.dataSource = self
@@ -42,8 +41,7 @@ final class ClueGuessViewController: UIViewController {
   }()
   
   private lazy var guessInputTextField: UITextField = {
-    let textField = UITextField()
-    textField.translatesAutoresizingMaskIntoConstraints = false
+    let textField = UITextField().autolayoutEnabled
     textField.isHidden = true
     textField.autocorrectionType = .no
     textField.keyboardType = .asciiCapable
@@ -59,8 +57,7 @@ final class ClueGuessViewController: UIViewController {
   private var timeTrialStatsBar: TimeTrialStatsBar?
   
   private lazy var loadingView: UIActivityIndicatorView = {
-    let view = UIActivityIndicatorView(style: .large)
-    view.translatesAutoresizingMaskIntoConstraints = false
+    let view = UIActivityIndicatorView(style: .large).autolayoutEnabled
     
     view.startAnimating()
     view.isHidden = true

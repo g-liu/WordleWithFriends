@@ -42,16 +42,10 @@ final class GameSetupViewController: UIViewController {
     }
   }
   
-  private lazy var scrollView: UIScrollView = {
-    let scrollView = UIScrollView()
-    scrollView.translatesAutoresizingMaskIntoConstraints = false
-    
-    return scrollView
-  }()
+  private lazy var scrollView: UIScrollView = { .init().autolayoutEnabled }()
   
   private lazy var stackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.translatesAutoresizingMaskIntoConstraints = false
+    let stackView = UIStackView().autolayoutEnabled
     stackView.axis = .vertical
     stackView.alignment = .center
     stackView.spacing = 8.0
@@ -67,9 +61,8 @@ final class GameSetupViewController: UIViewController {
   }()
   
   private lazy var welcomeTextLabel: UILabel = {
-    let label = UILabel()
+    let label = UILabel().autolayoutEnabled
     label.numberOfLines = 0
-    label.translatesAutoresizingMaskIntoConstraints = false
     label.textAlignment = .center
     label.text = "Welcome to Wordle With Friends!"
     label.font = UIFont.boldSystemFont(ofSize: 24.0) // TODO: Dynamic font sizes
@@ -78,9 +71,8 @@ final class GameSetupViewController: UIViewController {
   }()
   
   private lazy var humanInstructionsTextLabel: UILabel = {
-    let label = UILabel()
+    let label = UILabel().autolayoutEnabled
     label.numberOfLines = 0
-    label.translatesAutoresizingMaskIntoConstraints = false
     label.textAlignment = .center
     label.isHidden = true
     
@@ -88,8 +80,7 @@ final class GameSetupViewController: UIViewController {
   }()
   
   private lazy var versusHumanButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
+    let button = UIButton().autolayoutEnabled
     button.setTitle("Play vs. human", for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(promptForClue), for: .touchUpInside)
@@ -99,8 +90,7 @@ final class GameSetupViewController: UIViewController {
   }()
   
   private lazy var versusComputerButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
+    let button = UIButton().autolayoutEnabled
     button.setTitle("Play vs. computer", for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(initiateGameVersusComputer), for: .touchUpInside)
@@ -110,8 +100,7 @@ final class GameSetupViewController: UIViewController {
   }()
   
   private lazy var infiniteModeButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
+    let button = UIButton().autolayoutEnabled
     button.setTitle("Infinite mode", for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(initiateGameOnInfiniteMode), for: .touchUpInside)
@@ -121,8 +110,7 @@ final class GameSetupViewController: UIViewController {
   }()
   
   private lazy var timeTrialButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
+    let button = UIButton().autolayoutEnabled
     button.setTitle("Time trial", for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(initiateGameOnTimeTrialMode), for: .touchUpInside)
@@ -139,17 +127,15 @@ final class GameSetupViewController: UIViewController {
   }()
   
   private lazy var instructionsTextLabel: UILabel = {
-    let label = UILabel()
+    let label = UILabel().autolayoutEnabled
     label.numberOfLines = 0
-    label.translatesAutoresizingMaskIntoConstraints = false
     label.textAlignment = .center
     
     return label
   }()
   
   private lazy var startGameButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
+    let button = UIButton().autolayoutEnabled
     button.setTitle("Start", for: .normal)
     button.addTarget(self, action: #selector(checkAndInitiateGame), for: .touchUpInside)
     button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.buttonFontSize)
@@ -162,8 +148,7 @@ final class GameSetupViewController: UIViewController {
   }()
   
   private lazy var switchGamemodeButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
+    let button = UIButton().autolayoutEnabled
     button.setTitle("Switch gamemode", for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(resetGamemode), for: .touchUpInside)
@@ -175,8 +160,7 @@ final class GameSetupViewController: UIViewController {
   }()
   
   private lazy var clueTextField: UITextField = {
-    let textField = WordInputTextField()
-    textField.translatesAutoresizingMaskIntoConstraints = false
+    let textField = WordInputTextField().autolayoutEnabled
     textField.delegate = self
     textField.accessibilityIdentifier = "GameSetupViewController.clueTextField"
     textField.isHidden = true
